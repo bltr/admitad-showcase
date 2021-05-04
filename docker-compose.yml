@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  php:
+    build:
+      context: docker
+      dockerfile: php.docker
+    image: ${APP_NAME}_php
+    user: 1000:1000
+    volumes:
+      - .:/app
+      - composer:/composer
+    depends_on:
+      - redis
+      - db
+
+  nginx:
+    build:
+      context: docker
+      dockerfile: nginx.docker
+    volumes:
+      - .:/app
+    ports:
+      - 8080:80
+    depends_on:
+      - php
+
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_USER: $DB_USERNAME
+      POSTGRES_DB: $DB_DATABASE
+    ports:
+      - 54321:5432
+
+  redis:
+    image: redis:6.2-alpine
+    volumes:
+      - redis:/data
+    ports:
+      - 63791:6379
+
+  queue:
+    image: ${APP_NAME}_php
+    user: 1000:1000
+    volumes:
+      - '.:/app'
+    depends_on:
+      - redis
+      - db
+    command: ['/app/artisan', 'queue:listen', '--timeout=0']
+    restart: always
+
+volumes:
+  db:
+  redis:
+  composer:
+    name: composer
