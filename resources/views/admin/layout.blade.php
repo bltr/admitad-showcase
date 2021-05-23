@@ -34,6 +34,9 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('admin.home') }}">Home</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ route('admin.shops.index') }}">Shops</a>
+                    </li>
                 </ul>
             </div>
         </div>
