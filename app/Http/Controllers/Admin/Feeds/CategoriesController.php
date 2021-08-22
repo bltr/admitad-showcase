@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Feeds;
 
 use App\Http\Controllers\Controller;
-use App\Models\Feed\Categories;
+use App\Models\FeedCategory;
 use App\Models\Shop;
 use Illuminate\Http\Request;
 
@@ -11,7 +11,7 @@ class CategoriesController extends Controller
 {
     public function index(Shop $shop)
     {
-        $categories = Categories::where('shop_id', $shop->id)->get()->keyBy('outer_id')->groupBy('parentId');
+        $categories = FeedCategory::where('shop_id', $shop->id)->get()->keyBy('outer_id')->groupBy('parentId');
 
         $rendered_list = $this->renderNestedList($categories);
 
@@ -20,7 +20,7 @@ class CategoriesController extends Controller
 
     private function renderNestedList($categories, $roots = null, $depth = 0)
     {
-        $roots = $roots ?? $categories[''];
+        $roots = $roots ?? $categories[''] ?? [];
         $html = $depth ? '<ul class="list-group border-start">' : '<ul class="list-group">' ;
         foreach ($roots as $category) {
             if ($categories->has($category->outer_id)) {

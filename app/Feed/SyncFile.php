@@ -4,10 +4,11 @@
 namespace App\Feed;
 
 
-use App\Models\Feed\Categories;
-use App\Models\Feed\Offers;
+use App\Models\FeedCategory;
+use App\Models\FeedOffer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class SyncFile
 {
@@ -23,13 +24,13 @@ class SyncFile
         try {
             $this->readFile->init(FileName::build($shopId));
             $this->syncEntries($shopId, 'category');
-            $this->syncEntries($shopId, 'offer');
+            $this->syncEntries($shopId, 'offer', ['picture']);
         } catch (\Throwable $exception) {
             Log::error('feed sync: ' . $exception->getMessage() . ' ' . $exception->getLine());
         }
     }
 
-    private function syncEntries(int $shopId, string $tag_name)
+    private function syncEntries(int $shopId, string $tag_name, $arrayble_tag = [])
     {
         $hashs = [];
         $this->query($tag_name)->where('shop_id', $shopId)->select('hash', 'outer_id')->chunk(10000, function ($entries) use (&$hashs) {
@@ -39,6 +40,11 @@ class SyncFile
         DB::beginTransaction();
         $time = new \DateTime();
         foreach ($this->readFile->readEntries($tag_name) as $entry) {
+            foreach ($arrayble_tag as $tag) {
+                $entry[Str::plural($tag)] = (array) ($entry[$tag] ?? []);
+                unset($entry[$tag]);
+            }
+
             $json_entry = json_encode($entry, JSON_UNESCAPED_UNICODE);
             $hash = sha1($json_entry);
             $id = $entry['id'];
@@ -75,6 +81,6 @@ class SyncFile
 
     private function query($tag_name)
     {
-        return $tag_name === 'offer' ? Offers::query() : Categories::query();
+        return $tag_name === 'offer' ? FeedOffer::query() : FeedCategory::query();
     }
 }

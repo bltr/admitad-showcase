@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\Feed;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Offers extends Model
+class FeedOffer extends Model
 {
     use HasFactory;
 
@@ -21,10 +21,10 @@ class Offers extends Model
 
     public function getPicturesAttribute()
     {
-        return collect($this->data->picture);
+        return collect($this->data->pictures);
     }
 
-    public function getUrlAttribute()
+    public function getUrlAttributeXXX()
     {
         $query = [];
         parse_str(parse_url($this->data->url)['query'], $query);
@@ -40,7 +40,7 @@ class Offers extends Model
     public function fullCategoryName()
     {
         if (empty(self::$categories)) {
-            self::$categories = Categories::all()->keyBy('outer_id')->all();
+            self::$categories = FeedCategory::all()->keyBy('outer_id')->all();
         }
 
         $result = '';

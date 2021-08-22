@@ -8,16 +8,12 @@ use Illuminate\Support\Str;
 
 abstract class AbstractReport implements Report
 {
-    protected string $lable = '';
-
-    protected string $desc = '';
-
     protected array $values = [];
 
     public function __construct()
     {
-        if (empty($this->lable) || empty($this->desc) || empty($this->values)) {
-            throw new \ErrorException('Is not defined label, desc or values.');
+        if (empty($this->values)) {
+            throw new \ErrorException('Is not defined values.');
         }
     }
 
@@ -25,7 +21,7 @@ abstract class AbstractReport implements Report
 
     public function render(): string
     {
-        return view('admin.shops.feeds.analytics.reports.' . $this->getCode(), $this->getAllValues())->render();
+        return view('admin.shops.feeds.analytics.reports.' . $this->getCode(), $this->getValues())->render();
     }
 
     public function getValues(): array
@@ -41,10 +37,5 @@ abstract class AbstractReport implements Report
     public function getCode(): string
     {
         return Str::replaceLast('_report', '', Str::snake(class_basename(static::class)));
-    }
-
-    protected function getAllValues()
-    {
-        return ['lable' => $this->lable, 'desc' => $this->desc] + $this->values;
     }
 }
