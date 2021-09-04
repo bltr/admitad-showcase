@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCatalogOffersTable extends Migration
+class CreateOffersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateCatalogOffersTable extends Migration
      */
     public function up()
     {
-        Schema::create('catalog_offers', function (Blueprint $table) {
+        Schema::create('offers', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->softDeletes();
@@ -33,6 +33,6 @@ class CreateCatalogOffersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('catalog_offers');
+        Schema::dropIfExists('offers');
     }
 }

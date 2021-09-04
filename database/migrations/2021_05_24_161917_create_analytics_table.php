@@ -13,7 +13,7 @@ class CreateAnalyticsTable extends Migration
      */
     public function up()
     {
-        Schema::create('feed_analytics', function (Blueprint $table) {
+        Schema::create('analytics', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger('shop_id');
@@ -28,6 +28,6 @@ class CreateAnalyticsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('feed_analytics');
+        Schema::dropIfExists('analytics');
     }
 }

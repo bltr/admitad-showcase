@@ -9,8 +9,6 @@ class FeedOffer extends Model
 {
     use HasFactory;
 
-    protected $table = 'feed_offers';
-
     protected $guarded = [];
 
     protected $casts = [

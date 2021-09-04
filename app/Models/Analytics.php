@@ -9,8 +9,6 @@ class Analytics extends Model
 {
     use HasFactory;
 
-    public $table = 'feed_analytics';
-
     protected $guarded = [];
 
     protected $casts = [
