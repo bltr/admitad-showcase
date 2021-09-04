@@ -11,6 +11,13 @@ class CompositeReport implements Report
      */
     private array $reports;
 
+    private string $base_view;
+
+    public function __construct(string $base_view)
+    {
+        $this->base_view = $base_view;
+    }
+
     public function addReport(AbstractReport $report)
     {
         $this->reports[$report->getCode()] = $report;
@@ -25,7 +32,7 @@ class CompositeReport implements Report
 
     public function render(): string
     {
-        return view('admin._analytics.composite', ['reports' => $this->reports])->render();
+        return view($this->base_view . '.composite', ['reports' => $this->reports])->render();
     }
 
     public function getValues(): array

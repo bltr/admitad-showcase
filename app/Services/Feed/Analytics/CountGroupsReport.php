@@ -23,8 +23,6 @@ class CountGroupsReport extends AbstractReport
         ]
     ];
 
-    protected string $view = 'admin.feeds.analytics.';
-
     public function build(int $shopId)
     {
         $this->values['group_id_count'] = FeedOffer::where('shop_id', $shopId)->distinct('data->group_id')->count();
