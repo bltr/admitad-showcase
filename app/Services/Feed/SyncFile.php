@@ -33,9 +33,12 @@ class SyncFile
     private function syncEntries(int $shopId, string $tag_name, $arrayble_tag = [])
     {
         $hashs = [];
-        $this->query($tag_name)->where('shop_id', $shopId)->select('hash', 'outer_id')->chunk(10000, function ($entries) use (&$hashs) {
-            $hashs += $entries->pluck('hash', 'outer_id')->all();
-        });
+        $this->query($tag_name)
+            ->where('shop_id', $shopId)
+            ->select('hash', 'outer_id')
+            ->chunk(10000, function ($entries) use (&$hashs) {
+                $hashs += $entries->pluck('hash', 'outer_id')->all();
+            });
 
         DB::beginTransaction();
         $time = new \DateTime();
@@ -73,7 +76,10 @@ class SyncFile
         }
 
         if (!empty($hashs)) {
-            $this->query($tag_name)->where('shop_id', $shopId)->whereIn('outer_id', array_map(fn($value) => (string) $value, array_keys($hashs)))->delete();
+            $this->query($tag_name)
+                ->where('shop_id', $shopId)
+                ->whereIn('outer_id', array_map(fn($value) => (string) $value, array_keys($hashs)))
+                ->delete();
         }
 
         DB::commit();
