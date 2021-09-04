@@ -14,6 +14,8 @@ class OffersCountReport extends AbstractReport
         'invalid_count' => null,
     ];
 
+    protected string $view = 'admin.feeds.analytics.';
+
     public function build(int $shopId)
     {
         $this->values['count'] = FeedOffer::where('shop_id', $shopId)->count();

@@ -22,7 +22,7 @@
                         <th>{{ $shop->id }}</th>
                         <td>{{ $shop->name }}</td>
                         <td><a href="{{ $shop->site }}" target="_blank">{{ $shop->site }}</a></td>
-                        <td><a href="{{ route('admin.shops.feeds.offers', $shop) }}">feed</a></td>
+                        <td><a href="{{ route('admin.feeds.offers', $shop) }}">feed</a></td>
                     </tr>
                 @endforeach
             </table>

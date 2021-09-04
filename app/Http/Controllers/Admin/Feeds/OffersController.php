@@ -16,6 +16,6 @@ class OffersController extends Controller
             ->orderBy('id')
             ->paginate(20);
 
-        return view('admin.shops.feeds.offers', compact('shop', 'offers'));
+        return view('admin.feeds.offers', compact('shop', 'offers'));
     }
 }

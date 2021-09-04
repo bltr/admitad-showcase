@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\Feeds\AnalyticsController;
 use App\Http\Controllers\Admin\Feeds\CategoriesController;
+use App\Http\Controllers\Admin\Feeds\FeedsController;
 use App\Http\Controllers\Admin\Feeds\OffersController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\ShopsController;
@@ -25,10 +26,14 @@ Route::get('/', function () {
 Route::prefix('/admin')->name('admin.')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
-    Route::prefix('/shops')->name('shops.')->group(function() {
+    Route::prefix('/shops')->name('shops.')->group(function () {
         Route::get('/', [ShopsController::class, 'index'])->name('index');
-        Route::get('/{shop}/offers', [OffersController::class, 'index'])->name('feeds.offers');
-        Route::get('/{shop}/categories', [CategoriesController::class, 'index'])->name('feeds.categories');
-        Route::get('/{shop}/analytics', [AnalyticsController::class, 'index'])->name('feeds.analytics');
+    });
+
+    Route::prefix('feeds')->name('feeds.')->group(function () {
+        Route::get('/', [FeedsController::class, 'index'])->name('index');
+        Route::get('/{shop}/offers', [OffersController::class, 'index'])->name('offers');
+        Route::get('/{shop}/categories', [CategoriesController::class, 'index'])->name('categories');
+        Route::get('/{shop}/analytics', [AnalyticsController::class, 'index'])->name('analytics');
     });
 });

@@ -22,6 +22,6 @@ class AnalyticsController extends Controller
             $report = null;
         }
 
-        return view('admin.shops.feeds.analytics.index', compact('shop', 'analytics', 'report'));
+        return view('admin.feeds.analytics', compact('shop', 'analytics', 'report'));
     }
 }

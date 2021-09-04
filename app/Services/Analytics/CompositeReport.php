@@ -25,7 +25,7 @@ class CompositeReport implements Report
 
     public function render(): string
     {
-        return view('admin.shops.feeds.analytics.reports.composite', ['reports' => $this->reports])->render();
+        return view('admin._analytics.composite', ['reports' => $this->reports])->render();
     }
 
     public function getValues(): array

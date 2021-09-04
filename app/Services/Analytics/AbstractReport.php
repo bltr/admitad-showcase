@@ -10,10 +10,12 @@ abstract class AbstractReport implements Report
 {
     protected array $values = [];
 
+    protected string $view;
+
     public function __construct()
     {
-        if (empty($this->values)) {
-            throw new \ErrorException('Is not defined values.');
+        if (empty($this->values) && empty($this->view)) {
+            throw new \ErrorException('Is not defined values or view.');
         }
     }
 
@@ -21,7 +23,7 @@ abstract class AbstractReport implements Report
 
     public function render(): string
     {
-        return view('admin.shops.feeds.analytics.reports.' . $this->getCode(), $this->getValues())->render();
+        return view($this->view . $this->getCode(), $this->getValues())->render();
     }
 
     public function getValues(): array

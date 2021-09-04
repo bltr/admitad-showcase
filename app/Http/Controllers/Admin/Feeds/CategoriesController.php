@@ -15,7 +15,7 @@ class CategoriesController extends Controller
 
         $rendered_list = $this->renderNestedList($categories);
 
-        return view('admin.shops.feeds.categories', compact('shop', 'rendered_list'));
+        return view('admin.feeds.categories', compact('shop', 'rendered_list'));
     }
 
     private function renderNestedList($categories, $roots = null, $depth = 0)
