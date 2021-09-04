@@ -3,9 +3,9 @@
 @section('content')
     <div class="row">
         <div class="col">
-            @include('admin.feeds._breadcrums', compact('shop'))
+            @include('admin.feeds.components._breadcrums', compact('shop'))
 
-            @include('admin.feeds._nav', compact('shop'))
+            @include('admin.feeds.components._nav', compact('shop'))
         </div>
     </div>
 
