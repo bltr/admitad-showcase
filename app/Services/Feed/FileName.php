@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Feed;
+namespace App\Services\Feed;
 
 
 class FileName

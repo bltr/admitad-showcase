@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Import;
+namespace App\Services;
 
 use App\Models\FeedOffer;
 use App\Models\Offer;

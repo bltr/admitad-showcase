@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Import\ImportOffers;
+use App\Services\ImportOffers;
 use App\Models\Shop;
 use Illuminate\Console\Command;
 

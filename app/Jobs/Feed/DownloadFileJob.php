@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Feed;
 
-use App\Feed;
+use App\Services\Feed;
 use App\Models\Shop;
 use GuzzleHttp\Client;
 use Illuminate\Bus\Queueable;

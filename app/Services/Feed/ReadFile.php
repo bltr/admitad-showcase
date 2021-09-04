@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Feed;
+namespace App\Services\Feed;
 
 use ErrorException;
 use Generator;

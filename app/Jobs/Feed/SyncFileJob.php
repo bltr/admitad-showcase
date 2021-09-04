@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Feed;
 
-use App\Feed\SyncFile;
+use App\Services\Feed\SyncFile;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;

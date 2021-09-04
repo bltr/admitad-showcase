@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Feed\Analytics;
+namespace App\Services\Analytics;
 
 
 use Illuminate\Support\Str;

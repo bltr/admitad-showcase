@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Feed\Analytics\CompositeReportFactory;
+use App\Services\Feed\Analytics\CompositeReportFactory;
 use App\Models\Analytics;
 use App\Models\Shop;
 use Illuminate\Console\Command;

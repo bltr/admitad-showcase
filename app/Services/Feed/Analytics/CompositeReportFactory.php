@@ -1,8 +1,11 @@
 <?php
 
 
-namespace App\Feed\Analytics;
+namespace App\Services\Feed\Analytics;
 
+
+use App\Services\Analytics\CompositeReport;
+use App\Services\Analytics\Report;
 
 class CompositeReportFactory
 {
