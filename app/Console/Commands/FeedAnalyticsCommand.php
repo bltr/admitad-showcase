@@ -7,7 +7,7 @@ use App\Models\Analytics;
 use App\Models\Shop;
 use Illuminate\Console\Command;
 
-class FeedAnalytics extends Command
+class FeedAnalyticsCommand extends Command
 {
     protected $signature = 'feed:analytics {shop_id?*} : Ids of shops';
 
