@@ -2,16 +2,16 @@
     <a href="{{ route('admin.feeds.offers', $shop->id) }}"
        class="btn btn-primary {{ request()->routeIs('admin.feeds.offers') ? 'active' : '' }}"
     >
-        Offers
+        Офферы
     </a>
     <a href="{{ route('admin.feeds.categories', $shop->id) }}"
        class="btn btn-primary {{ request()->routeIs('admin.feeds.categories') ? 'active' : '' }}"
     >
-        Categories
+        Категории
     </a>
     <a href="{{ route('admin.feeds.analytics', $shop->id) }}"
        class="btn btn-primary {{ request()->routeIs('admin.feeds.analytics') ? 'active' : '' }}"
     >
-        Analytics
+        Аналитика
     </a>
 </div>

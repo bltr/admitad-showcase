@@ -32,16 +32,19 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('admin.home') }}">Home</a>
+                        <a class="nav-link {{ request()->routeIs('admin.home') ? 'active' : '' }}" aria-current="page" href="{{ route('admin.home') }}">
+                            <i class="bi bi-house"></i>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('admin.catalog.index') }}">Каталог</a>
+                        <a class="nav-link {{ request()->routeIs('admin.catalog.index') ? 'active' : '' }}" aria-current="page" href="{{ route('admin.catalog.index') }}">
+                            Каталог
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('admin.feeds.index') }}">Фиды</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('admin.shops.index') }}">Магазины</a>
+                        <a class="nav-link {{ request()->routeIs('admin.feeds.index') ? 'active' : '' }}" aria-current="page" href="{{ route('admin.feeds.index') }}">
+                            Фиды
+                        </a>
                     </li>
                 </ul>
             </div>

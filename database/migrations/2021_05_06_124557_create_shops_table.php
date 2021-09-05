@@ -20,6 +20,7 @@ class CreateShopsTable extends Migration
             $table->string('site');
             $table->string('feed_url');
             $table->string('import_type')->nullable();
+            $table->boolean('is_active')->default(false);
         });
     }
 
