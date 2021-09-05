@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 
 class ImportCommand extends Command
 {
-    protected $signature = 'import';
+    protected $signature = 'import {shop_id?*}';
 
     protected $description = 'Import offers';
 

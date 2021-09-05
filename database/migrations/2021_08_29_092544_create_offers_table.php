@@ -19,7 +19,7 @@ class CreateOffersTable extends Migration
             $table->softDeletes();
             $table->string('name');
             $table->unsignedInteger('price');
-            $table->string('photo');
+            $table->jsonb('photos');
             $table->string('url');
             $table->unsignedBigInteger('shop_id');
             $table->string('hash');

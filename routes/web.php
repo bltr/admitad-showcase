@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Catalog\CatalogController;
 use App\Http\Controllers\Admin\Feeds\AnalyticsController;
 use App\Http\Controllers\Admin\Feeds\CategoriesController;
 use App\Http\Controllers\Admin\Feeds\FeedsController;
@@ -35,5 +36,9 @@ Route::prefix('/admin')->name('admin.')->group(function () {
         Route::get('/{shop}/offers', [OffersController::class, 'index'])->name('offers');
         Route::get('/{shop}/categories', [CategoriesController::class, 'index'])->name('categories');
         Route::get('/{shop}/analytics', [AnalyticsController::class, 'index'])->name('analytics');
+    });
+
+    Route::prefix('catalog')->name('catalog.')->group(function () {
+        Route::get('/', [CatalogController::class, 'index'])->name('index');
     });
 });

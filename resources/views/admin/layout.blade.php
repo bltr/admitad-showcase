@@ -35,10 +35,13 @@
                         <a class="nav-link active" aria-current="page" href="{{ route('admin.home') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('admin.shops.index') }}">Shops</a>
+                        <a class="nav-link active" aria-current="page" href="{{ route('admin.catalog.index') }}">Каталог</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('admin.feeds.index') }}">Feeds</a>
+                        <a class="nav-link active" aria-current="page" href="{{ route('admin.feeds.index') }}">Фиды</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ route('admin.shops.index') }}">Магазины</a>
                     </li>
                 </ul>
             </div>

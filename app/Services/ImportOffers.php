@@ -27,16 +27,21 @@ class ImportOffers
                 ->selectRaw("mode() WITHIN GROUP (ORDER BY data ->> 'price') as price")
                 ->selectRaw("mode() WITHIN GROUP (ORDER BY data ->> 'name') as name")
                 ->selectRaw("mode() WITHIN GROUP (ORDER BY data ->> 'url') as url")
-                ->selectRaw("mode() WITHIN GROUP (ORDER BY data ->> 'pictures') as photo")
+                ->selectRaw("mode() WITHIN GROUP (ORDER BY data ->> 'pictures') as photos")
                 ->selectRaw("mode() WITHIN GROUP (ORDER BY catalog_offers_id) as catalog_offers_id");
         } else {
             $query
                 ->select('catalog_offers_id')
+                ->selectRaw('json_build_array(id) as ids')
                 ->selectRaw("data ->> 'price' as price")
                 ->selectRaw("data ->> 'name' as name")
                 ->selectRaw("data ->> 'url' as url")
-                ->selectRaw("data ->> 'pictures' as photo");
+                ->selectRaw("data ->> 'pictures' as photos");
         }
+        $query->withCasts([
+            'photos' => 'array',
+            'ids' => 'array',
+        ]);
 
         $query->cursor()->each(function (FeedOffer $offer) use ($hashs, $shop) {
             $attr = $this->mapOffer($offer, $shop);
@@ -45,11 +50,11 @@ class ImportOffers
             $attr['hash'] = $hash;
             if (!$hashs->has($offer->catalog_offers_id)) {
                 $id = Offer::create($attr)->id;
-                FeedOffer::whereIn('id', json_decode($offer->ids))->update(['catalog_offers_id' => $id]);
+                FeedOffer::whereIn('id', $offer->ids)->update(['catalog_offers_id' => $id]);
             } elseif ($hashs->get($offer->catalog_offer_id) !== $hash) {
                 $catalog_offer = Offer::find($offer->catalog_offers_id);
                 $catalog_offer->fill($attr)->save();
-                FeedOffer::whereIn('id', json_decode($offer->ids))->update(['catalog_offers_id' => $catalog_offer->id]);
+                FeedOffer::whereIn('id', $offer->ids)->update(['catalog_offers_id' => $catalog_offer->id]);
                 $hashs->forget($offer->catalog_offers_id);
             }
 
@@ -63,7 +68,7 @@ class ImportOffers
             'price' => (int)$offer->price,
             'name' => $offer->name,
             'url' => $offer->url,
-            'photo' => $offer->photo,
+            'photos' => $offer->photos,
             'shop_id' => $shop->id,
         ];
     }

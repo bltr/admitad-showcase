@@ -12,4 +12,21 @@ class Offer extends Model
     use SoftDeletes;
 
     protected $guarded = [];
+
+    protected $casts = [
+        'photos' => 'collection',
+    ];
+
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class);
+    }
+
+    public function getNotSponsoredUrlAttribute()
+    {
+        $query = [];
+        parse_str(parse_url($this->url)['query'], $query);
+
+        return $query['ulp'];
+    }
 }
