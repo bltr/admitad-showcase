@@ -22,7 +22,7 @@ class FeedOffer extends Model
         return collect($this->data->pictures);
     }
 
-    public function getUrlAttributeXXX()
+    public function getNotSponsoredUrlAttribute()
     {
         $query = [];
         parse_str(parse_url($this->data->url)['query'], $query);
