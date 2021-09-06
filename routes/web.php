@@ -28,6 +28,8 @@ Route::prefix('/admin')->name('admin.')->group(function () {
 
     Route::prefix('feeds')->name('feeds.')->group(function () {
         Route::get('/', [FeedsController::class, 'index'])->name('index');
+        Route::patch('/{shop}/toggle-activity', [FeedsController::class, 'toggleActivity'])->name('toggle-activity');
+        Route::patch('/{shop}/import-type', [FeedsController::class, 'importType'])->name('import-type');
         Route::get('/{shop}/offers', [OffersController::class, 'index'])->name('offers');
         Route::get('/{shop}/categories', [CategoriesController::class, 'index'])->name('categories');
         Route::get('/{shop}/analytics', [AnalyticsController::class, 'index'])->name('analytics');

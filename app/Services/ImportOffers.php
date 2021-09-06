@@ -21,7 +21,7 @@ class ImportOffers
             $query->groupByRaw("data #>> '{pictures, 0}'");
         }
 
-        if ($shop->import_type !== null) {
+        if ($shop->import_type !== Shop::IMPORT_WITHOUT_GROUPING) {
             $query
                 ->selectRaw("json_agg(id) as ids")
                 ->selectRaw("mode() WITHIN GROUP (ORDER BY data ->> 'price') as price")

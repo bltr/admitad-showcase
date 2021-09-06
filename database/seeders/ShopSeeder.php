@@ -18,6 +18,7 @@ class ShopSeeder extends Seeder
             'name' => 'Инсантрик RU',
             'site' => 'https://insantrik.ru/',
             'feed_url' => 'https://export.admitad.com/ru/webmaster/websites/867132/products/export_adv_products/?currency=&code=ad111e335d&user=mastersuper&format=xml&feed_id=17843&last_import=',
+            'import_type' => Shop::IMPORT_WITHOUT_GROUPING,
         ]);
 
         Shop::create([
