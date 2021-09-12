@@ -2,13 +2,13 @@
 
 namespace App\Console\Commands\Catalog;
 
-use App\Services\ImportOffers;
+use App\Services\Catalog\ImportOffers;
 use App\Models\Shop;
 use Illuminate\Console\Command;
 
 class ImportCommand extends Command
 {
-    protected $signature = 'import {shop_id?* : список id магазинов}';
+    protected $signature = 'catalog:import {shop_id?* : список id магазинов}';
 
     protected $description = 'Импорт товаров в калого';
 

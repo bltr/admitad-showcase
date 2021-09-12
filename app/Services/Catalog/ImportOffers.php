@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Catalog;
 
 use App\Models\FeedOffer;
 use App\Models\Offer;
@@ -11,7 +11,7 @@ class ImportOffers
     public function handle(Shop $shop)
     {
         $hashs = Offer::where('shop_id', $shop->id)->pluck('hash', 'id');
-        $query = FeedOffer::query();
+        $query = FeedOffer::where('shop_id', $shop->id);
 
         if ($shop->import_type === Shop::IMPORT_GROUP_BY_GROUP_ID) {
             $query->groupByRaw("data ->> 'group_id'");
@@ -28,10 +28,10 @@ class ImportOffers
                 ->selectRaw("mode() WITHIN GROUP (ORDER BY data ->> 'name') as name")
                 ->selectRaw("mode() WITHIN GROUP (ORDER BY data ->> 'url') as url")
                 ->selectRaw("mode() WITHIN GROUP (ORDER BY data ->> 'pictures') as photos")
-                ->selectRaw("mode() WITHIN GROUP (ORDER BY catalog_offers_id) as catalog_offers_id");
+                ->selectRaw("mode() WITHIN GROUP (ORDER BY offer_id) as offer_id");
         } else {
             $query
-                ->select('catalog_offers_id')
+                ->select('offer_id')
                 ->selectRaw('json_build_array(id) as ids')
                 ->selectRaw("data ->> 'price' as price")
                 ->selectRaw("data ->> 'name' as name")
@@ -43,23 +43,24 @@ class ImportOffers
             'ids' => 'array',
         ]);
 
-        $query->cursor()->each(function (FeedOffer $offer) use ($hashs, $shop) {
-            $attr = $this->mapOffer($offer, $shop);
+        $query->cursor()->each(function (FeedOffer $feedOffer) use ($hashs, $shop) {
+            $attr = $this->mapOffer($feedOffer, $shop);
 
             $hash = sha1(json_encode($attr));
             $attr['hash'] = $hash;
-            if (!$hashs->has($offer->catalog_offers_id)) {
+            if (!$hashs->has($feedOffer->offer_id)) {
                 $id = Offer::create($attr)->id;
-                FeedOffer::whereIn('id', $offer->ids)->update(['catalog_offers_id' => $id]);
-            } elseif ($hashs->get($offer->catalog_offer_id) !== $hash) {
-                $catalog_offer = Offer::find($offer->catalog_offers_id);
-                $catalog_offer->fill($attr)->save();
-                FeedOffer::whereIn('id', $offer->ids)->update(['catalog_offers_id' => $catalog_offer->id]);
-                $hashs->forget($offer->catalog_offers_id);
+                FeedOffer::whereIn('id', $feedOffer->ids)->update(['offer_id' => $id]);
+            } elseif ($hashs->get($feedOffer->catalog_offer_id) !== $hash) {
+                $offer = Offer::find($feedOffer->offer_id);
+                $offer->fill($attr)->save();
+                FeedOffer::whereIn('id', $feedOffer->ids)->update(['offer_id' => $offer->id]);
             }
 
-            Offer::whereIn('id', $hashs->keys())->delete();
+            $hashs->forget($feedOffer->offer_id);
         });
+
+        Offer::whereIn('id', $hashs->keys())->delete();
     }
 
     protected function mapOffer(FeedOffer $offer, Shop $shop): array

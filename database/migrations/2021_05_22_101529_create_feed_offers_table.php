@@ -16,7 +16,7 @@ class CreateFeedOffersTable extends Migration
         Schema::create('feed_offers', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger('catalog_offers_id')->nullable();
+            $table->unsignedBigInteger('offer_id')->nullable();
             $table->string('hash');
             $table->unsignedBigInteger('shop_id');
             $table->string('outer_id');
