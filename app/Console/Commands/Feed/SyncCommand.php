@@ -19,8 +19,8 @@ class SyncCommand extends Command
         $shops = $shop_ids ? Shop::whereIn('id', $shop_ids)->get() : Shop::all() ;
 
         $shops->each(function($shop) use ($syncFile, $downloadFile) {
-            $downloadFile->download($shop);
-            $syncFile->sync($shop->id);
+            $downloadFile->run($shop);
+            $syncFile->run($shop->id);
         });
 
         return 0;

@@ -14,7 +14,7 @@ class DownloadFile
         $this->client = $client;
     }
 
-    public function download(Shop $shop)
+    public function run(Shop $shop)
     {
         $this->client->get($shop->feed_url, [
             'sink' => FileName::build($shop->id),

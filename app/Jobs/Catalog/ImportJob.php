@@ -24,6 +24,6 @@ class ImportJob implements ShouldQueue
 
     public function handle(ImportOffers $importOffers)
     {
-        $importOffers->import($this->shop);
+        $importOffers->run($this->shop);
     }
 }

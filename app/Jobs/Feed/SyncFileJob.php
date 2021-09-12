@@ -22,8 +22,8 @@ class SyncFileJob implements ShouldQueue
         $this->shop = $shop;
     }
 
-    public function handle(SyncFile $sync)
+    public function handle(SyncFile $syncFile)
     {
-        $sync->sync($this->shop);
+        $syncFile->run($this->shop);
     }
 }

@@ -26,6 +26,6 @@ class DownloadFileJob implements ShouldQueue
 
     public function handle(DownloadFile $downloadFile)
     {
-        $downloadFile->download($this->shop);
+        $downloadFile->run($this->shop);
     }
 }

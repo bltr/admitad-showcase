@@ -20,7 +20,7 @@ class SyncFile
         $this->readFile = $readFile;
     }
 
-    public function sync(Shop $shop)
+    public function run(Shop $shop)
     {
         try {
             $this->readFile->init(FileName::build($shop->id));

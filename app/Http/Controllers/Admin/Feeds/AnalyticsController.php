@@ -8,9 +8,9 @@ use App\Models\Shop;
 
 class AnalyticsController extends Controller
 {
-    public function index(Shop $shop, AnalyticsService $service)
+    public function index(Shop $shop, AnalyticsService $analyticsService)
     {
-        $view = $service->renderLastReport($shop);
+        $view = $analyticsService->renderLastReport($shop);
 
         return view('admin.feeds.analytics', compact('shop', 'view'));
     }

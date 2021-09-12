@@ -23,7 +23,7 @@ class ImportCommand extends Command
         $query = Shop::approved();
         $shops = $shop_ids ? $query->whereIn('id', $shop_ids)->get() : $query->get() ;
 
-        $shops->each(fn($shop) => $importOffers->import($shop));
+        $shops->each(fn($shop) => $importOffers->run($shop));
 
         return 0;
     }

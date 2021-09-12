@@ -11,9 +11,9 @@ class AnalyticsCommand extends Command
 
     protected $description = 'Сформировать отчеты аналитики каталога';
 
-    public function handle(AnalyticsService $service)
+    public function handle(AnalyticsService $analyticsService)
     {
-        $service->build();
+        $analyticsService->build();
 
         return 0;
     }

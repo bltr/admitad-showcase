@@ -23,8 +23,8 @@ class AnalyticsJob implements ShouldQueue
         $this->shop = $shop;
     }
 
-    public function handle(AnalyticsService $service)
+    public function handle(AnalyticsService $analyticsService)
     {
-        $service->build($this->shop);
+        $analyticsService->build($this->shop);
     }
 }

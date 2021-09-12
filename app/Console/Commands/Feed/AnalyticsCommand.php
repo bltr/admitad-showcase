@@ -12,11 +12,11 @@ class AnalyticsCommand extends Command
 
     protected $description = 'Сформировать отчеты аналитики фидов';
 
-    public function handle(AnalyticsService $service)
+    public function handle(AnalyticsService $analyticsService)
     {
         $shop_ids = $this->argument('shop_id');
         $shops = $shop_ids ? Shop::whereIn('id', $shop_ids)->get() : Shop::all() ;
-        $shops->each(fn($shop) => $service->build($shop));
+        $shops->each(fn($shop) => $analyticsService->build($shop));
 
         return 0;
     }
