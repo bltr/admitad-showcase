@@ -4,8 +4,8 @@ namespace App\Jobs\Feed;
 
 use App\Models\Shop;
 use App\Services\Feed\AnalyticsService;
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -13,7 +13,7 @@ use Illuminate\Queue\SerializesModels;
 
 class AnalyticsJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchable;
 
     private Shop $shop;
 

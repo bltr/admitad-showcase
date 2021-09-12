@@ -26,13 +26,13 @@ class ImportCommand extends Command
         Bus::batch($shops->map(function ($shop) {
             return [
                 new DownloadFileJob($shop),
-                new SyncFileJob($shop),
+                new SyncFileJob($shop->id),
                 new AnalyticsJob($shop),
                 new ImportJob($shop)
             ];
         }))->then(function () use ($service) {
             $service->build();
-        });
+        })->dispatch();
 
         return 0;
     }
