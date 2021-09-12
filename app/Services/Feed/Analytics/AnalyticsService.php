@@ -32,7 +32,7 @@ class AnalyticsService
         });
     }
 
-    public function renderLastReport(Shop $shop): string
+    public function renderLastReport(Shop $shop): ?string
     {
         $analytics = Analytics::where('shop_id', $shop->id)->latest()->first();
         $view = null;

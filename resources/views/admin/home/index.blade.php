@@ -3,7 +3,12 @@
 @section('content')
     <div class="row">
         <div class="col">
-            <h1>admin home page</h1>
+            @if($view)
+                {!! $view !!}
+            @else
+                <p class="my-5 text-center">Нет подготовленных данных</p>
+            @endif
+
         </div>
     </div>
 @endsection
