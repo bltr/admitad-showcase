@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Feed;
 
+use App\Models\Shop;
 use App\Services\Feed\SyncFile;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
@@ -14,15 +15,15 @@ class SyncFileJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchable;
 
-    private int $shopId;
+    private Shop $shop;
 
-    public function __construct(int $shopId)
+    public function __construct(Shop $shop)
     {
-        $this->shopId = $shopId;
+        $this->shop = $shop;
     }
 
     public function handle(SyncFile $sync)
     {
-        $sync->sync($this->shopId);
+        $sync->sync($this->shop);
     }
 }

@@ -8,7 +8,7 @@ use App\Models\Shop;
 
 class ImportOffers
 {
-    public function handle(Shop $shop)
+    public function import(Shop $shop)
     {
         $hashs = Offer::where('shop_id', $shop->id)->pluck('hash', 'id');
         $query = FeedOffer::where('shop_id', $shop->id);

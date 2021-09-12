@@ -9,7 +9,6 @@ use App\Models\Shop;
 use App\Services\Analytics\CompositeReport;
 use App\Services\Feed\AnalyticsReports\CountGroupsReport;
 use App\Services\Feed\AnalyticsReports\OffersCountReport;
-use Illuminate\Support\Collection;
 
 class AnalyticsService
 {

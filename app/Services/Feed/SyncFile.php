@@ -6,6 +6,7 @@ namespace App\Services\Feed;
 
 use App\Models\FeedCategory;
 use App\Models\FeedOffer;
+use App\Models\Shop;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -19,12 +20,12 @@ class SyncFile
         $this->readFile = $readFile;
     }
 
-    public function sync(int $shopId)
+    public function sync(Shop $shop)
     {
         try {
-            $this->readFile->init(FileName::build($shopId));
-            $this->syncEntries($shopId, 'category');
-            $this->syncEntries($shopId, 'offer', ['picture']);
+            $this->readFile->init(FileName::build($shop->id));
+            $this->syncEntries($shop->id, 'category');
+            $this->syncEntries($shop->id, 'offer', ['picture']);
         } catch (\Throwable $exception) {
             Log::error('feed sync: ' . $exception->getMessage() . ' ' . $exception->getLine());
         }

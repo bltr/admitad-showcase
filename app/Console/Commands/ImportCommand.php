@@ -17,7 +17,7 @@ class ImportCommand extends Command
 
     protected $description = 'Полный импорт';
 
-    public function handle(AnalyticsService $service)
+    public function handle(AnalyticsService $analyticsService)
     {
         $shop_ids = $this->argument('shop_id');
         $query = Shop::approved();
@@ -26,12 +26,12 @@ class ImportCommand extends Command
         Bus::batch($shops->map(function ($shop) {
             return [
                 new DownloadFileJob($shop),
-                new SyncFileJob($shop->id),
+                new SyncFileJob($shop),
                 new AnalyticsJob($shop),
                 new ImportJob($shop)
             ];
-        }))->then(function () use ($service) {
-            $service->build();
+        }))->then(function () use ($analyticsService) {
+            $analyticsService->build();
         })->dispatch();
 
         return 0;
