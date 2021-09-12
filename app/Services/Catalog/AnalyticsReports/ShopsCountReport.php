@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Services\Catalog\Analytics;
+namespace App\Services\Catalog\AnalyticsReports;
 
 
 use App\Models\Shop;

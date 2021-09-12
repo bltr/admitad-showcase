@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Feed;
 
 use App\Jobs\Feed\DownloadFileJob;
 use App\Jobs\Feed\SyncFileJob;
@@ -8,11 +8,11 @@ use App\Models\Shop;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Bus;
 
-class FeedSyncCommand extends Command
+class SyncCommand extends Command
 {
-    protected $signature = 'feed:sync {shop_id?*} : Ids of shops}';
+    protected $signature = 'feed:sync {shop_id?* : список id магазинов}';
 
-    protected $description = 'Push download and sync feeds jobs of all or specified shops';
+    protected $description = 'Синхронизация фида';
 
     public function handle()
     {

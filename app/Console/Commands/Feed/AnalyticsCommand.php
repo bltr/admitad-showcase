@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Feed;
 
-use App\Services\Feed\Analytics\AnalyticsService;
+use App\Services\Feed\AnalyticsService;
 use App\Models\Shop;
 use Illuminate\Console\Command;
 
-class FeedAnalyticsCommand extends Command
+class AnalyticsCommand extends Command
 {
     protected $signature = 'feed:analytics {shop_id?* :  список id магазинов}';
 

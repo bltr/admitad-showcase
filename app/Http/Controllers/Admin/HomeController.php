@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Services\Catalog\Analytics\AnalyticsService;
+use App\Services\Catalog\AnalyticsService;
 
 class HomeController extends Controller
 {

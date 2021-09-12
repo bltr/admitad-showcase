@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Catalog;
 
 use App\Services\ImportOffers;
 use App\Models\Shop;
@@ -8,9 +8,9 @@ use Illuminate\Console\Command;
 
 class ImportCommand extends Command
 {
-    protected $signature = 'import {shop_id?*}';
+    protected $signature = 'import {shop_id?* : список id магазинов}';
 
-    protected $description = 'Import offers';
+    protected $description = 'Импорт товаров в калого';
 
     public function __construct()
     {

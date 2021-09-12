@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Catalog;
 
-use App\Services\Catalog\Analytics\AnalyticsService;
+use App\Services\Catalog\AnalyticsService;
 use Illuminate\Console\Command;
 
-class CatalogAnalyticsCommand extends Command
+class AnalyticsCommand extends Command
 {
     protected $signature = 'catalog:analytics';
 

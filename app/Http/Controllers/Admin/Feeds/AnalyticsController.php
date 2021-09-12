@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Feeds;
 
-use App\Services\Feed\Analytics\AnalyticsService;
+use App\Services\Feed\AnalyticsService;
 use App\Http\Controllers\Controller;
 use App\Models\Shop;
 

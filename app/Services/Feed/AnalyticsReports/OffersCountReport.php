@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Services\Feed\Analytics;
+namespace App\Services\Feed\AnalyticsReports;
 
 
 use App\Models\FeedOffer;

@@ -1,13 +1,13 @@
 <?php
 
 
-namespace App\Services\Catalog\Analytics;
+namespace App\Services\Catalog;
 
 
 use App\Models\Analytics;
-use App\Models\Shop;
 use App\Services\Analytics\CompositeReport;
-use Illuminate\Support\Collection;
+use App\Services\Catalog\AnalyticsReports\OffersCountReport;
+use App\Services\Catalog\AnalyticsReports\ShopsCountReport;
 
 class AnalyticsService
 {
