@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands\Feed;
 
-use App\Jobs\Feed\DownloadFileJob;
-use App\Jobs\Feed\SyncFileJob;
 use App\Models\Shop;
+use App\Services\Feed\DownloadFile;
+use App\Services\Feed\SyncFile;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Bus;
 
 class SyncCommand extends Command
 {
@@ -14,11 +13,15 @@ class SyncCommand extends Command
 
     protected $description = 'Синхронизация фида';
 
-    public function handle()
+    public function handle(SyncFile $syncFile, DownloadFile $downloadFile)
     {
         $shop_ids = $this->argument('shop_id');
         $shops = $shop_ids ? Shop::whereIn('id', $shop_ids)->get() : Shop::all() ;
-        $shops->each(fn($shop) => Bus::chain([new DownloadFileJob($shop), new SyncFileJob($shop->id)])->dispatch());
+
+        $shops->each(function($shop) use ($syncFile, $downloadFile) {
+            $downloadFile->download($shop);
+            $syncFile->sync($shop->id);
+        });
 
         return 0;
     }

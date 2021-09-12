@@ -22,16 +22,11 @@ class AnalyticsService
         return $composite;
     }
 
-    /**
-     * @param Collection|Shop[] $shops
-     */
-    public function build(Collection $shops): void
+    public function build(Shop $shop): void
     {
-        $shops->each(function($shop) {
-            $report = $this->createReport($shop->id);
-            $report->build();
-            Analytics::create(['shop_id' => $shop->id, 'data' => $report->getValues()]);
-        });
+        $report = $this->createReport($shop->id);
+        $report->build();
+        Analytics::create(['shop_id' => $shop->id, 'data' => $report->getValues()]);
     }
 
     public function renderLastReport(Shop $shop): ?string

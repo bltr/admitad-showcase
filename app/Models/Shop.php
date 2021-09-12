@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,4 +18,9 @@ class Shop extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
+    public function scopeApproved(Builder $query)
+    {
+        return $query->where('is_active', true)->whereNotNull('import_type');
+    }
 }

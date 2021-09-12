@@ -3,8 +3,7 @@
 namespace App\Jobs\Feed;
 
 use App\Models\Shop;
-use App\Services\Feed\FileName;
-use GuzzleHttp\Client;
+use App\Services\Feed\DownloadFile;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -24,11 +23,8 @@ class DownloadFileJob implements ShouldQueue
         $this->shop = $shop;
     }
 
-    public function handle(Client $client)
+    public function handle(DownloadFile $downloadFile)
     {
-        $client->get($this->shop->feed_url, [
-            'sink' => FileName::build($this->shop->id),
-            'headers' => ['Accept-Encoding' => 'gzip'],
-        ]);
+        $downloadFile->download($this->shop);
     }
 }

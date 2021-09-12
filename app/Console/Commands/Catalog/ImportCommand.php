@@ -10,7 +10,7 @@ class ImportCommand extends Command
 {
     protected $signature = 'catalog:import {shop_id?* : список id магазинов}';
 
-    protected $description = 'Импорт товаров в калого';
+    protected $description = 'Импорт товаров в каталог';
 
     public function __construct()
     {
@@ -20,7 +20,9 @@ class ImportCommand extends Command
     public function handle(ImportOffers $importOffers)
     {
         $shop_ids = $this->argument('shop_id');
-        $shops = $shop_ids ? Shop::whereIn('id', $shop_ids)->get() : Shop::all() ;
+        $query = Shop::approved();
+        $shops = $shop_ids ? $query->whereIn('id', $shop_ids)->get() : $query->get() ;
+
         $shops->each(fn($shop) => $importOffers->handle($shop));
 
         return 0;
