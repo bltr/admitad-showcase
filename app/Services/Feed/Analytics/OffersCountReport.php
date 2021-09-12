@@ -9,15 +9,28 @@ use App\Services\Analytics\AbstractReport;
 
 class OffersCountReport extends AbstractReport
 {
+    public const CODE = 'feed.offers_count';
+
     protected array $values = [
         'count' => null,
         'invalid_count' => null,
     ];
 
-    public function build(int $shopId)
+    private int $shopId;
+
+    /**
+     * @param int $shopId
+     */
+    public function __construct(int $shopId)
     {
-        $this->values['count'] = FeedOffer::where('shop_id', $shopId)->count();
-        $this->values['invalid_count'] = FeedOffer::where('shop_id', $shopId)
+        parent::__construct();
+        $this->shopId = $shopId;
+    }
+
+    public function build()
+    {
+        $this->values['count'] = FeedOffer::where('shop_id', $this->shopId)->count();
+        $this->values['invalid_count'] = FeedOffer::where('shop_id', $this->shopId)
             ->whereNull('data->price')
             ->orWhereRaw("data -> 'pictures' = '[]'::jsonb")
             ->orWhereNull('data->url')

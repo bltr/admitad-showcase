@@ -7,10 +7,8 @@
 
             @include('admin.feeds.components._nav', compact('shop'))
 
-            @if ($analytics)
-                <h5 class="my-4">{{ $analytics->created_at }}</h5>
-
-                {!! $report->render() !!}
+            @if($view)
+                {!! $view !!}
             @else
                 <p class="my-5 text-center">Нет подготовленных данных</p>
             @endif

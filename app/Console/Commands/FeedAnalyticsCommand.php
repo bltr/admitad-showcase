@@ -2,27 +2,21 @@
 
 namespace App\Console\Commands;
 
-use App\Services\Feed\Analytics\CompositeReportFactory;
-use App\Models\Analytics;
+use App\Services\Feed\Analytics\AnalyticsService;
 use App\Models\Shop;
 use Illuminate\Console\Command;
 
 class FeedAnalyticsCommand extends Command
 {
-    protected $signature = 'feed:analytics {shop_id?*} : Ids of shops';
+    protected $signature = 'feed:analytics {shop_id?* :  список id магазинов}';
 
-    protected $description = 'Build analytics report';
+    protected $description = 'Сформировать отчеты аналитики фидов';
 
-    public function handle(CompositeReportFactory $factory)
+    public function handle(AnalyticsService $service)
     {
-        $report = $factory->build();
-
         $shop_ids = $this->argument('shop_id');
         $shops = $shop_ids ? Shop::whereIn('id', $shop_ids)->get() : Shop::all() ;
-        $shops->each(function($shop) use ($report) {
-            $report->build($shop->id);
-            Analytics::create(['shop_id' => $shop->id, 'data' => $report->getValues()]);
-        });
+        $service->build($shops);
 
         return 0;
     }

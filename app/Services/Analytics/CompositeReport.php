@@ -4,6 +4,8 @@
 namespace App\Services\Analytics;
 
 
+use Illuminate\Support\Carbon;
+
 class CompositeReport implements Report
 {
     /**
@@ -11,35 +13,30 @@ class CompositeReport implements Report
      */
     private array $reports;
 
-    private string $base_view;
+    private Carbon $date;
 
-    public function __construct(string $base_view)
+    public function addReport(AbstractReport $report): void
     {
-        $this->base_view = $base_view;
+        $this->reports[$report::CODE] = $report;
     }
 
-    public function addReport(AbstractReport $report)
-    {
-        $this->reports[$report->getCode()] = $report;
-    }
-
-    public function build(int $shopId)
+    public function build(): void
     {
         foreach ($this->reports as $report) {
-            $report->build($shopId);
+            $report->build();
         }
     }
 
     public function render(): string
     {
-        return view($this->base_view . '.composite', ['reports' => $this->reports])->render();
+        return view('admin._analytics.composite', ['reports' => $this->reports, 'date' => $this->date])->render();
     }
 
     public function getValues(): array
     {
         $state = [];
         foreach ($this->reports as $report) {
-            $state[$report->getCode()] = $report->getValues();
+            $state[$report::CODE] = $report->getValues();
         }
 
         return $state;
@@ -48,7 +45,12 @@ class CompositeReport implements Report
     public function setValues(array $values): void
     {
         foreach ($this->reports as $report) {
-            $report->setValues($values[$report->getCode()]);
+            $report->setValues($values[$report::CODE]);
         }
+    }
+
+    public function setDate(Carbon $date): void
+    {
+        $this->date = $date;
     }
 }
