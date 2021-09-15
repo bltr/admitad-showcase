@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Kalnoy\Nestedset\NestedSet;
 
 class CreateFeedCategoriesTable extends Migration
 {
@@ -22,6 +23,12 @@ class CreateFeedCategoriesTable extends Migration
             $table->jsonb('data');
 
             $table->index(['shop_id', 'outer_id']);
+
+            // nested set
+            $table->unsignedInteger(NestedSet::LFT)->default(0);
+            $table->unsignedInteger(NestedSet::RGT)->default(0);
+            $table->string(NestedSet::PARENT_ID)->nullable();
+            $table->index(NestedSet::getDefaultColumns());
         });
     }
 

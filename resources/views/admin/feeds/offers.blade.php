@@ -47,7 +47,7 @@
                         <button type="button" class="btn btn-outline-secondary btn-sm float-end" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{ $offer->id }}">🛈</button>
                         <a class="card-title small" href="{{ $offer->not_sponsored_url }}" target="_blank">{{ $offer->data->name }} ⮭</a>
                         <p class="card-subtitle my-2 text-muted">{{ $offer->data->price }} р.</p>
-                        <p class="card-subtitle small fw-bold mb-2">{{ $offer->fullCategoryName() }}</p>
+                        <p class="card-subtitle small fw-bold mb-2">{{ $offer->full_category_name }}</p>
                         <p class="card-text small">{{ $offer->data->description ?? '' }}</p>
 
                         <div class="modal fade" id="staticBackdrop{{ $offer->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

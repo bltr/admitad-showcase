@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
 
 class FeedOffer extends Model
 {
-    use HasFactory;
+    use HasFactory, HasJsonRelationships;
 
     protected $guarded = [];
 
@@ -35,22 +36,13 @@ class FeedOffer extends Model
         return $this->attributes['data'];
     }
 
-    public function fullCategoryName()
+    public function category()
     {
-        if (empty(self::$categories)) {
-            self::$categories = FeedCategory::all()->keyBy('outer_id')->all();
-        }
+        return $this->belongsTo(FeedCategory::class, 'data->categoryId', 'outer_id')->with('ancestors');
+    }
 
-        $result = '';
-        // $offer->categoryId['value'] - for kupivip
-        $category_id = $this->data->categoryId->value ?? $this->data->categoryId;
-
-        while ($category_id !== null) {
-            $category = self::$categories[$category_id];
-            $result .= ' • ' . $category->name;
-            $category_id = $category->parentId ?? null;
-        }
-
-        return $result;
+    public function getFullCategoryNameAttribute()
+    {
+        return $this->category->ancestors->pluck('name')->implode(' • ') . ' • ' . $this->category->name;
     }
 }

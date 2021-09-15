@@ -7,7 +7,7 @@
 
             @include('admin.feeds.components._nav', compact('shop'))
 
-            {!! $rendered_list !!}
+            @include('admin.feeds.components._category-tree', compact('categories'))
         </div>
     </div>
 @endsection

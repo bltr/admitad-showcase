@@ -20,7 +20,7 @@ class SyncCommand extends Command
 
         $shops->each(function($shop) use ($syncFile, $downloadFile) {
             $downloadFile->run($shop);
-            $syncFile->run($shop->id);
+            $syncFile->run($shop);
         });
 
         return 0;

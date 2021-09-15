@@ -24,7 +24,10 @@ class SyncFile
     {
         try {
             $this->readFile->init(FileName::build($shop->id));
+
             $this->syncEntries($shop->id, 'category');
+            FeedCategory::scoped(['shop_id' => $shop->id])->fixTree();
+
             $this->syncEntries($shop->id, 'offer', ['picture']);
         } catch (\Throwable $exception) {
             Log::error('feed sync: ' . $exception->getMessage() . ' ' . $exception->getLine());
@@ -54,21 +57,21 @@ class SyncFile
             $id = $entry['id'];
 
             if (!isset($hashs[$id])) {
-                $this->query($tag_name)->insert([
+                $this->query($tag_name)->insert($this->appendData($tag_name, [
                     'created_at' => $time,
                     'updated_at' => $time,
                     'outer_id' => $id,
                     'shop_id' => $shopId,
                     'hash' => $hash,
                     'data' => $json_entry
-                ]);
+                ], $entry));
             }
 
-            if (isset($hashs[$id]) && $hashs[$id] !== $hash) {
+            if (isset($hashs[$id]) && $hashs[$id] !== $hash . 'b') {
                 $this->query($tag_name)
                     ->where('shop_id', $shopId)
                     ->where('outer_id', $id)
-                    ->update(['updated_at' => $time, 'hash' => $hash, 'data' => $json_entry]);
+                    ->update($this->appendData($tag_name, ['updated_at' => $time, 'hash' => $hash, 'data' => $json_entry], $entry));
             }
 
             if (isset($hashs[$id])) {
@@ -89,5 +92,15 @@ class SyncFile
     private function query($tag_name)
     {
         return $tag_name === 'offer' ? FeedOffer::query() : FeedCategory::query();
+    }
+
+    private function appendData($tag_name, $data, $entry)
+    {
+        if ($tag_name === 'category') {
+            $data['parent_id'] = $entry['parentId'] ?? null;
+            return $data;
+        }
+
+        return $data;
     }
 }
