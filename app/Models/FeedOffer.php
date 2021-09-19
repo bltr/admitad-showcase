@@ -16,8 +16,6 @@ class FeedOffer extends Model
         'data' => 'object'
     ];
 
-    protected static array $categories;
-
     public function getPicturesAttribute()
     {
         return collect($this->data->pictures);

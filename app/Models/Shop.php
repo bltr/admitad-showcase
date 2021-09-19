@@ -19,6 +19,8 @@ class Shop extends Model
         'is_active' => 'boolean',
     ];
 
+    protected $guarded = [];
+
     public function scopeApproved(Builder $query)
     {
         return $query->where('is_active', true)->whereNotNull('import_type');

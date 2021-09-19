@@ -18,9 +18,10 @@ class CreateShopsTable extends Migration
             $table->timestamps();
             $table->string('name');
             $table->string('site');
-            $table->string('feed_url');
+            $table->string('feed_url')->nullable();
             $table->string('import_type')->nullable();
             $table->boolean('is_active')->default(false);
+            $table->unsignedInteger('outer_id');
         });
     }
 
