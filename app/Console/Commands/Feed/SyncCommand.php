@@ -16,7 +16,7 @@ class SyncCommand extends Command
     public function handle(SyncFile $syncFile, DownloadFile $downloadFile)
     {
         $shop_ids = $this->argument('shop_id');
-        $shops = $shop_ids ? Shop::whereIn('id', $shop_ids)->whereNotNull('feed_url')->get() : Shop::all() ;
+        $shops = $shop_ids ? Shop::whereIn('id', $shop_ids)->whereNotNull('feed_url')->get() : Shop::whereNotNull('feed_url')->get() ;
 
         $shops->each(function($shop) use ($syncFile, $downloadFile) {
             $downloadFile->run($shop);
