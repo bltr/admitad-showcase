@@ -10,7 +10,7 @@
             @if($view)
                 {!! $view !!}
             @else
-                <p class="my-5 text-center">Нет подготовленных данных</p>
+                <p class="my-5 text-center">Нет данных</p>
             @endif
 
         </div>

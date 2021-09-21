@@ -7,7 +7,7 @@ namespace App\Services\Feed\AnalyticsReports;
 use App\Models\FeedOffer;
 use App\Services\Analytics\AbstractReport;
 
-class CountGroupsReport extends AbstractReport
+class GroupsCountReport extends AbstractReport
 {
     public const CODE = 'feed.count_groups';
 
