@@ -45,7 +45,6 @@ class SyncShops
 
             DB::commit();
         } catch (\Throwable $e) {
-            dump($e->getMessage());
             DB::rollBack();
         }
     }

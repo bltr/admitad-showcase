@@ -10,8 +10,6 @@ class FeedCategory extends Model
 {
     use HasFactory, NodeTrait;
 
-    protected $primaryKey = 'outer_id';
-
     protected $guarded = [];
 
     protected $casts = [

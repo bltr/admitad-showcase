@@ -21,14 +21,9 @@ class CreateFeedCategoriesTable extends Migration
             $table->unsignedBigInteger('shop_id');
             $table->string('outer_id');
             $table->jsonb('data');
+            $table->nestedSet();
 
             $table->index(['shop_id', 'outer_id']);
-
-            // nested set
-            $table->unsignedInteger(NestedSet::LFT)->default(0);
-            $table->unsignedInteger(NestedSet::RGT)->default(0);
-            $table->string(NestedSet::PARENT_ID)->nullable();
-            $table->index(NestedSet::getDefaultColumns());
         });
     }
 

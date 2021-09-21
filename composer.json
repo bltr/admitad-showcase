@@ -15,8 +15,7 @@
         "kalnoy/nestedset": "^6.0",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
-        "predis/predis": "^1.1",
-        "staudenmeir/eloquent-json-relations": "^1.5"
+        "predis/predis": "^1.1"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.10",

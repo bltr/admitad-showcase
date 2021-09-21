@@ -21,8 +21,10 @@ class CreateFeedOffersTable extends Migration
             $table->unsignedBigInteger('shop_id');
             $table->string('outer_id');
             $table->jsonb('data');
+            $table->unsignedBigInteger('feed_category_id')->nullable();
 
             $table->index(['shop_id', 'outer_id']);
+            $table->foreign('feed_category_id')->references('id')->on('feed_categories');
         });
     }
 
