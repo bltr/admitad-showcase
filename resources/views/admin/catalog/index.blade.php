@@ -15,9 +15,10 @@
     <div class="row">
         <div class="col-2">
             <form>
-                <fieldset class="row mb-3">
+
+                <fieldset class="row p-2 border border-secondary rounded">
                     <legend class="col-form-label col-12 text-secondary">Магазины</legend>
-                    <div class="col-12">
+                    <div class="col-12 mb-3">
                         @foreach($shops as $shop)
                             <div class="form-check">
                                 <input class="form-check-input"
@@ -33,9 +34,15 @@
                             </div>
                         @endforeach
                     </div>
+                    @if($shops->isNotEmpty())
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-sm">Применить</button>
+                            <button type="reset" class="btn btn-info btn-sm">Сбросить</button>
+                        </div>
+                    @else
+                        <div class="col-12 small text-secondary">Нет одобренных магазинов</div>
+                    @endif
                 </fieldset>
-                <button type="submit" class="btn btn-primary btn-sm">Применить</button>
-                <button type="reset" class="btn btn-info btn-sm">Сбросить</button>
             </form>
         </div>
 
@@ -81,6 +88,9 @@
                     </div>
                 @endforeach
             </div>
+            @if($offers->isEmpty())
+                <div class="small text-secondary text-center mt-5">Нет офферов</div>
+            @endif
 
             {{ $offers->links() }}
         </div>
