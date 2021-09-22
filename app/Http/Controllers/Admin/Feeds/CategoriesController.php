@@ -14,7 +14,8 @@ class CategoriesController extends Controller
         $categories = FeedCategory::where('shop_id', $shop->id)
             ->get()
             ->toTree();
+        $shops = Shop::all();
 
-        return view('admin.feeds.categories', compact('shop', 'categories'));
+        return view('admin.feeds.categories', compact('shop', 'categories', 'shops'));
     }
 }

@@ -1,18 +1,13 @@
-@extends('admin.layout')
+@extends('admin.feeds.layout')
 
-@section('content')
+@section('feed-content')
     <div class="row">
         <div class="col">
-            @include('admin.feeds.components._breadcrums', compact('shop'))
-
-            @include('admin.feeds.components._nav', compact('shop'))
-
             @if($view)
                 {!! $view !!}
             @else
                 <p class="my-5 text-center">Нет данных</p>
             @endif
-
         </div>
     </div>
 @endsection

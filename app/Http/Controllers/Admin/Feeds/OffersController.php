@@ -15,7 +15,8 @@ class OffersController extends Controller
             ->selectRaw('*, jsonb_pretty(data) as data')
             ->orderBy('id')
             ->paginate(20);
+        $shops = Shop::all();
 
-        return view('admin.feeds.offers', compact('shop', 'offers'));
+        return view('admin.feeds.offers', compact('shop', 'offers', 'shops'));
     }
 }

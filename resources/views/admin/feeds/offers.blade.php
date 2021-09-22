@@ -1,16 +1,8 @@
-@extends('admin.layout')
+@extends('admin.feeds.layout')
 
-@section('content')
-    <div class="row">
-        <div class="col">
-            @include('admin.feeds.components._breadcrums', compact('shop'))
-
-            @include('admin.feeds.components._nav', compact('shop'))
-        </div>
-    </div>
-
+@section('feed-content')
     @if($offers->isNotEmpty())
-        <div class="row  row-cols-1 row-cols-md-4 g-4 mb-4 clearfix">
+        <div class="row  row-cols-1 row-cols-md-4 g-4 mb-4">
             @foreach($offers as $offer)
                 <div class="col">
 
@@ -74,7 +66,7 @@
             @endforeach
         </div>
     @else
-        <div class="my-5 text-center clearfix">
+        <div class="my-5 text-center">
             Нет данных
         </div>
     @endif
