@@ -12,7 +12,8 @@ class AnalyticsController extends Controller
     {
         $view = $analyticsService->renderLastReport($shop);
         $shops = Shop::all();
+        $currentShop = $shop;
 
-        return view('admin.feeds.analytics', compact('shop', 'view', 'shops'));
+        return view('admin.feeds.analytics', compact('currentShop', 'view', 'shops'));
     }
 }

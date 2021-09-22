@@ -16,7 +16,8 @@ class OffersController extends Controller
             ->orderBy('id')
             ->paginate(20);
         $shops = Shop::all();
+        $currentShop = $shop;
 
-        return view('admin.feeds.offers', compact('shop', 'offers', 'shops'));
+        return view('admin.feeds.offers', compact('currentShop', 'offers', 'shops'));
     }
 }

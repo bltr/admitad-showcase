@@ -15,7 +15,8 @@ class CategoriesController extends Controller
             ->get()
             ->toTree();
         $shops = Shop::all();
+        $currentShop = $shop;
 
-        return view('admin.feeds.categories', compact('shop', 'categories', 'shops'));
+        return view('admin.feeds.categories', compact('currentShop', 'categories', 'shops'));
     }
 }
