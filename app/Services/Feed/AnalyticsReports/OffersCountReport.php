@@ -18,9 +18,6 @@ class OffersCountReport extends AbstractReport
 
     private int $shopId;
 
-    /**
-     * @param int $shopId
-     */
     public function __construct(int $shopId)
     {
         parent::__construct();
@@ -31,9 +28,11 @@ class OffersCountReport extends AbstractReport
     {
         $this->values['count'] = FeedOffer::where('shop_id', $this->shopId)->count();
         $this->values['invalid_count'] = FeedOffer::where('shop_id', $this->shopId)
-            ->whereNull('data->price')
-            ->orWhereRaw("data -> 'pictures' = '[]'::jsonb")
-            ->orWhereNull('data->url')
+            ->where(function($query) {
+                return $query->whereNull('data->price')
+                    ->orWhereRaw("data -> 'pictures' = '[]'::jsonb")
+                    ->orWhereNull('data->url');
+            })
             ->count();
     }
 }
