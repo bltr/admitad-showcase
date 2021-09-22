@@ -6,7 +6,7 @@ namespace App\Services\Feed\AnalyticsReports;
 
 use App\Models\FeedOffer;
 use App\Services\Analytics\AbstractReport;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 
 class OffersCountReport extends AbstractReport
 {

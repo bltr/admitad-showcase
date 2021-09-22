@@ -53,4 +53,9 @@ class CompositeReport implements Report
     {
         $this->date = $date;
     }
+
+    public function code()
+    {
+        return implode('#', array_map(fn($report) => $report::CODE, $this->reports));
+    }
 }
