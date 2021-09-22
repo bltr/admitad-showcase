@@ -8,7 +8,6 @@
             @else
                 <p class="my-5 small text-secondary text-center">Нет подготовленных данных</p>
             @endif
-
         </div>
     </div>
 @endsection
