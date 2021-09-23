@@ -13,7 +13,7 @@
         <div class="col-2">
             <div class="list-group">
                 @foreach($shops as $shop)
-                    <a class="list-group-item @if($shop->is($currentShop)) active @endif" href="{{ route(request()->route()->getName(), $shop) }}">{{ $shop->name }}</a>
+                    <a class="list-group-item @if($shop->is($currentShop)) active @endif" href="{{ route(request()->route()->getName(), $shop) }}">{{ $shop->id }}. {{ $shop->name }}</a>
                 @endforeach
             </div>
         </div>
