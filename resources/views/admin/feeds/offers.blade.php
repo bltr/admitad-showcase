@@ -2,6 +2,9 @@
 
 @section('feed-content')
     @if($offers->isNotEmpty())
+        <div class="row">
+            @include('admin.feeds.components._nav', ['shop' => $currentShop])
+        </div>
         <div class="row  row-cols-1 row-cols-md-4 g-4 mb-4">
             @foreach($offers as $offer)
                 <div class="col">

@@ -3,17 +3,20 @@
 @section('content')
     <div class="row">
         <div class="col">
-            @include('admin.feeds.components._breadcrums', ['shop' => $currentShop])
-
-            @include('admin.feeds.components._nav', ['shop' => $currentShop])
+            @include('admin.feeds.components._breadcrums', ['shop' => $currentShop ?? null])
         </div>
     </div>
 
-    <div class="row mt-4">
+    <div class="row">
         <div class="col-2">
             <div class="list-group">
                 @foreach($shops as $shop)
-                    <a class="list-group-item @if($shop->is($currentShop)) active @endif" href="{{ route(request()->route()->getName(), $shop) }}">{{ $shop->id }}. {{ $shop->name }}</a>
+                    <a class="list-group-item @if($shop->id === ($currentShop->id ?? null)) active @endif"
+                       href="{{ route('admin.feeds.analytics', $shop) }}"
+                       style="height: 3rem"
+                    >
+                        {{ $shop->id }}. {{ $shop->name }}
+                    </a>
                 @endforeach
             </div>
         </div>

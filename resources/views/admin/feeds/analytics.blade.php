@@ -1,6 +1,9 @@
 @extends('admin.feeds.layout')
 
 @section('feed-content')
+    <div class="row ">
+        @include('admin.feeds.components._nav', ['shop' => $currentShop])
+    </div>
     <div class="row">
         <div class="col">
             @if($view)

@@ -2,6 +2,9 @@
 
 @section('feed-content')
     <div class="row">
+        @include('admin.feeds.components._nav', ['shop' => $currentShop])
+    </div>
+    <div class="row">
         <div class="col">
             @include('admin.feeds.components._category-tree', compact('categories'))
 
