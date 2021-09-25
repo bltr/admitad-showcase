@@ -11,7 +11,7 @@
         <div class="col-2">
             <div class="list-group">
                 @foreach($shops as $shop)
-                    <a class="list-group-item text-secondary @if($shop->id === ($currentShop->id ?? null)) active @endif"
+                    <a class="list-group-item @if($shop->id === ($currentShop->id ?? null)) active @endif"
                        href="{{ route('admin.feeds.analytics', $shop) }}"
                        style="height: 3rem"
                     >

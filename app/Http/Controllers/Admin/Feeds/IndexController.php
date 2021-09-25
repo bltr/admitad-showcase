@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Shop;
 use Illuminate\Http\Request;
 
-class FeedsController extends Controller
+class IndexController extends Controller
 {
     public function index()
     {
