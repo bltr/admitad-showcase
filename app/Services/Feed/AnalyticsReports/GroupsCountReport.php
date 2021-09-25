@@ -9,19 +9,19 @@ use App\Services\Analytics\AbstractReport;
 
 class GroupsCountReport extends AbstractReport
 {
-    public const CODE = 'feed.count_groups';
+    public const CODE = 'feed.groups_count';
 
     protected array $values = [
         'group_id_count' => null,
         'url_count' => null,
         'picture_count' => null,
         'deviations' => [
-            'group_id_picture' => null,
-            'group_id_url' => null,
-            'picture_group_id' => null,
-            'picture_url' => null,
-            'url_group_id' => null,
-            'url_picture' => null,
+            'picture_deviation_in_group_id_group' => null,
+            'url_deviation_in_group_id_group' => null,
+            'group_id_deviation_in_picture_group' => null,
+            'url_deviation_in_picture_group' => null,
+            'group_id_deviation_in_url_group' => null,
+            'picture_deviation_in_url_group' => null,
         ]
     ];
 
@@ -45,38 +45,47 @@ class GroupsCountReport extends AbstractReport
             ->value('count');
 
         if ($this->values['group_id_count'] !== 0) {
-            $this->values['deviations']['picture_group_id'] = FeedOffer::where('shop_id', $this->shopId)
+            $this->values['deviations']['group_id_deviation_in_picture_group'] = FeedOffer::where('shop_id', $this->shopId)
                 ->groupByRaw("data #>> '{pictures, 0}'")
                 ->havingRaw("count(distinct data ->> 'group_id') > 1")
                 ->selectRaw('json_agg(id) as ids')
+                ->withCasts(['ids' => 'array'])
                 ->pluck('ids');
-            $this->values['deviations']['url_group_id'] = FeedOffer::where('shop_id', $this->shopId)
+
+            $this->values['deviations']['group_id_deviation_in_url_group'] = FeedOffer::where('shop_id', $this->shopId)
                 ->groupByRaw("data ->> 'url'")
                 ->havingRaw("count(distinct data ->> 'group_id') > 1")
                 ->selectRaw('json_agg(id) as ids')
+                ->withCasts(['ids' => 'array'])
                 ->pluck('ids');
-            $this->values['deviations']['group_id_picture'] = FeedOffer::where('shop_id', $this->shopId)
+
+            $this->values['deviations']['picture_deviation_in_group_id_group'] = FeedOffer::where('shop_id', $this->shopId)
                 ->groupByRaw("data ->> 'group_id'")
                 ->havingRaw("count(distinct data #>> '{pictures, 0}') > 1")
                 ->selectRaw('json_agg(id) as ids')
+                ->withCasts(['ids' => 'array'])
                 ->pluck('ids');
-            $this->values['deviations']['group_id_url'] = FeedOffer::where('shop_id', $this->shopId)
+
+            $this->values['deviations']['url_deviation_in_group_id_group'] = FeedOffer::where('shop_id', $this->shopId)
                 ->groupByRaw("data ->> 'group_id'")
                 ->havingRaw("count(distinct data ->> 'url') > 1")
                 ->selectRaw('json_agg(id) as ids')
+                ->withCasts(['ids' => 'array'])
                 ->pluck('ids');
         }
 
-        $this->values['deviations']['picture_url'] = FeedOffer::where('shop_id', $this->shopId)
+        $this->values['deviations']['url_deviation_in_picture_group'] = FeedOffer::where('shop_id', $this->shopId)
             ->groupByRaw("data #>> '{pictures, 0}'")
             ->havingRaw("count(distinct data ->> 'url') > 1")
             ->selectRaw('json_agg(id) as ids')
+            ->withCasts(['ids' => 'array'])
             ->pluck('ids');
 
-        $this->values['deviations']['url_picture'] = FeedOffer::where('shop_id', $this->shopId)
+        $this->values['deviations']['picture_deviation_in_url_group'] = FeedOffer::where('shop_id', $this->shopId)
             ->groupByRaw("data ->> 'url'")
             ->havingRaw("count(distinct data #>> '{pictures, 0}') > 1")
             ->selectRaw('json_agg(id) as ids')
+            ->withCasts(['ids' => 'array'])
             ->pluck('ids');
     }
 }
