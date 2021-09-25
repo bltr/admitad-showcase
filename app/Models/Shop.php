@@ -42,4 +42,24 @@ class Shop extends Model
     {
         return $this->import_type !== null;
     }
+
+    public function isImportWithoutGrouping()
+    {
+        return $this->import_type === static::IMPORT_WITHOUT_GROUPING;
+    }
+
+    public function isImportGroupByGroupId()
+    {
+        return $this->import_type === static::IMPORT_GROUP_BY_GROUP_ID;
+    }
+
+    public function isImportGroupByPicture()
+    {
+        return $this->import_type === static::IMPORT_GROUP_BY_PICTURE;
+    }
+
+    public function isImportGroupByUrl()
+    {
+        return $this->import_type === static::IMPORT_GROUP_BY_URL;
+    }
 }
