@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\SortedById;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Shop extends Model
 {
     use HasFactory;
+    use SortedById;
 
     public const IMPORT_WITHOUT_GROUPING = 'import_without_grouping';
     public const IMPORT_GROUP_BY_GROUP_ID = 'import_group_by_group_id';

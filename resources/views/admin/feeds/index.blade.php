@@ -17,7 +17,7 @@
                                 @if($shop->is_active)
                                     <button class="btn btn-success btn-sm">Отключить импорт</button>
                                 @else
-                                    <button class="btn btn-outline-info btn-sm">Включить импорт</button>
+                                    <button class="btn btn-outline-primary btn-sm">Включить импорт</button>
                                 @endif
                             </form>
                         </div>

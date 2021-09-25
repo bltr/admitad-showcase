@@ -10,7 +10,7 @@ class FeedsController extends Controller
 {
     public function index()
     {
-        $shops = Shop::orderBy('id')->get();
+        $shops = Shop::all();
 
         return view('admin.feeds.index', compact('shops'));
     }
