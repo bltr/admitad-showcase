@@ -20,7 +20,7 @@ class ImportCommand extends Command
     public function handle(AnalyticsService $analyticsService)
     {
         $shop_ids = $this->argument('shop_id');
-        $query = Shop::approved();
+        $query = Shop::active();
         $shops = $shop_ids ? $query->whereIn('id', $shop_ids)->get() : $query->get() ;
 
         Bus::batch($shops->map(function ($shop) {

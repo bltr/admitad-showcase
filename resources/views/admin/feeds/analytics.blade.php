@@ -13,7 +13,7 @@
                         @csrf
 
                         <select name='import_type' class="form-select" onchange="this.form.submit()">
-                            <option>-</option>
+                            <option value="">-</option>
                             <option @if($shop->import_type === \App\Models\Shop::IMPORT_WITHOUT_GROUPING) selected @endif value="{{ \App\Models\Shop::IMPORT_WITHOUT_GROUPING }}">{{ \App\Models\Shop::IMPORT_WITHOUT_GROUPING }}</option>
                             <option @if($shop->import_type === \App\Models\Shop::IMPORT_GROUP_BY_GROUP_ID) selected @endif value="{{ \App\Models\Shop::IMPORT_GROUP_BY_GROUP_ID }}">{{ \App\Models\Shop::IMPORT_GROUP_BY_GROUP_ID }}</option>
                             <option @if($shop->import_type === \App\Models\Shop::IMPORT_GROUP_BY_PICTURE) selected @endif value="{{ \App\Models\Shop::IMPORT_GROUP_BY_PICTURE }}">{{ \App\Models\Shop::IMPORT_GROUP_BY_PICTURE }}</option>
@@ -21,6 +21,7 @@
                         </select>
                     </form>
                 </div>
+
                 {!! $view !!}
             @else
                 <p class="my-5 text-center">Нет данных</p>

@@ -23,8 +23,23 @@ class Shop extends Model
 
     protected $guarded = [];
 
-    public function scopeApproved(Builder $query)
+    public function scopeActive(Builder $query)
     {
-        return $query->where('is_active', true)->whereNotNull('import_type');
+        return $query->where('is_active', true);
+    }
+
+    public function toggleActivity()
+    {
+        if (!$this->is_active && !$this->isCanBeActive()) {
+            throw new \DomainException('Попытка активировать магазин без выбранного типа импорта');
+        }
+
+        $this->is_active = !$this->is_active;
+        $this->save();
+    }
+
+    public function isCanBeActive(): bool
+    {
+        return $this->import_type !== null;
     }
 }

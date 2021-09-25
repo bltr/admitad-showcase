@@ -20,7 +20,7 @@ class ImportCommand extends Command
     public function handle(ImportOffers $importOffers)
     {
         $shop_ids = $this->argument('shop_id');
-        $query = Shop::approved();
+        $query = Shop::active();
         $shops = $shop_ids ? $query->whereIn('id', $shop_ids)->get() : $query->get() ;
 
         $shops->each(fn($shop) => $importOffers->run($shop));

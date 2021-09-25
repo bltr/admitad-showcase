@@ -17,8 +17,7 @@ class IndexController extends Controller
 
     public function toggleActivity(Shop $shop)
     {
-        $shop->is_active = !$shop->is_active;
-        $shop->save();
+        $shop->toggleActivity();
 
         return back();
     }

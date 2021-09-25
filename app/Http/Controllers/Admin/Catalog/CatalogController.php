@@ -17,7 +17,7 @@ class CatalogController extends Controller
         });
         $offers = $query->paginate(16);
 
-        $shops = Shop::approved()->get();
+        $shops = Shop::active()->get();
 
         return view('admin.catalog.index', compact('offers', 'shops'));
     }
