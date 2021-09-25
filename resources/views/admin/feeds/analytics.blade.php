@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col">
             @if($view)
-                <div class="col-4">
+                <div class="col-4 mb-4">
                     <form action="{{ route('admin.feeds.import-type', $shop) }}" method="POST">
                         @method('patch')
                         @csrf

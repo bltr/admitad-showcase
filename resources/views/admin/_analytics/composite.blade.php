@@ -1,4 +1,4 @@
-<h5 class="mt-4">{{ $date }}</h5>
+<h5>{{ $date }}</h5>
 <div class="row  row-cols-1 row-cols-md-2 g-4 mb-4">
     @foreach($reports as $report)
         <div class="col">

@@ -19,10 +19,21 @@
                                     <button class="btn btn-success btn-sm">Отключить импорт</button>
                                 @elseif($shop->isCanBeActive())
                                     <button class="btn btn-outline-primary btn-sm">Включить импорт</button>
+                                @else
+                                    <span data-bs-toggle="tooltip"
+                                          data-bs-placement="right"
+                                          title="Нельзя включить импорт если не установлен тип импорта"
+                                    >
+                                        <span class="btn btn-outline-primary btn-sm disabled">Включить импорт</span>
+                                    </span>
                                 @endif
                             </form>
                         </div>
-                        <div class="ms-auto" data-bs-toggle="tooltip" data-bs-placement="right" title="Количество офферов в фиде">
+                        <div class="ms-auto"
+                             data-bs-toggle="tooltip"
+                             data-bs-placement="right"
+                             title="Количество офферов в фиде"
+                        >
                             {{ $shop->analytics->data['feed.offers_count']['count'] ?? '-' }}
                             <i class="bi bi-union text-secondary"></i>
                         </div>
@@ -31,7 +42,6 @@
             </ul>
         </div>
         <div class="col-6">
-            <h4>Аналитика</h4>
             {!! $analyticsView !!}
         </div>
     </div>
