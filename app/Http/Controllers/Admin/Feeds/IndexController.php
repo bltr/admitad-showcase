@@ -11,7 +11,7 @@ class IndexController extends Controller
 {
     public function index(AnalyticServiceTotal $analyticServiceTotal)
     {
-        $shops = Shop::all();
+        $shops = Shop::with('analytics')->get();
         $analyticsView = $analyticServiceTotal->renderLastReport();
 
         return view('admin.feeds.index', compact('shops', 'analyticsView'));

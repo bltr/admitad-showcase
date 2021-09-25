@@ -62,4 +62,14 @@ class Shop extends Model
     {
         return $this->import_type === static::IMPORT_GROUP_BY_URL;
     }
+
+    public function getAdmitadUrlAttribute()
+    {
+        return 'https://account.admitad.com/ru/webmaster/websites/867132/offers/' . $this->outer_id;
+    }
+
+    public function analytics()
+    {
+        return $this->hasOne(Analytics::class)->latest();
+    }
 }
