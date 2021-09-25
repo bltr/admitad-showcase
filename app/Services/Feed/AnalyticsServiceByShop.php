@@ -10,7 +10,7 @@ use App\Services\Analytics\CompositeReport;
 use App\Services\Feed\AnalyticsReports\GroupsCountReport;
 use App\Services\Feed\AnalyticsReports\OffersCountReport;
 
-class AnalyticsService
+class AnalyticsServiceByShop
 {
     private function createReport(int $shopId): CompositeReport
     {

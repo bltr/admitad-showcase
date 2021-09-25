@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Feeds;
 
-use App\Services\Feed\AnalyticsService;
+use App\Services\Feed\AnalyticsServiceByShop;
 use App\Http\Controllers\Controller;
 use App\Models\Shop;
 
 class AnalyticsController extends Controller
 {
-    public function index(Shop $shop, AnalyticsService $analyticsService)
+    public function index(Shop $shop, AnalyticsServiceByShop $analyticsService)
     {
         $view = $analyticsService->renderLastReport($shop);
         $shops = Shop::all();

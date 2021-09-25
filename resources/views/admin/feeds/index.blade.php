@@ -2,7 +2,7 @@
 
 @section('feed-content')
     <div class="row">
-        <div class="col-5">
+        <div class="col-6">
             <ul class="list-group">
                 @foreach($shops as $shop)
                     <li class="list-group-item border-top d-flex"
@@ -25,8 +25,9 @@
                 @endforeach
             </ul>
         </div>
-        <div class="col-5">
+        <div class="col-6">
             <h4>Аналитика</h4>
+            {!! $analyticsView !!}
         </div>
     </div>
 @endsection

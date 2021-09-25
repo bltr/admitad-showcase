@@ -4,15 +4,17 @@ namespace App\Http\Controllers\Admin\Feeds;
 
 use App\Http\Controllers\Controller;
 use App\Models\Shop;
+use App\Services\Feed\AnalyticServiceTotal;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
-    public function index()
+    public function index(AnalyticServiceTotal $analyticServiceTotal)
     {
         $shops = Shop::all();
+        $analyticsView = $analyticServiceTotal->renderLastReport();
 
-        return view('admin.feeds.index', compact('shops'));
+        return view('admin.feeds.index', compact('shops', 'analyticsView'));
     }
 
     public function toggleActivity(Shop $shop)

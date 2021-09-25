@@ -3,7 +3,7 @@
 namespace App\Jobs\Feed;
 
 use App\Models\Shop;
-use App\Services\Feed\AnalyticsService;
+use App\Services\Feed\AnalyticsServiceByShop;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -23,7 +23,7 @@ class AnalyticsJob implements ShouldQueue
         $this->shop = $shop;
     }
 
-    public function handle(AnalyticsService $analyticsService)
+    public function handle(AnalyticsServiceByShop $analyticsService)
     {
         $analyticsService->build($this->shop);
     }
