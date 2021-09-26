@@ -10,10 +10,10 @@ class AnalyticsController extends Controller
 {
     public function index(Shop $shop, AnalyticsServiceByShop $analyticsService)
     {
-        $view = $analyticsService->renderLastReport($shop);
+        $analytics = $analyticsService->getLastReport($shop);
         $shops = Shop::all();
         $currentShop = $shop;
 
-        return view('admin.feeds.analytics', compact('currentShop', 'view', 'shops', 'shop'));
+        return view('admin.feeds.analytics', compact('currentShop', 'analytics', 'shops', 'shop'));
     }
 }

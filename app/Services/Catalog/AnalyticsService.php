@@ -24,21 +24,15 @@ class AnalyticsService
     {
         $report = $this->createReport();
         $report->build();
-        Analytics::create(['data' => $report->getValues()]);
+        Analytics::create(['data' => $report->getValues(), 'code' => $report->code()]);
     }
 
-    public function renderLastReport(): ?string
+    public function getLastReport(): ?Analytics
     {
-        $analytics = Analytics::whereNull('shop_id')->latest()->first();
-        $view = null;
+        $report = $this->createReport();
 
-        if ($analytics) {
-            $report = $this->createReport();
-            $report->setDate($analytics->created_at);
-            $report->setValues($analytics->data);
-            $view = $report->render();
-        }
-
-        return $view;
+        return Analytics::where('code', $report->code())
+            ->latest()
+            ->first();
     }
 }

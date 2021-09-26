@@ -3,11 +3,7 @@
 @section('content')
     <div class="row">
         <div class="col">
-            @if($view)
-                {!! $view !!}
-            @else
-                <p class="my-5 small text-secondary text-center">Нет подготовленных данных</p>
-            @endif
+            @include('admin._analytics.composite', compact('analytics'))
         </div>
     </div>
 @endsection

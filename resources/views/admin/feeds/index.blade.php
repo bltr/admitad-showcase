@@ -42,7 +42,7 @@
             </ul>
         </div>
         <div class="col-6">
-            {!! $analyticsView !!}
+            @include('admin._analytics.composite', compact('analytics'))
         </div>
     </div>
 @endsection

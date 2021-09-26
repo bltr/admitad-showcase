@@ -25,20 +25,12 @@ class AnalyticServiceTotal
         Analytics::create(['data' => $report->getValues(), 'code' => $report->code()]);
     }
 
-    public function renderLastReport(): ?string
+    public function getLastReport(): ?Analytics
     {
         $report = $this->createReport();
-        $analytics = Analytics::where('code', $report->code())
+
+        return Analytics::where('code', $report->code())
             ->latest()
             ->first();
-
-        $view = null;
-        if ($analytics) {
-            $report->setDate($analytics->created_at);
-            $report->setValues($analytics->data);
-            $view = $report->render();
-        }
-
-        return $view;
     }
 }

@@ -12,9 +12,9 @@ class IndexController extends Controller
     public function index(AnalyticServiceTotal $analyticServiceTotal)
     {
         $shops = Shop::with('analytics')->get();
-        $analyticsView = $analyticServiceTotal->renderLastReport();
+        $analytics = $analyticServiceTotal->getLastReport();
 
-        return view('admin.feeds.index', compact('shops', 'analyticsView'));
+        return view('admin.feeds.index', compact('shops', 'analytics'));
     }
 
     public function toggleActivity(Shop $shop)

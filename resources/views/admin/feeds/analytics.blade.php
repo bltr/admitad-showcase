@@ -11,7 +11,7 @@
     </div>
     <div class="row">
         <div class="col">
-            @if($view)
+            @if($analytics)
                 <div class="col-4 mb-4">
                     <form action="{{ route('admin.feeds.import-type', $shop) }}" method="POST">
                         @method('patch')
@@ -42,11 +42,9 @@
                         </select>
                     </form>
                 </div>
-
-                {!! $view !!}
-            @else
-                <p class="my-5 text-center">Нет данных</p>
             @endif
+
+            @include('admin._analytics.composite', compact('analytics'))
         </div>
     </div>
 @endsection

@@ -19,18 +19,8 @@ abstract class AbstractReport implements Report
 
     abstract public function build();
 
-    public function render(): string
-    {
-        return view('admin._analytics.' . static::CODE, $this->getValues())->render();
-    }
-
     public function getValues(): array
     {
         return $this->values;
-    }
-
-    public function setValues(array $values): void
-    {
-        $this->values = $values;
     }
 }
