@@ -23,9 +23,7 @@ class AnalyticsServiceByShop
 
     public function build(Shop $shop): void
     {
-        $report = $this->createReport($shop->id);
-        $report->build();
-        Analytics::create(['shop_id' => $shop->id ?? null, 'data' => $report->getValues(), 'code' => $report->code()]);
+        Analytics::create(['shop_id' => $shop->id ?? null, 'data' => $this->createReport($shop->id)->build(), 'code' => $this->createReport($shop->id)->code()]);
     }
 
     public function getLastReport(Shop $shop): ?Analytics

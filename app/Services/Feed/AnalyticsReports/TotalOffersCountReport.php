@@ -13,8 +13,10 @@ class TotalOffersCountReport extends AbstractReport
         'count' => null,
     ];
 
-    public function build()
+    public function build(): array
     {
         $this->values['count'] = FeedOffer::count();
+
+        return $this->values;
     }
 }

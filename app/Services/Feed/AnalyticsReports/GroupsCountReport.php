@@ -36,7 +36,7 @@ class GroupsCountReport extends AbstractReport
         $this->shopId = $shopId;
     }
 
-    public function build()
+    public function build(): array
     {
         $this->values['group_id_count'] = FeedOffer::where('shop_id', $this->shopId)->distinct('data->group_id')->count();
         $this->values['url_count'] = FeedOffer::where('shop_id', $this->shopId)->distinct('data->url')->count();
@@ -87,5 +87,7 @@ class GroupsCountReport extends AbstractReport
             ->selectRaw('json_agg(id) as ids')
             ->withCasts(['ids' => 'array'])
             ->pluck('ids');
+
+        return $this->values;
     }
 }

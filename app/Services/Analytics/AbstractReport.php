@@ -17,10 +17,5 @@ abstract class AbstractReport implements Report
         }
     }
 
-    abstract public function build();
-
-    public function getValues(): array
-    {
-        return $this->values;
-    }
+    abstract public function build(): array;
 }

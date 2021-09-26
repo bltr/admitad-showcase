@@ -15,8 +15,10 @@ class OffersCountReport extends AbstractReport
         'count' => null,
     ];
 
-    public function build()
+    public function build(): array
     {
         $this->values['count'] = Offer::count();
+
+        return $this->values;
     }
 }

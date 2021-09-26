@@ -4,8 +4,6 @@
 namespace App\Services\Analytics;
 
 
-use Illuminate\Support\Carbon;
-
 class CompositeReport implements Report
 {
     /**
@@ -13,25 +11,16 @@ class CompositeReport implements Report
      */
     private array $reports;
 
-    private Carbon $date;
-
     public function addReport(AbstractReport $report): void
     {
         $this->reports[$report::CODE] = $report;
     }
 
-    public function build(): void
-    {
-        foreach ($this->reports as $report) {
-            $report->build();
-        }
-    }
-
-    public function getValues(): array
+    public function build(): array
     {
         $state = [];
-        foreach ($this->reports as $report) {
-            $state[$report::CODE] = $report->getValues();
+        foreach ($this->reports as $code => $report) {
+            $state[$code] = $report->build();
         }
 
         return $state;

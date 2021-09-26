@@ -22,9 +22,7 @@ class AnalyticsService
 
     public function build(): void
     {
-        $report = $this->createReport();
-        $report->build();
-        Analytics::create(['data' => $report->getValues(), 'code' => $report->code()]);
+        Analytics::create(['data' => $this->createReport()->build(), 'code' => $this->createReport()->code()]);
     }
 
     public function getLastReport(): ?Analytics

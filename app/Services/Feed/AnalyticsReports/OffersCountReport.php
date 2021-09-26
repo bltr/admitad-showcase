@@ -25,12 +25,14 @@ class OffersCountReport extends AbstractReport
         $this->shopId = $shopId;
     }
 
-    public function build()
+    public function build(): array
     {
         $this->values['count'] = FeedOffer::where('shop_id', $this->shopId)->count();
         $this->values['invalid_count'] = FeedOffer::where('shop_id', $this->shopId)
             ->where(fn($query) => $this->whereInvalidOffers($query))
             ->count();
+
+        return $this->values;
     }
 
     protected function whereInvalidOffers(Builder $query): Builder
