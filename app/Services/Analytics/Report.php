@@ -6,5 +6,5 @@ namespace App\Services\Analytics;
 
 interface Report
 {
-    public function build(): array;
+    public function build(int $object_id = null): array;
 }

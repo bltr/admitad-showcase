@@ -2,34 +2,37 @@
 
 namespace App\Services\Feed;
 
-
 use App\Models\Analytics;
 use App\Services\Analytics\CompositeReport;
 use App\Services\Feed\AnalyticsReports\GroupsCountReport;
 use App\Services\Feed\AnalyticsReports\OffersCountReport;
-use App\Models\Shop;
 
 class AnalyticsServiceByShop
 {
-    private function createReport(int $shopId): CompositeReport
+    private function createReport(): CompositeReport
     {
         $composite = new CompositeReport();
-        $composite->addReport(new OffersCountReport($shopId));
-        $composite->addReport(new GroupsCountReport($shopId));
+        $composite->addReport(new OffersCountReport());
+        $composite->addReport(new GroupsCountReport());
 
         return $composite;
     }
 
-    public function build(Shop $shop): void
+    public function build(int $object_id = null): void
     {
-        Analytics::create(['shop_id' => $shop->id ?? null, 'data' => $this->createReport($shop->id)->build(), 'code' => $this->createReport($shop->id)->code()]);
+        $report = $this->createReport();
+        Analytics::create([
+            'object_id' => $object_id,
+            'data' => $report->build($object_id),
+            'code' => $report->code()
+        ]);
     }
 
-    public function getLastReport(Shop $shop): ?Analytics
+    public function getLastReport(int $object_id = null): ?Analytics
     {
-        $report = $this->createReport($shop->id);
+        $report = $this->createReport($object_id);
 
-        return Analytics::where('shop_id', $shop->id)
+        return Analytics::where('object_id', $object_id)
             ->where('code', $report->code())
             ->latest()
             ->first();

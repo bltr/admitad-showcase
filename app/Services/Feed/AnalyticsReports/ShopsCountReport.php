@@ -13,7 +13,7 @@ class ShopsCountReport extends AbstractReport
         'count' => null,
     ];
 
-    public function build(): array
+    public function build(int $object_id = null): array
     {
         $this->values['count'] = Shop::count();
 

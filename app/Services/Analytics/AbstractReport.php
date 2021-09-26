@@ -17,5 +17,5 @@ abstract class AbstractReport implements Report
         }
     }
 
-    abstract public function build(): array;
+    abstract public function build(int $object_id = null): array;
 }

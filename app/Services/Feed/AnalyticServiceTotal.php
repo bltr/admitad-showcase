@@ -18,16 +18,22 @@ class AnalyticServiceTotal
         return $composite;
     }
 
-    public function build(): void
-    {
-        Analytics::create(['data' => $this->createReport()->build(), 'code' => $this->createReport()->code()]);
-    }
-
-    public function getLastReport(): ?Analytics
+    public function build(int $object_id = null): void
     {
         $report = $this->createReport();
+        Analytics::create([
+            'object_id' => $object_id,
+            'data' => $report->build($object_id),
+            'code' => $report->code()
+        ]);
+    }
 
-        return Analytics::where('code', $report->code())
+    public function getLastReport(int $object_id = null): ?Analytics
+    {
+        $report = $this->createReport($object_id);
+
+        return Analytics::where('object_id', $object_id)
+            ->where('code', $report->code())
             ->latest()
             ->first();
     }

@@ -17,7 +17,7 @@ class AnalyticsCommand extends Command
     {
         $shop_ids = $this->argument('shop_id');
         $shops = $shop_ids ? Shop::whereIn('id', $shop_ids)->get() : Shop::all() ;
-        $shops->each(fn($shop) => $analyticsService->build($shop));
+        $shops->each(fn($shop) => $analyticsService->build($shop->id));
 
         $analyticServiceTotal->build();
 

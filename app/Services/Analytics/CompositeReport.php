@@ -16,11 +16,11 @@ class CompositeReport implements Report
         $this->reports[$report::CODE] = $report;
     }
 
-    public function build(): array
+    public function build(int $object_id = null): array
     {
         $state = [];
         foreach ($this->reports as $code => $report) {
-            $state[$code] = $report->build();
+            $state[$code] = $report->build($object_id);
         }
 
         return $state;

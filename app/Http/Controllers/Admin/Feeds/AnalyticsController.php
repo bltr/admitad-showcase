@@ -10,7 +10,7 @@ class AnalyticsController extends Controller
 {
     public function index(Shop $shop, AnalyticsServiceByShop $analyticsService)
     {
-        $analytics = $analyticsService->getLastReport($shop);
+        $analytics = $analyticsService->getLastReport($shop->id);
         $shops = Shop::all();
         $currentShop = $shop;
 

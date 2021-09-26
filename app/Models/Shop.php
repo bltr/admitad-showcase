@@ -70,6 +70,6 @@ class Shop extends Model
 
     public function analytics()
     {
-        return $this->hasOne(Analytics::class)->latest();
+        return $this->hasOne(Analytics::class, 'object_id')->latest();
     }
 }

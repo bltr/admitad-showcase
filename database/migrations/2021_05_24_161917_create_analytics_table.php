@@ -17,7 +17,7 @@ class CreateAnalyticsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('code');
-            $table->unsignedBigInteger('shop_id')->nullable();
+            $table->unsignedBigInteger('object_id')->nullable();
             $table->jsonb('data');
         });
     }
