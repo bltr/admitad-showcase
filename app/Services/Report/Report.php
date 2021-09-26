@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Services\Analytics;
+namespace App\Services\Report;
 
 
 interface Report

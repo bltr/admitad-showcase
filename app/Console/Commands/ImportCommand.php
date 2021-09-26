@@ -3,11 +3,12 @@
 namespace App\Console\Commands;
 
 use App\Jobs\Catalog\ImportJob;
-use App\Jobs\Feed\AnalyticsJob;
+use App\Jobs\Feed\ReportJob;
 use App\Jobs\Feed\DownloadFileJob;
 use App\Jobs\Feed\SyncFileJob;
 use App\Models\Shop;
-use App\Services\Catalog\AnalyticsService;
+use App\Services\Report\CompositeReport;
+use App\Services\Report\ReportService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Bus;
 
@@ -17,7 +18,7 @@ class ImportCommand extends Command
 
     protected $description = 'Полный импорт';
 
-    public function handle(AnalyticsService $analyticsService)
+    public function handle(ReportService $reportService)
     {
         $shop_ids = $this->argument('shop_id');
         $query = Shop::active();
@@ -27,11 +28,11 @@ class ImportCommand extends Command
             return [
                 new DownloadFileJob($shop),
                 new SyncFileJob($shop),
-                new AnalyticsJob($shop),
+                new ReportJob($shop),
                 new ImportJob($shop)
             ];
-        }))->then(function () use ($analyticsService) {
-            $analyticsService->build();
+        }))->then(function () use ($reportService) {
+            $reportService->build(CompositeReport::catalogReportTotal());
         })->dispatch();
 
         return 0;

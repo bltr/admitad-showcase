@@ -3,7 +3,8 @@
 namespace App\Jobs\Feed;
 
 use App\Models\Shop;
-use App\Services\Feed\AnalyticsServiceByShop;
+use App\Services\Report\CompositeReport;
+use App\Services\Report\ReportService;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,7 +12,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class AnalyticsJob implements ShouldQueue
+class ReportJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchable;
 
@@ -23,8 +24,9 @@ class AnalyticsJob implements ShouldQueue
         $this->shop = $shop;
     }
 
-    public function handle(AnalyticsServiceByShop $analyticsService)
+    public function handle(ReportService $reportService)
     {
-        $analyticsService->build($this->shop);
+        $reportService->build(CompositeReport::feedReportByShop(), $this->shop->id);
+        $reportService->build(CompositeReport::feedReportTotal());
     }
 }

@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Services\Analytics;
+namespace App\Services\Report;
 
-use App\Models\Analytics;
+use App\Models\Reports;
 
-class AnalyticsService
+class ReportService
 {
     public function build(CompositeReport $report, int $object_id = null): void
     {
-        Analytics::create([
+        Reports::create([
             'object_id' => $object_id,
             'data' => $report->build($object_id),
             'code' => $report->code,
         ]);
     }
 
-    public function getLastReport(CompositeReport $report, int $object_id = null): ?Analytics
+    public function getLastReport(CompositeReport $report, int $object_id = null): ?Reports
     {
-        return Analytics::where('object_id', $object_id)
+        return Reports::where('object_id', $object_id)
             ->where('code', $report->code)
             ->latest()
             ->first();

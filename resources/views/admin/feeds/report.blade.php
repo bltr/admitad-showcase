@@ -11,7 +11,7 @@
     </div>
     <div class="row">
         <div class="col">
-            @if($analytics)
+            @if($report)
                 <div class="col-4 mb-4">
                     <form action="{{ route('admin.feeds.import-type', $shop) }}" method="POST">
                         @method('patch')
@@ -44,7 +44,7 @@
                 </div>
             @endif
 
-            @include('admin._analytics.composite', compact('analytics'))
+            @include('admin.report.composite', compact('report'))
         </div>
     </div>
 @endsection

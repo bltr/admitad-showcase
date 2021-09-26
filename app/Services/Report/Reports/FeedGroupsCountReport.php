@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Services\Analytics\Reports;
+namespace App\Services\Report\Reports;
 
 
 use App\Models\FeedOffer;
-use App\Services\Analytics\AbstractReport;
+use App\Services\Report\AbstractReport;
 
 class FeedGroupsCountReport extends AbstractReport
 {

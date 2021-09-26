@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Catalog\CatalogController;
-use App\Http\Controllers\Admin\Feeds\AnalyticsController;
+use App\Http\Controllers\Admin\Feeds\ReportController;
 use App\Http\Controllers\Admin\Feeds\CategoriesController;
 use App\Http\Controllers\Admin\Feeds\IndexController;
 use App\Http\Controllers\Admin\Feeds\OffersController;
@@ -32,7 +32,7 @@ Route::prefix('/admin')->name('admin.')->group(function () {
         Route::patch('/{shop}/import-type', [IndexController::class, 'importType'])->name('import-type');
         Route::get('/{shop}/offers', [OffersController::class, 'index'])->name('offers');
         Route::get('/{shop}/categories', [CategoriesController::class, 'index'])->name('categories');
-        Route::get('/{shop}/analytics', [AnalyticsController::class, 'index'])->name('analytics');
+        Route::get('/{shop}/report', [ReportController::class, 'index'])->name('report');
     });
 
     Route::prefix('catalog')->name('catalog.')->group(function () {

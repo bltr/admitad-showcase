@@ -34,7 +34,7 @@
                              data-bs-placement="right"
                              title="Количество офферов в фиде"
                         >
-                            {{ $shop->analytics->data['feed.offers_count']['count'] ?? '-' }}
+                            {{ $shop->report->data['feed.offers_count']['count'] ?? '-' }}
                             <i class="bi bi-union text-secondary"></i>
                         </div>
                     </li>
@@ -42,7 +42,7 @@
             </ul>
         </div>
         <div class="col-6">
-            @include('admin._analytics.composite', compact('analytics'))
+            @include('admin.report.composite', compact('report'))
         </div>
     </div>
 @endsection

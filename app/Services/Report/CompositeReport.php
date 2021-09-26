@@ -1,15 +1,15 @@
 <?php
 
 
-namespace App\Services\Analytics;
+namespace App\Services\Report;
 
 
-use App\Services\Analytics\Reports\OffersCountReport;
-use App\Services\Analytics\Reports\ShopsCountReport;
-use App\Services\Analytics\Reports\FeedGroupsCountReport;
-use App\Services\Analytics\Reports\FeedOffersCountReport;
-use App\Services\Analytics\Reports\FeedShopsCountReport;
-use App\Services\Analytics\Reports\TotalFeedOffersCountReport;
+use App\Services\Report\Reports\OffersCountReport;
+use App\Services\Report\Reports\ShopsCountReport;
+use App\Services\Report\Reports\FeedGroupsCountReport;
+use App\Services\Report\Reports\FeedOffersCountReport;
+use App\Services\Report\Reports\FeedShopsCountReport;
+use App\Services\Report\Reports\TotalFeedOffersCountReport;
 
 class CompositeReport implements Report
 {

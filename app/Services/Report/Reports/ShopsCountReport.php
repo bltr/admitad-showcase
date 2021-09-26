@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Services\Analytics\Reports;
+namespace App\Services\Report\Reports;
 
 
 use App\Models\Shop;
-use App\Services\Analytics\AbstractReport;
+use App\Services\Report\AbstractReport;
 
 class ShopsCountReport extends AbstractReport
 {

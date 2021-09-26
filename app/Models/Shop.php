@@ -68,8 +68,8 @@ class Shop extends Model
         return 'https://account.admitad.com/ru/webmaster/websites/867132/offers/' . $this->outer_id;
     }
 
-    public function analytics()
+    public function report()
     {
-        return $this->hasOne(Analytics::class, 'object_id')->latest();
+        return $this->hasOne(Reports::class, 'object_id')->latest();
     }
 }

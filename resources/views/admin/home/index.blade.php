@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         <div class="col">
-            @include('admin._analytics.composite', compact('analytics'))
+            @include('admin.report.composite', compact('report'))
         </div>
     </div>
 @endsection
