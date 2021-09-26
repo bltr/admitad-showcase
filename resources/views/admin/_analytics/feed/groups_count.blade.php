@@ -10,7 +10,7 @@
                     title="Отклонения по picture в группах по group_id"
                 >
                     @if(!empty($deviations['picture_deviation_in_group_id_group']))
-                        <a href="{{ route('admin.feed') }}" class="text-danger">p</a>
+                        <a href="#" class="text-danger text-decoration-none">p</a>
                     @else
                         -
                     @endif
