@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services\Feed\AnalyticsReports;
+namespace App\Services\Analytics\Reports;
 
 use App\Models\Shop;
 use App\Services\Analytics\AbstractReport;
 
-class ShopsCountReport extends AbstractReport
+class FeedShopsCountReport extends AbstractReport
 {
     public const CODE = 'feed.shops_count';
 

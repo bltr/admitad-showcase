@@ -4,15 +4,16 @@ namespace App\Http\Controllers\Admin\Feeds;
 
 use App\Http\Controllers\Controller;
 use App\Models\Shop;
-use App\Services\Feed\AnalyticServiceTotal;
+use App\Services\Analytics\AnalyticsService;
+use App\Services\Analytics\CompositeReport;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
-    public function index(AnalyticServiceTotal $analyticServiceTotal)
+    public function index(AnalyticsService $analyticService)
     {
         $shops = Shop::with('analytics')->get();
-        $analytics = $analyticServiceTotal->getLastReport();
+        $analytics = $analyticService->getLastReport(CompositeReport::feedReportTotal());
 
         return view('admin.feeds.index', compact('shops', 'analytics'));
     }

@@ -2,7 +2,8 @@
 
 namespace App\Console\Commands\Catalog;
 
-use App\Services\Catalog\AnalyticsService;
+use App\Services\Analytics\AnalyticsService;
+use App\Services\Analytics\CompositeReport;
 use Illuminate\Console\Command;
 
 class AnalyticsCommand extends Command
@@ -13,7 +14,7 @@ class AnalyticsCommand extends Command
 
     public function handle(AnalyticsService $analyticsService)
     {
-        $analyticsService->build();
+        $analyticsService->build(CompositeReport::catalogReportTotal());
 
         return 0;
     }

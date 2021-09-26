@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Admin\Feeds;
 
-use App\Services\Feed\AnalyticsServiceByShop;
+use App\Services\Analytics\AnalyticsService;
 use App\Http\Controllers\Controller;
 use App\Models\Shop;
+use App\Services\Analytics\CompositeReport;
 
 class AnalyticsController extends Controller
 {
-    public function index(Shop $shop, AnalyticsServiceByShop $analyticsService)
+    public function index(Shop $shop, AnalyticsService $analyticsService)
     {
-        $analytics = $analyticsService->getLastReport($shop->id);
+        $analytics = $analyticsService->getLastReport(CompositeReport::feedReportByShop(), $shop->id);
         $shops = Shop::all();
         $currentShop = $shop;
 

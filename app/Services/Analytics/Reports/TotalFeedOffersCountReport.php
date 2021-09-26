@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services\Feed\AnalyticsReports;
+namespace App\Services\Analytics\Reports;
 
 use App\Models\FeedOffer;
 use App\Services\Analytics\AbstractReport;
 
-class TotalOffersCountReport extends AbstractReport
+class TotalFeedOffersCountReport extends AbstractReport
 {
     public const CODE = 'feed.total_offers_count';
 

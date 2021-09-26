@@ -1,15 +1,15 @@
 <?php
 
 
-namespace App\Services\Catalog\AnalyticsReports;
+namespace App\Services\Analytics\Reports;
 
 
-use App\Models\Offer;
+use App\Models\Shop;
 use App\Services\Analytics\AbstractReport;
 
-class OffersCountReport extends AbstractReport
+class ShopsCountReport extends AbstractReport
 {
-    public const CODE = 'catalog.offers_count';
+    public const CODE = 'catalog.shops_count';
 
     protected array $values = [
         'count' => null,
@@ -17,7 +17,7 @@ class OffersCountReport extends AbstractReport
 
     public function build(int $object_id = null): array
     {
-        $this->values['count'] = Offer::count();
+        $this->values['count'] = Shop::count();
 
         return $this->values;
     }

@@ -1,14 +1,14 @@
 <?php
 
 
-namespace App\Services\Feed\AnalyticsReports;
+namespace App\Services\Analytics\Reports;
 
 
 use App\Models\FeedOffer;
 use App\Services\Analytics\AbstractReport;
 use Illuminate\Database\Eloquent\Builder;
 
-class OffersCountReport extends AbstractReport
+class FeedOffersCountReport extends AbstractReport
 {
     public const CODE = 'feed.offers_count';
 
