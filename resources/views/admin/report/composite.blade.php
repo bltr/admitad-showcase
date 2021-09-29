@@ -1,6 +1,6 @@
 @php
 /**
- * @var \App\Models\Reports $report
+ * @var \App\Models\Report $report
  */
 @endphp
 @if($report)

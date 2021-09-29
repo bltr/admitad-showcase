@@ -9,8 +9,13 @@
                     data-bs-placement="right"
                     title="Отклонения по picture в группах по group_id"
                 >
+                    <span class="text-danger text-decoration-none">p:</span>
                     @if(!empty($deviations['picture_deviation_in_group_id_group']))
-                        <a href="#" class="text-danger text-decoration-none">p</a>
+                        <a href="{{ route('admin.feeds.report.group-deviation', [$shop, $report, 'deviation_type' => 'picture_deviation_in_group_id_group']) }}"
+                           @class(['badge text-dark', 'bg-danger' => request()->deviation_type === 'picture_deviation_in_group_id_group'])
+                        >
+                            {{ count($deviations['picture_deviation_in_group_id_group']) }}
+                        </a>
                     @else
                         -
                     @endif
@@ -19,8 +24,13 @@
                     data-bs-placement="right"
                     title="Отклонения по url в группах по group"
                 >
+                    <span class="text-danger">u:</span>
                     @if(!empty($deviations['url_deviation_in_group_id_group']))
-                        <span class="text-danger">u</span>
+                        <a href="{{ route('admin.feeds.report.group-deviation', [$shop, $report, 'deviation_type' => 'url_deviation_in_group_id_group']) }}"
+                           @class(['badge text-dark', 'bg-danger' => request()->deviation_type === 'url_deviation_in_group_id_group'])
+                        >
+                            {{ count($deviations['url_deviation_in_group_id_group']) }}
+                        </a>
                     @else
                         -
                     @endif
@@ -33,8 +43,13 @@
                     data-bs-placement="right"
                     title="Отклонения по group_id в группах по picture"
                 >
+                    <span class="text-danger">g:</span>
                     @if(!empty($deviations['group_id_deviation_in_picture_group']))
-                        <span class="text-danger">g</span>
+                        <a href="{{ route('admin.feeds.report.group-deviation', [$shop, $report, 'deviation_type' => 'group_id_deviation_in_picture_group']) }}"
+                           @class(['badge text-dark', 'bg-danger' => request()->deviation_type === 'group_id_deviation_in_picture_group'])
+                        >
+                            {{ count($deviations['group_id_deviation_in_picture_group']) }}
+                        </a>
                     @else
                         -
                     @endif
@@ -43,8 +58,13 @@
                     data-bs-placement="right"
                     title="Отклонения по url в группах по picture"
                 >
+                    <span class="text-danger">u:</span>
                     @if(!empty($deviations['url_deviation_in_picture_group']))
-                        <span class="text-danger">u</span>
+                        <a href="{{ route('admin.feeds.report.group-deviation', [$shop, $report, 'deviation_type' => 'url_deviation_in_picture_group']) }}"
+                           @class(['badge text-dark', 'bg-danger' => request()->deviation_type === 'url_deviation_in_picture_group'])
+                        >
+                            {{ count($deviations['url_deviation_in_picture_group']) }}
+                        </a>
                     @else
                         -
                     @endif
@@ -58,8 +78,13 @@
                     data-bs-placement="right"
                     title="Отклонения по group_id в группах по url"
                 >
+                    <span class="text-danger">g:</span>
                     @if(!empty($deviations['group_id_deviation_in_url_group']))
-                        <span class="text-danger">g</span>
+                        <a href="{{ route('admin.feeds.report.group-deviation', [$shop, $report, 'deviation_type' => 'group_id_deviation_in_url_group']) }}"
+                           @class(['badge text-dark', 'bg-danger' => request()->deviation_type === 'group_id_deviation_in_url_group'])
+                        >
+                            {{ count($deviations['group_id_deviation_in_url_group']) }}
+                        </a>
                     @else
                         -
                     @endif
@@ -68,8 +93,13 @@
                     data-bs-placement="right"
                     title="Отклонения по picture в группах по url"
                 >
+                    <span class="text-danger">u:</span>
                     @if(!empty($deviations['picture_deviation_in_url_group']))
-                        <span class="text-danger">u</span>
+                        <a href="{{ route('admin.feeds.report.group-deviation', [$shop, $report, 'deviation_type' => 'picture_deviation_in_url_group']) }}"
+                           @class(['badge text-dark', 'bg-danger' => request()->deviation_type === 'picture_deviation_in_url_group'])
+                        >
+                            {{ count($deviations['picture_deviation_in_url_group']) }}
+                        </a>
                     @else
                         -
                     @endif

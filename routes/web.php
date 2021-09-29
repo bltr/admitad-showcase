@@ -33,6 +33,7 @@ Route::prefix('/admin')->name('admin.')->group(function () {
         Route::get('/{shop}/offers', [OffersController::class, 'index'])->name('offers');
         Route::get('/{shop}/categories', [CategoriesController::class, 'index'])->name('categories');
         Route::get('/{shop}/report', [ReportController::class, 'index'])->name('report');
+        Route::get('/{shop}/report/{report}/group-deviation', [ReportController::class, 'groupDeviation'])->name('report.group-deviation');
     });
 
     Route::prefix('catalog')->name('catalog.')->group(function () {

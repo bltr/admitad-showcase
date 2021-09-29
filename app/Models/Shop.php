@@ -70,6 +70,6 @@ class Shop extends Model
 
     public function report()
     {
-        return $this->hasOne(Reports::class, 'object_id')->latest();
+        return $this->hasOne(Report::class, 'object_id')->latest();
     }
 }

@@ -22,7 +22,7 @@
                             <div class="carousel-inner">
                                 @foreach($offer->pictures as $picture)
                                     <div class="carousel-item {{ $loop->index === 0 ? 'active' : '' }}">
-                                        <img src="{{ $picture }}" class="d-block w-100" alt="...">
+                                        <img src="{{ $picture }}" class="d-block w-100" loading="lazy">
                                     </div>
                                 @endforeach
                             </div>
@@ -40,13 +40,13 @@
                         @endif
 
                         <div class="card-body">
-                            <button type="button" class="btn btn-outline-secondary btn-sm float-end" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{ $offer->id }}">🛈</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm float-end" data-bs-toggle="modal" data-bs-target="#modal{{ $offer->id }}">🛈</button>
                             <a class="card-title small" href="{{ $offer->not_sponsored_url }}" target="_blank">{{ $offer->data->name }} ⮭</a>
                             <p class="card-subtitle my-2 text-muted">{{ $offer->data->price }} р.</p>
                             <p class="card-subtitle small fw-bold mb-2">{{ $offer->full_category_name }}</p>
                             <p class="card-text small">{{ $offer->data->description ?? '' }}</p>
 
-                            <div class="modal fade" id="staticBackdrop{{ $offer->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal fade" id="modal{{ $offer->id }}" tabindex="-1">
                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
