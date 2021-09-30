@@ -30,7 +30,7 @@
             @forelse($paginator as $group_key=>$offer_ids)
                 <h5 class="mt-5">
                     Группа по <span class="badge bg-info">{{ $group_key }}</span>
-                    @if(str_contains($deviation_type, 'in_picture'))
+                    @if(str_contains(request()->deviation_type, 'in_picture'))
                         <img src="{{ $group_key }}" loading="lazy" width="50">
                     @endif
                 </h5>

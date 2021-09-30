@@ -27,15 +27,13 @@ class ReportController extends Controller
 
     public function groupDeviation(Shop $shop, Report $report, Request $request)
     {
-        $deviation_type = $request->deviation_type;
-        $paginator = $this->getPaginator($report->data['feed.groups_count']['deviations'][$deviation_type], $request);
-        $offer_ids_groups = $paginator->items();
-        $offers = $this->getOffers($offer_ids_groups);
+        $paginator = $this->getPaginator($report->data['feed.groups_count']['deviations'][$request->deviation_type], $request);
+        $offers = $this->getOffers($paginator->items());
 
-        return view('admin.feeds.group-deviation', compact('shop', 'report', 'offers', 'deviation_type', 'paginator'));
+        return view('admin.feeds.group-deviation', compact('shop', 'report', 'offers', 'paginator'));
     }
 
-    public function getPaginator($deviations, Request $request): LengthAwarePaginator
+    public function getPaginator(array $deviations, Request $request): LengthAwarePaginator
     {
         $deviations = collect($deviations);
         $page = (Paginator::resolveCurrentPage() ?: 1);

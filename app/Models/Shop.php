@@ -88,7 +88,7 @@ class Shop extends Model
         if (!in_array($import_type, $this->getImportTypes())) {
             throw new \InvalidArgumentException('Неверный тип импорта');
         }
-        
+
         $this->import_type = $import_type;
         if (is_null($import_type)) {
             $this->is_active = false;
