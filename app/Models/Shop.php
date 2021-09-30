@@ -72,4 +72,27 @@ class Shop extends Model
     {
         return $this->hasOne(Report::class, 'object_id')->latest();
     }
+
+    public function getImportTypes(): array{
+        return [
+            null,
+            static::IMPORT_WITHOUT_GROUPING,
+            static::IMPORT_GROUP_BY_URL,
+            static::IMPORT_GROUP_BY_PICTURE,
+            static::IMPORT_GROUP_BY_GROUP_ID,
+        ];
+    }
+
+    public function setImportType(?string $import_type)
+    {
+        if (!in_array($import_type, $this->getImportTypes())) {
+            throw new \InvalidArgumentException('Неверный тип импорта');
+        }
+        
+        $this->import_type = $import_type;
+        if (is_null($import_type)) {
+            $this->is_active = false;
+        }
+        $this->save();
+    }
 }

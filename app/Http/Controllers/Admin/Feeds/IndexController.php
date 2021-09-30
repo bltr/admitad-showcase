@@ -27,8 +27,8 @@ class IndexController extends Controller
 
     public function importType(Shop $shop, Request $request)
     {
-        $shop->import_type = $request->import_type;
-        $shop->save();
+        $request->validate(['import_type' => 'in:' . implode(',', $shop->getImportTypes())]);
+        $shop->setImportType($request->import_type);
 
         return back();
     }
