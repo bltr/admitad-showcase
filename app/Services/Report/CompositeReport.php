@@ -66,4 +66,9 @@ class CompositeReport implements Report
 
         return $state;
     }
+
+    public function getReportsCodes(): array
+    {
+        return array_keys($this->reports);
+    }
 }

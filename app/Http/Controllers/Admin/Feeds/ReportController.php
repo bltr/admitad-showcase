@@ -18,11 +18,13 @@ class ReportController extends Controller
 {
     public function index(Shop $shop, ReportService $reportService)
     {
-        $report = $reportService->getLastReport(CompositeReport::feedReportByShop(), $shop->id);
+        $compositeReport = CompositeReport::feedReportByShop();
+        $report = $reportService->getLastReport($compositeReport, $shop->id);
+        $reports_codes = $compositeReport->getReportsCodes();
         $shops = Shop::all();
         $currentShop = $shop;
 
-        return view('admin.feeds.report', compact('currentShop', 'report', 'shops', 'shop'));
+        return view('admin.feeds.report', compact('currentShop', 'report', 'reports_codes', 'shops', 'shop'));
     }
 
     public function groupDeviation(Shop $shop, Report $report, Request $request)
