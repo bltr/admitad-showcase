@@ -38,12 +38,12 @@
                     @foreach($offer_ids as $id)
                         <tr>
                             <td>
-                                <a href="{{ $offers[$id]->data->pictures[0] }}" target="_blank">
-                                    <img src="{{ $offers[$id]->data->pictures[0]}}" loading="lazy" width="50">
+                                <a href="{{ $offers[$id]->data->pictures[0] ?? '' }}" target="_blank">
+                                    <img src="{{ $offers[$id]->data->pictures[0] ?? '' }}" loading="lazy" width="50">
                                 </a>
                             </td>
                             <td>
-                                {{ $offers[$id]->data->pictures[0] }}
+                                {{ $offers[$id]->data->pictures[0] ?? '-' }}
                             </td>
                             <td>{{ $offers[$id]->data->group_id ?? '-' }}</td>
                             <td>
