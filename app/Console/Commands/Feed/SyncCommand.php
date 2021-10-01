@@ -16,12 +16,14 @@ class SyncCommand extends Command
     public function handle(SyncFile $syncFile, DownloadFile $downloadFile)
     {
         $shop_ids = $this->argument('shop_id');
-        $shops = $shop_ids ? Shop::whereIn('id', $shop_ids)->whereNotNull('feed_url')->get() : Shop::whereNotNull('feed_url')->get() ;
 
-        $shops->each(function($shop) use ($syncFile, $downloadFile) {
-            $downloadFile->run($shop);
-            $syncFile->run($shop);
-        });
+        Shop::whereNotNull('feed_url')
+            ->when($shop_ids, fn($q) => $q->whereIn('id', $shop_ids))
+            ->get()
+            ->each(function($shop) use ($syncFile, $downloadFile) {
+                $downloadFile->run($shop);
+                $syncFile->run($shop);
+            });
 
         return 0;
     }

@@ -16,8 +16,10 @@ class ReportCommand extends Command
     public function handle(ReportService $reportService)
     {
         $shop_ids = $this->argument('shop_id');
-        $shops = $shop_ids ? Shop::whereIn('id', $shop_ids)->get() : Shop::all() ;
-        $shops->each(fn($shop) => $reportService->build(CompositeReport::feedReportByShop(), $shop->id));
+
+        Shop::when($shop_ids, fn($q) => $q->whereIn('id', $shop_ids))
+            ->get()
+            ->each(fn($shop) => $reportService->build(CompositeReport::feedReportByShop(), $shop->id));
 
         $reportService->build(CompositeReport::feedReportTotal());
 
