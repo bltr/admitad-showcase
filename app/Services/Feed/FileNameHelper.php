@@ -4,9 +4,9 @@
 namespace App\Services\Feed;
 
 
-class FileName
+class FileNameHelper
 {
-    public static function build(int $shop_id): string
+    public function __invoke(int $shop_id): string
     {
         $dir_name = storage_path('feeds');
         if (!is_dir($dir_name)) {

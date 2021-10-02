@@ -8,16 +8,18 @@ use GuzzleHttp\Client;
 class DownloadFileAction
 {
     private Client $client;
+    private FileNameHelper $fileName;
 
-    public function __construct(Client $client)
+    public function __construct(Client $client, FileNameHelper $fileName)
     {
         $this->client = $client;
+        $this->fileName = $fileName;
     }
 
     public function __invoke(Shop $shop)
     {
         $this->client->get($shop->feed_url, [
-            'sink' => FileName::build($shop->id),
+            'sink' => ($this->fileName)($shop->id),
             'headers' => ['Accept-Encoding' => 'gzip'],
         ]);
     }

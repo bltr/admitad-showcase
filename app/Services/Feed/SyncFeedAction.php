@@ -13,17 +13,17 @@ use Illuminate\Support\Str;
 
 class SyncFeedAction
 {
-    private ReadFile $readFile;
+    private XMLFileReader $fileReader;
 
-    public function __construct(ReadFile $readFile)
+    public function __construct(XMLFileReader $fileReader)
     {
-        $this->readFile = $readFile;
+        $this->fileReader = $fileReader;
     }
 
     public function __invoke(Shop $shop)
     {
         try {
-            $this->readFile->init(FileName::build($shop->id));
+            $this->fileReader->init($shop->id);
 
             try {
                 DB::beginTransaction();
@@ -54,7 +54,7 @@ class SyncFeedAction
             });
 
         $time = new \DateTime();
-        foreach ($this->readFile->readEntries($tag_name) as $entry) {
+        foreach ($this->fileReader->getIterator($tag_name) as $entry) {
             foreach ($arrayble_tag as $tag) {
                 $entry[Str::plural($tag)] = (array) ($entry[$tag] ?? []);
                 unset($entry[$tag]);

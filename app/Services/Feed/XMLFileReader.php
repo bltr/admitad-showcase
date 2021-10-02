@@ -8,14 +8,20 @@ use Illuminate\Support\Str;
 use SimpleXMLElement;
 use XMLReader;
 
-class ReadFile
+class XMLFileReader
 {
-    private ?XMLReader $xmlReader;
+    private XMLReader $reader;
+    private FileNameHelper $fileName;
 
-    public function init(string $fileName)
+    public function __construct(XMLReader $reader, FileNameHelper $fileName)
     {
-        $this->xmlReader = new XMLReader();
-        $this->xmlReader->open($fileName);
+        $this->reader = $reader;
+        $this->fileName = $fileName;
+    }
+
+    public function init(int $shop_id)
+    {
+        $this->reader->open(($this->fileName)($shop_id));
     }
 
     /**
@@ -23,19 +29,19 @@ class ReadFile
      * @return Generator|SimpleXMLElement[]
      * @throws ErrorException
      */
-    public function readEntries(string $tag_name): Generator
+    public function getIterator(string $tag_name): Generator
     {
         $plural_tag_name = Str::plural($tag_name);
 
-        while (($is_success = $this->xmlReader->read()) && !$this->isTagStarted($plural_tag_name)) continue;
+        while (($is_success = $this->reader->read()) && !$this->isTagStarted($plural_tag_name)) continue;
 
         if (!$is_success) {
             throw new ErrorException('XMLReader::read(): incorrect feed format');
         }
 
-        while (($is_success = $this->xmlReader->read()) && !$this->isTagEnded($plural_tag_name)) {
+        while (($is_success = $this->reader->read()) && !$this->isTagEnded($plural_tag_name)) {
             if ($this->isTagStarted($tag_name)) {
-                yield $this->xml2array(simplexml_load_string($this->xmlReader->readOuterXml()));
+                yield $this->xml2array(simplexml_load_string($this->reader->readOuterXml()));
             }
         }
 
@@ -50,7 +56,7 @@ class ReadFile
      */
     private function isTagStarted(string $tag_name): bool
     {
-        return $this->xmlReader->nodeType === XMLReader::ELEMENT && $this->xmlReader->name === $tag_name;
+        return $this->reader->nodeType === XMLReader::ELEMENT && $this->reader->name === $tag_name;
     }
 
     /**
@@ -59,7 +65,7 @@ class ReadFile
      */
     private function isTagEnded(string $tag_name): bool
     {
-        return $this->xmlReader->nodeType === XMLReader::END_ELEMENT && $this->xmlReader->name === $tag_name;
+        return $this->reader->nodeType === XMLReader::END_ELEMENT && $this->reader->name === $tag_name;
     }
 
     /**
