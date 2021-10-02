@@ -13,9 +13,11 @@ class IndexController extends Controller
     public function index(ReportService $reportService)
     {
         $shops = Shop::with('report')->get();
-        $report = $reportService->getLastReport(CompositeReport::feedReportTotal());
+        $compositeReport = CompositeReport::feedReportTotal();
+        $report = $reportService->getLastReport($compositeReport);
+        $reports_codes = $compositeReport->getReportsCodes();
 
-        return view('admin.feeds.index', compact('shops', 'report'));
+        return view('admin.feeds.index', compact('shops', 'report', 'reports_codes'));
     }
 
     public function toggleActivity(Shop $shop)
