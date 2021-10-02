@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
-class SyncShops
+class SyncShopsAction
 {
     const TOKEN_KEY = 'admitad_access_token';
 
@@ -22,26 +22,12 @@ class SyncShops
     private $clientId = 'dada1b2f4773db527b54d22ba7f62b';
     private $clientSecret = '734aa2fe16ac507bf1eb7470dc87d0';
 
-    public function run()
+    public function __invoke()
     {
         try {
             DB::beginTransaction();
-            $shops = Shop::all()->keyBy('outer_id');
 
-            $this->fetch()->each(function ($campaign) use ($shops) {
-                if (!$shops->has($campaign['outer_id'])) {
-                    Shop::create($campaign);
-                    return;
-                }
-
-                $shops->pull($campaign['outer_id'])
-                    ->fill($campaign)
-                    ->save();
-            });
-
-            if ($shops->isNotEmpty()) {
-                Shop::destroy($shops->modelKeys());
-            }
+            $this->syncShops();
 
             DB::commit();
         } catch (\Throwable $e) {
@@ -49,7 +35,26 @@ class SyncShops
         }
     }
 
-    public function fetch(): Collection
+    private function syncShops(): void
+    {
+        $shops = Shop::all()->keyBy('outer_id');
+
+        $this->fetchShopsFromApi()
+            ->each(function ($shop_data) use ($shops) {
+                $shop = $shops->pull($shop_data['outer_id']);
+                if ($shop) {
+                    $shop->fill($shop_data)->save();
+                } else {
+                    Shop::create($shop_data);
+                }
+            });
+
+        if ($shops->isNotEmpty()) {
+            Shop::destroy($shops->modelKeys());
+        }
+    }
+
+    private function fetchShopsFromApi(): Collection
     {
         return collect($this->shops())->map(function ($shop) {
             return [

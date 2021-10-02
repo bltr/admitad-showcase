@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Feed;
 
-use App\Services\Feed\SyncShops;
+use App\Services\Feed\SyncShopsAction;
 use Illuminate\Console\Command;
 
 class SyncShopsCommand extends Command
@@ -11,9 +11,9 @@ class SyncShopsCommand extends Command
 
     protected $description = 'Синхронизировать магазины';
 
-    public function handle(SyncShops $syncShops)
+    public function handle(SyncShopsAction $syncShops)
     {
-        $syncShops->run();
+        $syncShops();
 
         return 0;
     }
