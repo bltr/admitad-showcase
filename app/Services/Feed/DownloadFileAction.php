@@ -5,7 +5,7 @@ namespace App\Services\Feed;
 use App\Models\Shop;
 use GuzzleHttp\Client;
 
-class DownloadFile
+class DownloadFileAction
 {
     private Client $client;
 
@@ -14,7 +14,7 @@ class DownloadFile
         $this->client = $client;
     }
 
-    public function run(Shop $shop)
+    public function __invoke(Shop $shop)
     {
         $this->client->get($shop->feed_url, [
             'sink' => FileName::build($shop->id),

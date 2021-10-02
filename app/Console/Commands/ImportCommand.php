@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use App\Jobs\Catalog\ImportJob;
 use App\Jobs\Feed\ReportJob;
 use App\Jobs\Feed\DownloadFileJob;
-use App\Jobs\Feed\SyncFileJob;
+use App\Jobs\Feed\SyncFeedJob;
 use App\Models\Shop;
 use App\Services\Report\CompositeReport;
 use App\Services\Report\ReportService;
@@ -27,7 +27,7 @@ class ImportCommand extends Command
         Bus::batch($shops->map(function ($shop) {
             return [
                 new DownloadFileJob($shop),
-                new SyncFileJob($shop),
+                new SyncFeedJob($shop),
                 new ReportJob($shop),
                 new ImportJob($shop)
             ];

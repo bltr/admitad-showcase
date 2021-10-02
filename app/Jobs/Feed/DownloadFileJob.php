@@ -3,7 +3,7 @@
 namespace App\Jobs\Feed;
 
 use App\Models\Shop;
-use App\Services\Feed\DownloadFile;
+use App\Services\Feed\DownloadFileAction;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -24,8 +24,8 @@ class DownloadFileJob implements ShouldQueue
         $this->shop = $shop;
     }
 
-    public function handle(DownloadFile $downloadFile)
+    public function handle(DownloadFileAction $downloadFile)
     {
-        $downloadFile->run($this->shop);
+        $downloadFile($this->shop);
     }
 }

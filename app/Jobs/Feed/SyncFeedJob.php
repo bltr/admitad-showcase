@@ -3,7 +3,7 @@
 namespace App\Jobs\Feed;
 
 use App\Models\Shop;
-use App\Services\Feed\SyncFile;
+use App\Services\Feed\SyncFeedAction;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,7 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class SyncFileJob implements ShouldQueue
+class SyncFeedJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchable;
 
@@ -22,8 +22,8 @@ class SyncFileJob implements ShouldQueue
         $this->shop = $shop;
     }
 
-    public function handle(SyncFile $syncFile)
+    public function handle(SyncFeedAction $syncFile)
     {
-        $syncFile->run($this->shop);
+        $syncFile($this->shop);
     }
 }

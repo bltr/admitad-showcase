@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
-class SyncFile
+class SyncFeedAction
 {
     private ReadFile $readFile;
 
@@ -20,7 +20,7 @@ class SyncFile
         $this->readFile = $readFile;
     }
 
-    public function run(Shop $shop)
+    public function __invoke(Shop $shop)
     {
         try {
             $this->readFile->init(FileName::build($shop->id));

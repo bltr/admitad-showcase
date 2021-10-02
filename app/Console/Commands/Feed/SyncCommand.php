@@ -3,8 +3,8 @@
 namespace App\Console\Commands\Feed;
 
 use App\Models\Shop;
-use App\Services\Feed\DownloadFile;
-use App\Services\Feed\SyncFile;
+use App\Services\Feed\DownloadFileAction;
+use App\Services\Feed\SyncFeedAction;
 use Illuminate\Console\Command;
 
 class SyncCommand extends Command
@@ -13,7 +13,7 @@ class SyncCommand extends Command
 
     protected $description = 'Синхронизация фида';
 
-    public function handle(SyncFile $syncFile, DownloadFile $downloadFile)
+    public function handle(SyncFeedAction $syncFile, DownloadFileAction $downloadFile)
     {
         $shop_ids = $this->argument('shop_id');
 
@@ -21,8 +21,8 @@ class SyncCommand extends Command
             ->when($shop_ids, fn($q) => $q->whereIn('id', $shop_ids))
             ->get()
             ->each(function($shop) use ($syncFile, $downloadFile) {
-                $downloadFile->run($shop);
-                $syncFile->run($shop);
+                $downloadFile($shop);
+                $syncFile($shop);
             });
 
         return 0;
