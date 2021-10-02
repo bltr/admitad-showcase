@@ -26,7 +26,7 @@ class XMLFileReader
 
     /**
      * @param string $tag_name
-     * @return Generator|SimpleXMLElement[]
+     * @return Generator|array[]
      * @throws ErrorException
      */
     public function getIterator(string $tag_name): Generator
