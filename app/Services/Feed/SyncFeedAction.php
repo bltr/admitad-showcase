@@ -48,10 +48,10 @@ class SyncFeedAction
         $this->seedFeedCategoryIdOfOffers();
     }
 
-    private function syncEntriesfForTag(string $tag_name, $arrayble_tag = [])
+    private function syncEntriesfForTag(string $tagName, $arraybleTag = [])
     {
         $hashs = [];
-        $this->query($tag_name)
+        $this->query($tagName)
             ->where('shop_id', $this->shopId)
             ->select('hash', 'outer_id')
             ->chunk(10000, function ($entries) use (&$hashs) {
@@ -59,32 +59,32 @@ class SyncFeedAction
             });
 
         $time = new \DateTime();
-        foreach ($this->fileReader->getIterator($tag_name) as $entry) {
-            foreach ($arrayble_tag as $tag) {
+        foreach ($this->fileReader->getIterator($tagName) as $entry) {
+            foreach ($arraybleTag as $tag) {
                 $entry[Str::plural($tag)] = (array) ($entry[$tag] ?? []);
                 unset($entry[$tag]);
             }
 
-            $json_entry = json_encode($entry, JSON_UNESCAPED_UNICODE);
-            $hash = sha1($json_entry);
+            $jsonEntry = json_encode($entry, JSON_UNESCAPED_UNICODE);
+            $hash = sha1($jsonEntry);
             $id = $entry['id'];
 
             if (!isset($hashs[$id])) {
-                $this->query($tag_name)->insert([
+                $this->query($tagName)->insert([
                     'created_at' => $time,
                     'updated_at' => $time,
                     'outer_id' => $id,
                     'shop_id' => $this->shopId,
                     'hash' => $hash,
-                    'data' => $json_entry
+                    'data' => $jsonEntry
                 ]);
             }
 
             if (isset($hashs[$id]) && $hashs[$id] !== $hash . 'b') {
-                $this->query($tag_name)
+                $this->query($tagName)
                     ->where('shop_id', $this->shopId)
                     ->where('outer_id', $id)
-                    ->update(['updated_at' => $time, 'hash' => $hash, 'data' => $json_entry]);
+                    ->update(['updated_at' => $time, 'hash' => $hash, 'data' => $jsonEntry]);
             }
 
             if (isset($hashs[$id])) {
@@ -93,16 +93,16 @@ class SyncFeedAction
         }
 
         if (!empty($hashs)) {
-            $this->query($tag_name)
+            $this->query($tagName)
                 ->where('shop_id', $this->shopId)
                 ->whereIn('outer_id', array_map(fn($value) => (string) $value, array_keys($hashs)))
                 ->delete();
         }
     }
 
-    private function query($tag_name)
+    private function query($tagName)
     {
-        return $tag_name === 'offer' ? FeedOffer::query() : FeedCategory::query();
+        return $tagName === 'offer' ? FeedOffer::query() : FeedCategory::query();
     }
 
     private function fixCategoriesTree(): void

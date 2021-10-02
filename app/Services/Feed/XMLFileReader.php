@@ -19,28 +19,23 @@ class XMLFileReader
         $this->fileName = $fileName;
     }
 
-    public function init(int $shop_id)
+    public function init(int $shopId)
     {
-        $this->reader->open(($this->fileName)($shop_id));
+        $this->reader->open(($this->fileName)($shopId));
     }
 
-    /**
-     * @param string $tag_name
-     * @return Generator|array[]
-     * @throws ErrorException
-     */
-    public function getIterator(string $tag_name): Generator
+    public function getIterator(string $tagName): Generator
     {
-        $plural_tag_name = Str::plural($tag_name);
+        $pluralTagName = Str::plural($tagName);
 
-        while (($is_success = $this->reader->read()) && !$this->isTagStarted($plural_tag_name)) continue;
+        while (($is_success = $this->reader->read()) && !$this->isTagStarted($pluralTagName)) continue;
 
         if (!$is_success) {
             throw new ErrorException('XMLReader::read(): incorrect feed format');
         }
 
-        while (($is_success = $this->reader->read()) && !$this->isTagEnded($plural_tag_name)) {
-            if ($this->isTagStarted($tag_name)) {
+        while (($is_success = $this->reader->read()) && !$this->isTagEnded($pluralTagName)) {
+            if ($this->isTagStarted($tagName)) {
                 yield $this->xml2array(simplexml_load_string($this->reader->readOuterXml()));
             }
         }
@@ -51,21 +46,21 @@ class XMLFileReader
     }
 
     /**
-     * @param string $tag_name
+     * @param string $tagName
      * @return bool
      */
-    private function isTagStarted(string $tag_name): bool
+    private function isTagStarted(string $tagName): bool
     {
-        return $this->reader->nodeType === XMLReader::ELEMENT && $this->reader->name === $tag_name;
+        return $this->reader->nodeType === XMLReader::ELEMENT && $this->reader->name === $tagName;
     }
 
     /**
-     * @param string $tag_name
+     * @param string $tagName
      * @return bool
      */
-    private function isTagEnded(string $tag_name): bool
+    private function isTagEnded(string $tagName): bool
     {
-        return $this->reader->nodeType === XMLReader::END_ELEMENT && $this->reader->name === $tag_name;
+        return $this->reader->nodeType === XMLReader::END_ELEMENT && $this->reader->name === $tagName;
     }
 
     /**
