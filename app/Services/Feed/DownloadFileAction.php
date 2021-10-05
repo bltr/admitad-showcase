@@ -8,19 +8,30 @@ use GuzzleHttp\Client;
 class DownloadFileAction
 {
     private Client $client;
-    private FileNameHelper $fileName;
 
-    public function __construct(Client $client, FileNameHelper $fileName)
+    public function __construct(Client $client)
     {
         $this->client = $client;
-        $this->fileName = $fileName;
     }
 
     public function __invoke(Shop $shop)
     {
+        $this->checkDirExisten($shop);
         $this->client->get($shop->feed_url, [
-            'sink' => ($this->fileName)($shop->id),
+            'sink' => $shop->feed_file_name,
             'headers' => ['Accept-Encoding' => 'gzip'],
         ]);
+    }
+
+    private function checkDirExisten(Shop $shop): void
+    {
+        $dirName = dirname($shop->feed_file_name);
+        if (!is_dir($dirName)) {
+            // to prevent race conditions
+            try {
+                mkdir($dirName);
+            } catch (\ErrorException $e) {
+            }
+        }
     }
 }

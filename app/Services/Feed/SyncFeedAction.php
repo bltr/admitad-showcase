@@ -13,17 +13,17 @@ use Illuminate\Support\Str;
 
 class SyncFeedAction
 {
-    private XMLFileReader $fileReader;
-    private int $shopId;
+    private XMLIterator $xmlIterator;
+    private Shop $shop;
 
-    public function __construct(XMLFileReader $fileReader)
+    public function __construct(XMLIterator $xmlIterator)
     {
-        $this->fileReader = $fileReader;
+        $this->xmlIterator = $xmlIterator;
     }
 
     public function __invoke(Shop $shop)
     {
-        $this->shopId = $shop->id;
+        $this->shop = $shop;
         try {
             $this->sync();
         } catch (\Throwable $exception) {
@@ -35,9 +35,11 @@ class SyncFeedAction
     {
         try {
             DB::beginTransaction();
-            $this->fileReader->init($this->shopId);
+
+            $this->xmlIterator->open($this->shop);
             $this->syncEntriesfForTag('category');
             $this->syncEntriesfForTag('offer', ['picture']);
+
             DB::commit();
         } catch (\Throwable $exception) {
             DB::rollBack();
@@ -52,14 +54,14 @@ class SyncFeedAction
     {
         $hashs = [];
         $this->query($tagName)
-            ->where('shop_id', $this->shopId)
+            ->where('shop_id', $this->shop)
             ->select('hash', 'outer_id')
             ->chunk(10000, function ($entries) use (&$hashs) {
                 $hashs += $entries->pluck('hash', 'outer_id')->all();
             });
 
         $time = new \DateTime();
-        foreach ($this->fileReader->getIterator($tagName) as $entry) {
+        foreach ($this->xmlIterator->getIterator($tagName) as $entry) {
             foreach ($arraybleTag as $tag) {
                 $entry[Str::plural($tag)] = (array) ($entry[$tag] ?? []);
                 unset($entry[$tag]);
@@ -74,7 +76,7 @@ class SyncFeedAction
                     'created_at' => $time,
                     'updated_at' => $time,
                     'outer_id' => $id,
-                    'shop_id' => $this->shopId,
+                    'shop_id' => $this->shop->id,
                     'hash' => $hash,
                     'data' => $jsonEntry
                 ]);
@@ -82,7 +84,7 @@ class SyncFeedAction
 
             if (isset($hashs[$id]) && $hashs[$id] !== $hash . 'b') {
                 $this->query($tagName)
-                    ->where('shop_id', $this->shopId)
+                    ->where('shop_id', $this->shop->id)
                     ->where('outer_id', $id)
                     ->update(['updated_at' => $time, 'hash' => $hash, 'data' => $jsonEntry]);
             }
@@ -94,7 +96,7 @@ class SyncFeedAction
 
         if (!empty($hashs)) {
             $this->query($tagName)
-                ->where('shop_id', $this->shopId)
+                ->where('shop_id', $this->shop->id)
                 ->whereIn('outer_id', array_map(fn($value) => (string) $value, array_keys($hashs)))
                 ->delete();
         }
@@ -108,7 +110,7 @@ class SyncFeedAction
     private function fixCategoriesTree(): void
     {
         $this->seedParenIdOfCategories();
-        FeedCategory::scoped(['shop_id' => $this->shopId])->fixTree();
+        FeedCategory::scoped(['shop_id' => $this->shop])->fixTree();
     }
 
     private function seedParenIdOfCategories(): void
@@ -118,8 +120,8 @@ class SyncFeedAction
                 from feed_categories as f_c
                 where f_c.outer_id = (feed_categories.data ->> 'parentId')
                   and (feed_categories.data ->> 'parentId') <> 'null'
-                  and f_c.shop_id = {$this->shopId}
-                  and feed_categories.shop_id = {$this->shopId};
+                  and f_c.shop_id = {$this->shop}
+                  and feed_categories.shop_id = {$this->shop};
             QUERY
         );
     }
@@ -131,8 +133,8 @@ class SyncFeedAction
                 update feed_offers set feed_category_id = feed_categories.id
                 from feed_categories
                 where feed_categories.outer_id=feed_offers.data ->> 'categoryId'
-                 and feed_categories.shop_id = {$this->shopId}
-                 and feed_offers.shop_id = {$this->shopId};
+                 and feed_categories.shop_id = {$this->shop}
+                 and feed_offers.shop_id = {$this->shop};
             QUERY
         );
     }

@@ -8,20 +8,18 @@ use Illuminate\Support\Str;
 use SimpleXMLElement;
 use XMLReader;
 
-class XMLFileReader
+class XMLIterator
 {
     private XMLReader $reader;
-    private FileNameHelper $fileName;
 
-    public function __construct(XMLReader $reader, FileNameHelper $fileName)
+    public function __construct(XMLReader $reader)
     {
         $this->reader = $reader;
-        $this->fileName = $fileName;
     }
 
-    public function init(int $shopId)
+    public function open(string $fileName)
     {
-        $this->reader->open(($this->fileName)($shopId));
+        $this->reader->open($fileName);
     }
 
     public function getIterator(string $tagName): Generator

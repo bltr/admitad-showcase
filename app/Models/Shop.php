@@ -12,6 +12,8 @@ class Shop extends Model
     use HasFactory;
     use SortedById;
 
+    public const FEED_DIR_NAME = 'feeds';
+
     public const IMPORT_WITHOUT_GROUPING = 'import_without_grouping';
     public const IMPORT_GROUP_BY_GROUP_ID = 'import_group_by_group_id';
     public const IMPORT_GROUP_BY_PICTURE = 'import_group_by_picture';
@@ -94,5 +96,10 @@ class Shop extends Model
             $this->is_active = false;
         }
         $this->save();
+    }
+
+    public function getFeedFileNameAttribute()
+    {
+        return storage_path(static::FEED_DIR_NAME) . '/' . $this->id . '.xml';
     }
 }
