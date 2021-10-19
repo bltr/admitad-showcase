@@ -13,6 +13,8 @@ use Illuminate\Support\Str;
 
 class SyncFeedAction
 {
+    private const BUFFER_SIZE = 1000;
+
     private XMLIterator $xmlIterator;
     private Shop $shop;
 
@@ -36,7 +38,7 @@ class SyncFeedAction
         try {
             DB::beginTransaction();
 
-            $this->xmlIterator->open($this->shop);
+            $this->xmlIterator->open($this->shop->feed_file_name);
             $this->syncEntriesfForTag('category');
             $this->syncEntriesfForTag('offer', ['picture']);
 
@@ -50,20 +52,41 @@ class SyncFeedAction
         $this->seedFeedCategoryIdOfOffers();
     }
 
-    private function syncEntriesfForTag(string $tagName, $arraybleTag = [])
+    private function syncEntriesfForTag(string $tagName, array $arraybleTag = [])
     {
-        $hashs = [];
-        $this->query($tagName)
-            ->where('shop_id', $this->shop)
-            ->select('hash', 'outer_id')
-            ->chunk(10000, function ($entries) use (&$hashs) {
-                $hashs += $entries->pluck('hash', 'outer_id')->all();
-            });
-
+        $buffer = [];
         $time = new \DateTime();
+
         foreach ($this->xmlIterator->getIterator($tagName) as $entry) {
+            $buffer[$entry['id']] = $entry;
+
+            if (count($buffer) === static::BUFFER_SIZE) {
+                $this->syncChunk($tagName, $buffer, $arraybleTag, $time);
+                $buffer = [];
+            }
+        }
+
+        if (count($buffer) > 0) {
+            $this->syncChunk($tagName, $buffer, $arraybleTag, $time);
+        }
+
+        $this->query($tagName)
+            ->where('shop_id', $this->shop->id)
+            ->where('synchronized_at', '<>', $time)
+            ->delete();
+    }
+
+    private function syncChunk(string $tagName, array $entries, array $arraybleTag, \DateTime $time)
+    {
+        $hashs = $this->query($tagName)
+            ->where('shop_id', $this->shop->id)
+            ->whereIn('outer_id', array_keys($entries))
+            ->pluck('hash', 'outer_id')
+            ->all();
+
+        foreach ($entries as $entry) {
             foreach ($arraybleTag as $tag) {
-                $entry[Str::plural($tag)] = (array) ($entry[$tag] ?? []);
+                $entry[Str::plural($tag)] = (array)($entry[$tag] ?? []);
                 unset($entry[$tag]);
             }
 
@@ -75,6 +98,7 @@ class SyncFeedAction
                 $this->query($tagName)->insert([
                     'created_at' => $time,
                     'updated_at' => $time,
+                    'synchronized_at' => $time,
                     'outer_id' => $id,
                     'shop_id' => $this->shop->id,
                     'hash' => $hash,
@@ -82,14 +106,16 @@ class SyncFeedAction
                 ]);
             }
 
-            if (isset($hashs[$id]) && $hashs[$id] !== $hash . 'b') {
+            if (isset($hashs[$id]) && $hashs[$id] !== $hash) {
                 $this->query($tagName)
                     ->where('shop_id', $this->shop->id)
                     ->where('outer_id', $id)
-                    ->update(['updated_at' => $time, 'hash' => $hash, 'data' => $jsonEntry]);
-            }
-
-            if (isset($hashs[$id])) {
+                    ->update([
+                        'updated_at' => $time,
+                        'synchronized_at' => $time,
+                        'hash' => $hash,
+                        'data' => $jsonEntry
+                    ]);
                 unset($hashs[$id]);
             }
         }
@@ -98,7 +124,7 @@ class SyncFeedAction
             $this->query($tagName)
                 ->where('shop_id', $this->shop->id)
                 ->whereIn('outer_id', array_map(fn($value) => (string) $value, array_keys($hashs)))
-                ->delete();
+                ->update(['synchronized_at' => $time]);
         }
     }
 
@@ -109,11 +135,11 @@ class SyncFeedAction
 
     private function fixCategoriesTree(): void
     {
-        $this->seedParenIdOfCategories();
+        $this->seedParentIdOfCategories();
         FeedCategory::scoped(['shop_id' => $this->shop])->fixTree();
     }
 
-    private function seedParenIdOfCategories(): void
+    private function seedParentIdOfCategories(): void
     {
         DB::update(<<<QUERY
                 update feed_categories set parent_id = f_c.id

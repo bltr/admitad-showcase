@@ -16,6 +16,7 @@ class CreateFeedOffersTable extends Migration
         Schema::create('feed_offers', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->timestamp('synchronized_at')->nullable();
             $table->unsignedBigInteger('offer_id')->nullable();
             $table->string('hash');
             $table->unsignedBigInteger('shop_id');
@@ -24,7 +25,7 @@ class CreateFeedOffersTable extends Migration
             $table->unsignedBigInteger('feed_category_id')->nullable();
 
             $table->index(['shop_id', 'outer_id']);
-            $table->foreign('feed_category_id')->references('id')->on('feed_categories');
+            $table->foreign('feed_category_id')->references('id')->on('feed_categories')->cascadeOnDelete();
         });
     }
 

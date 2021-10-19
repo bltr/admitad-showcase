@@ -17,6 +17,7 @@ class CreateFeedCategoriesTable extends Migration
         Schema::create('feed_categories', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->timestamp('synchronized_at')->nullable();
             $table->string('hash');
             $table->unsignedBigInteger('shop_id');
             $table->string('outer_id');
