@@ -10,9 +10,14 @@ class FeedCategory extends Model
 {
     use HasFactory, NodeTrait;
 
+    public $timestamps = false;
+
     protected $guarded = [];
 
     protected $casts = [
+        'inserted_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'synchronized_at' => 'datetime',
         'data' => 'object'
     ];
 

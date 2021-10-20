@@ -9,9 +9,14 @@ class FeedOffer extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $guarded = [];
 
     protected $casts = [
+        'inserted_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'synchronized_at' => 'datetime',
         'data' => 'object'
     ];
 

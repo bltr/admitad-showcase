@@ -55,7 +55,7 @@ class SyncFeedAction
     private function syncEntriesfForTag(string $tagName, array $arraybleTag = [])
     {
         $buffer = [];
-        $time = new \DateTime();
+        $time = now();
 
         foreach ($this->xmlIterator->getIterator($tagName) as $entry) {
             $buffer[$entry['id']] = $entry;
