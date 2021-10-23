@@ -24,7 +24,7 @@ class CreateFeedCategoriesTable extends Migration
             $table->jsonb('data');
             $table->nestedSet();
 
-            $table->index(['shop_id', 'outer_id']);
+            $table->unique(['shop_id', 'outer_id']);
         });
     }
 
@@ -35,6 +35,6 @@ class CreateFeedCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('feed_categories');
     }
 }

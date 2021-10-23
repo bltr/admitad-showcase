@@ -16,6 +16,7 @@ class SyncFeedAction
     private const BUFFER_SIZE = 1000;
 
     private XMLIterator $xmlIterator;
+
     private Shop $shop;
 
     public function __construct(XMLIterator $xmlIterator)
@@ -25,6 +26,8 @@ class SyncFeedAction
 
     public function __invoke(Shop $shop)
     {
+        config()->set('flare.reporting.maximum_number_of_collected_queries', 1);
+
         $this->shop = $shop;
         try {
             $this->sync();
@@ -35,24 +38,16 @@ class SyncFeedAction
 
     public function sync()
     {
-        try {
-            DB::beginTransaction();
+        $this->xmlIterator->open($this->shop->feed_file_name);
 
-            $this->xmlIterator->open($this->shop->feed_file_name);
-            $this->syncEntriesfForTag('category');
-            $this->syncEntriesfForTag('offer', ['picture']);
-
-            DB::commit();
-        } catch (\Throwable $exception) {
-            DB::rollBack();
-            throw $exception;
-        }
+        $this->syncEntriesForTag('category');
+        $this->syncEntriesForTag('offer', ['picture']);
 
         $this->fixCategoriesTree();
         $this->seedFeedCategoryIdOfOffers();
     }
 
-    private function syncEntriesfForTag(string $tagName, array $arraybleTag = [])
+    private function syncEntriesForTag(string $tagName, array $arraybleTag = [])
     {
         $buffer = [];
         $time = now();
@@ -83,6 +78,7 @@ class SyncFeedAction
             ->whereIn('outer_id', array_keys($entries))
             ->pluck('hash', 'outer_id')
             ->all();
+        $values = [];
 
         foreach ($entries as $entry) {
             foreach ($arraybleTag as $tag) {
@@ -95,7 +91,7 @@ class SyncFeedAction
             $id = $entry['id'];
 
             if (!isset($hashs[$id])) {
-                $this->query($tagName)->insert([
+                $values[] = [
                     'created_at' => $time,
                     'updated_at' => $time,
                     'synchronized_at' => $time,
@@ -103,22 +99,28 @@ class SyncFeedAction
                     'shop_id' => $this->shop->id,
                     'hash' => $hash,
                     'data' => $jsonEntry
-                ]);
+                ];
             }
 
             if (isset($hashs[$id]) && $hashs[$id] !== $hash) {
-                $this->query($tagName)
-                    ->where('shop_id', $this->shop->id)
-                    ->where('outer_id', $id)
-                    ->update([
-                        'updated_at' => $time,
-                        'synchronized_at' => $time,
-                        'hash' => $hash,
-                        'data' => $jsonEntry
-                    ]);
+                $values[] = [
+                    'created_at' => null,
+                    'updated_at' => $time,
+                    'synchronized_at' => $time,
+                    'outer_id' => $id,
+                    'shop_id' => $this->shop->id,
+                    'hash' => $hash,
+                    'data' => $jsonEntry
+                ];
                 unset($hashs[$id]);
             }
         }
+
+        $this->query($tagName)->upsert(
+            $values,
+            ['shop_id', 'outer_id'],
+            ['updated_at', 'synchronized_at', 'hash', 'data']
+        );
 
         if (!empty($hashs)) {
             $this->query($tagName)

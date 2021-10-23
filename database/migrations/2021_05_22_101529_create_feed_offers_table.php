@@ -24,7 +24,7 @@ class CreateFeedOffersTable extends Migration
             $table->jsonb('data');
             $table->unsignedBigInteger('feed_category_id')->nullable();
 
-            $table->index(['shop_id', 'outer_id']);
+            $table->unique(['shop_id', 'outer_id']);
             $table->foreign('feed_category_id')->references('id')->on('feed_categories')->cascadeOnDelete();
         });
     }
@@ -36,6 +36,6 @@ class CreateFeedOffersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('offers');
+        Schema::dropIfExists('feed_offers');
     }
 }
