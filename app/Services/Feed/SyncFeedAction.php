@@ -69,7 +69,7 @@ class SyncFeedAction
             $this->syncChunk($tagName, $buffer);
         }
 
-        $c = $this->query($tagName)
+        $this->query($tagName)
             ->where('shop_id', $this->shop->id)
             ->where('synchronized_at', '<>', $this->synchronized_at)
             ->delete();
