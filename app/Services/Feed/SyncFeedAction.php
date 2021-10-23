@@ -15,6 +15,8 @@ use Illuminate\Support\Str;
 class SyncFeedAction
 {
     private const BUFFER_SIZE = 500;
+    private const CATEGORY_TAG = 'category';
+    private const OFFER_TAG = 'offer';
 
     private XMLFileReader $xmlIterator;
 
@@ -45,8 +47,8 @@ class SyncFeedAction
     {
         $this->xmlIterator->open($this->shop->feed_file_name);
 
-        $this->syncEntriesForTag('category');
-        $this->syncEntriesForTag('offer');
+        $this->syncEntriesForTag(self::CATEGORY_TAG);
+        $this->syncEntriesForTag(self::OFFER_TAG);
 
         $this->fixCategoriesTree();
         $this->seedFeedCategoryIdOfOffers();
@@ -126,7 +128,7 @@ class SyncFeedAction
 
     private function query($tagName)
     {
-        return $tagName === 'offer' ? FeedOffer::query() : FeedCategory::query();
+        return $tagName === self::OFFER_TAG ? FeedOffer::query() : FeedCategory::query();
     }
 
     private function fixCategoriesTree(): void
