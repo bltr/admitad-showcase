@@ -13,5 +13,5 @@
     @endforeach
 </div>
 @else
-    <p class="my-5 small text-secondary text-center">Нет подготовленных данных</p>
+    <p class="my-5 small text-secondary text-center">Нет данных</p>
 @endif

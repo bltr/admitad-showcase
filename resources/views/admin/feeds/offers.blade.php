@@ -1,10 +1,11 @@
 @extends('admin.feeds.layout')
 
 @section('feed-content')
+    <div class="row">
+        @include('admin.feeds.components._nav', ['shop' => $currentShop])
+    </div>
+
     @if($offers->isNotEmpty())
-        <div class="row">
-            @include('admin.feeds.components._nav', ['shop' => $currentShop])
-        </div>
         <div class="row  row-cols-1 row-cols-md-4 g-4 mb-4">
             @foreach($offers as $offer)
                 <div class="col">
@@ -69,7 +70,7 @@
             @endforeach
         </div>
     @else
-        <div class="my-5 text-center">
+        <div class="my-5 small text-secondary text-center">
             Нет данных
         </div>
     @endif

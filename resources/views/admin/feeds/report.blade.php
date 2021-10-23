@@ -9,6 +9,7 @@
     <div class="row ">
         @include('admin.feeds.components._nav', ['shop' => $currentShop])
     </div>
+
     <div class="row">
         <div class="col">
             @include('admin.report.composite', compact('report'))

@@ -89,7 +89,7 @@
                 @endforeach
             </div>
             @if($offers->isEmpty())
-                <div class="small text-secondary text-center mt-5">Нет офферов</div>
+                <div class="small text-secondary text-center mt-5">Нет данных</div>
             @endif
 
             {{ $offers->links() }}
