@@ -7,6 +7,7 @@ namespace App\Services\Feed;
 use App\Models\FeedCategory;
 use App\Models\FeedOffer;
 use App\Models\Shop;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -18,6 +19,7 @@ class SyncFeedAction
     private XMLIterator $xmlIterator;
 
     private Shop $shop;
+    private Carbon $synchronized_at;
 
     public function __construct(XMLIterator $xmlIterator)
     {
@@ -27,6 +29,8 @@ class SyncFeedAction
     public function __invoke(Shop $shop)
     {
         $this->shop = $shop;
+        $this->synchronized_at = now();
+
         try {
             $this->sync();
         } catch (\Throwable $exception) {
@@ -48,28 +52,27 @@ class SyncFeedAction
     private function syncEntriesForTag(string $tagName, array $arraybleTag = [])
     {
         $buffer = [];
-        $time = now();
 
         foreach ($this->xmlIterator->getIterator($tagName) as $entry) {
             $buffer[$entry['id']] = $entry;
 
             if (count($buffer) === static::BUFFER_SIZE) {
-                $this->syncChunk($tagName, $buffer, $arraybleTag, $time);
+                $this->syncChunk($tagName, $buffer, $arraybleTag);
                 $buffer = [];
             }
         }
 
         if (count($buffer) > 0) {
-            $this->syncChunk($tagName, $buffer, $arraybleTag, $time);
+            $this->syncChunk($tagName, $buffer, $arraybleTag);
         }
 
         $c = $this->query($tagName)
             ->where('shop_id', $this->shop->id)
-            ->where('synchronized_at', '<>', $time)
+            ->where('synchronized_at', '<>', $this->synchronized_at)
             ->delete();
     }
 
-    private function syncChunk(string $tagName, array $entries, array $arraybleTag, \DateTime $time)
+    private function syncChunk(string $tagName, array $entries, array $arraybleTag)
     {
         $hashs = $this->query($tagName)
             ->where('shop_id', $this->shop->id)
@@ -90,9 +93,9 @@ class SyncFeedAction
 
             if (!isset($hashs[$id])) {
                 $values[] = [
-                    'created_at' => $time,
-                    'updated_at' => $time,
-                    'synchronized_at' => $time,
+                    'created_at' => $this->synchronized_at,
+                    'updated_at' => $this->synchronized_at,
+                    'synchronized_at' => $this->synchronized_at,
                     'outer_id' => $id,
                     'shop_id' => $this->shop->id,
                     'hash' => $hash,
@@ -102,9 +105,9 @@ class SyncFeedAction
 
             if (isset($hashs[$id]) && $hashs[$id] !== $hash) {
                 $values[] = [
-                    'created_at' => $time,
-                    'updated_at' => $time,
-                    'synchronized_at' => $time,
+                    'created_at' => $this->synchronized_at,
+                    'updated_at' => $this->synchronized_at,
+                    'synchronized_at' => $this->synchronized_at,
                     'outer_id' => $id,
                     'shop_id' => $this->shop->id,
                     'hash' => $hash,
@@ -124,7 +127,7 @@ class SyncFeedAction
             $this->query($tagName)
                 ->where('shop_id', $this->shop->id)
                 ->whereIn('outer_id', array_map(fn($value) => (string) $value, array_keys($hashs)))
-                ->update(['synchronized_at' => $time]);
+                ->update(['synchronized_at' => $this->synchronized_at]);
         }
     }
 
