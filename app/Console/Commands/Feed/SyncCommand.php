@@ -15,18 +15,16 @@ class SyncCommand extends Command
 
     public function handle(SyncFeedAction $syncFile, DownloadFileAction $downloadFile)
     {
-        $m = memory_get_usage();
         $shop_ids = $this->argument('shop_id');
 
         Shop::whereNotNull('feed_url')
             ->when($shop_ids, fn($q) => $q->whereIn('id', $shop_ids))
             ->get()
             ->each(function($shop) use ($syncFile, $downloadFile) {
-//                $downloadFile($shop);
+                $downloadFile($shop);
                 $syncFile($shop);
             });
 
-        $this->info(memory_get_peak_usage() - $m);
         return 0;
     }
 }

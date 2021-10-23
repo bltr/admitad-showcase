@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 
 class SyncFeedAction
 {
-    private const BUFFER_SIZE = 1000;
+    private const BUFFER_SIZE = 500;
 
     private XMLIterator $xmlIterator;
 
@@ -26,8 +26,6 @@ class SyncFeedAction
 
     public function __invoke(Shop $shop)
     {
-        config()->set('flare.reporting.maximum_number_of_collected_queries', 1);
-
         $this->shop = $shop;
         try {
             $this->sync();
@@ -65,7 +63,7 @@ class SyncFeedAction
             $this->syncChunk($tagName, $buffer, $arraybleTag, $time);
         }
 
-        $this->query($tagName)
+        $c = $this->query($tagName)
             ->where('shop_id', $this->shop->id)
             ->where('synchronized_at', '<>', $time)
             ->delete();
@@ -104,7 +102,7 @@ class SyncFeedAction
 
             if (isset($hashs[$id]) && $hashs[$id] !== $hash) {
                 $values[] = [
-                    'created_at' => null,
+                    'created_at' => $time,
                     'updated_at' => $time,
                     'synchronized_at' => $time,
                     'outer_id' => $id,
@@ -138,7 +136,7 @@ class SyncFeedAction
     private function fixCategoriesTree(): void
     {
         $this->seedParentIdOfCategories();
-        FeedCategory::scoped(['shop_id' => $this->shop])->fixTree();
+        FeedCategory::scoped(['shop_id' => $this->shop->id])->fixTree();
     }
 
     private function seedParentIdOfCategories(): void
@@ -148,8 +146,8 @@ class SyncFeedAction
                 from feed_categories as f_c
                 where f_c.outer_id = (feed_categories.data ->> 'parentId')
                   and (feed_categories.data ->> 'parentId') <> 'null'
-                  and f_c.shop_id = {$this->shop}
-                  and feed_categories.shop_id = {$this->shop};
+                  and f_c.shop_id = {$this->shop->id}
+                  and feed_categories.shop_id = {$this->shop->id};
             QUERY
         );
     }
@@ -161,8 +159,8 @@ class SyncFeedAction
                 update feed_offers set feed_category_id = feed_categories.id
                 from feed_categories
                 where feed_categories.outer_id=feed_offers.data ->> 'categoryId'
-                 and feed_categories.shop_id = {$this->shop}
-                 and feed_offers.shop_id = {$this->shop};
+                 and feed_categories.shop_id = {$this->shop->id}
+                 and feed_offers.shop_id = {$this->shop->id};
             QUERY
         );
     }
