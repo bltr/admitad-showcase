@@ -16,12 +16,15 @@ class SyncFeedAction
 {
     private const BUFFER_SIZE = 500;
 
-    private XMLIterator $xmlIterator;
+    private XMLFileReader $xmlIterator;
 
     private Shop $shop;
+
     private Carbon $synchronized_at;
 
-    public function __construct(XMLIterator $xmlIterator)
+    private array $arraybleTag = ['picture'];
+
+    public function __construct(XMLFileReader $xmlIterator)
     {
         $this->xmlIterator = $xmlIterator;
     }
@@ -43,13 +46,13 @@ class SyncFeedAction
         $this->xmlIterator->open($this->shop->feed_file_name);
 
         $this->syncEntriesForTag('category');
-        $this->syncEntriesForTag('offer', ['picture']);
+        $this->syncEntriesForTag('offer');
 
         $this->fixCategoriesTree();
         $this->seedFeedCategoryIdOfOffers();
     }
 
-    private function syncEntriesForTag(string $tagName, array $arraybleTag = [])
+    private function syncEntriesForTag(string $tagName)
     {
         $buffer = [];
 
@@ -57,13 +60,13 @@ class SyncFeedAction
             $buffer[$entry['id']] = $entry;
 
             if (count($buffer) === static::BUFFER_SIZE) {
-                $this->syncChunk($tagName, $buffer, $arraybleTag);
+                $this->syncChunk($tagName, $buffer);
                 $buffer = [];
             }
         }
 
         if (count($buffer) > 0) {
-            $this->syncChunk($tagName, $buffer, $arraybleTag);
+            $this->syncChunk($tagName, $buffer);
         }
 
         $c = $this->query($tagName)
@@ -72,7 +75,7 @@ class SyncFeedAction
             ->delete();
     }
 
-    private function syncChunk(string $tagName, array $entries, array $arraybleTag)
+    private function syncChunk(string $tagName, array $entries)
     {
         $hashs = $this->query($tagName)
             ->where('shop_id', $this->shop->id)
@@ -82,9 +85,11 @@ class SyncFeedAction
         $values = [];
 
         foreach ($entries as $entry) {
-            foreach ($arraybleTag as $tag) {
-                $entry[Str::plural($tag)] = (array)($entry[$tag] ?? []);
-                unset($entry[$tag]);
+            foreach ($this->arraybleTag as $tag) {
+                if (isset($entry[$tag])) {
+                    $entry[Str::plural($tag)] = (array)($entry[$tag] ?? []);
+                    unset($entry[$tag]);
+                }
             }
 
             $jsonEntry = json_encode($entry, JSON_UNESCAPED_UNICODE);

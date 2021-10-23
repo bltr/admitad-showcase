@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 use SimpleXMLElement;
 use XMLReader;
 
-class XMLIterator
+class XMLFileReader
 {
     private XMLReader $reader;
 
@@ -22,40 +22,37 @@ class XMLIterator
         $this->reader->open($fileName);
     }
 
+    /**
+     * @param string $tagName
+     * @return Generator|array
+     * @throws ErrorException
+     */
     public function getIterator(string $tagName): Generator
     {
         $pluralTagName = Str::plural($tagName);
 
-        while (($is_success = $this->reader->read()) && !$this->isTagStarted($pluralTagName)) continue;
+        while (($isSuccess = $this->reader->read()) && !$this->isTagStarted($pluralTagName)) continue;
 
-        if (!$is_success) {
+        if (!$isSuccess) {
             throw new ErrorException('XMLReader::read(): incorrect feed format');
         }
 
-        while (($is_success = $this->reader->read()) && !$this->isTagEnded($pluralTagName)) {
+        while (($isSuccess = $this->reader->read()) && !$this->isTagEnded($pluralTagName)) {
             if ($this->isTagStarted($tagName)) {
                 yield $this->xml2array(simplexml_load_string($this->reader->readOuterXml()));
             }
         }
 
-        if (!$is_success) {
+        if (!$isSuccess) {
             throw new ErrorException('XMLReader::read(): incorrect feed format');
         }
     }
 
-    /**
-     * @param string $tagName
-     * @return bool
-     */
     private function isTagStarted(string $tagName): bool
     {
         return $this->reader->nodeType === XMLReader::ELEMENT && $this->reader->name === $tagName;
     }
 
-    /**
-     * @param string $tagName
-     * @return bool
-     */
     private function isTagEnded(string $tagName): bool
     {
         return $this->reader->nodeType === XMLReader::END_ELEMENT && $this->reader->name === $tagName;
