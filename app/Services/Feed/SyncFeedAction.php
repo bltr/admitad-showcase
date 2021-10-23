@@ -92,33 +92,21 @@ class SyncFeedAction
                 }
             }
 
-            $jsonEntry = json_encode($entry, JSON_UNESCAPED_UNICODE);
-            $hash = sha1($jsonEntry);
-            $id = $entry['id'];
+            $json = json_encode($entry, JSON_UNESCAPED_UNICODE);
+            $hash = sha1($json);
+            $outer_id = $entry['id'];
 
-            if (!isset($hashs[$id])) {
+            if (!isset($hashs[$outer_id]) || ($hashs[$outer_id] !== $hash)) {
                 $values[] = [
                     'created_at' => $this->synchronized_at,
                     'updated_at' => $this->synchronized_at,
                     'synchronized_at' => $this->synchronized_at,
-                    'outer_id' => $id,
+                    'outer_id' => $outer_id,
                     'shop_id' => $this->shop->id,
                     'hash' => $hash,
-                    'data' => $jsonEntry
+                    'data' => $json
                 ];
-            }
-
-            if (isset($hashs[$id]) && $hashs[$id] !== $hash) {
-                $values[] = [
-                    'created_at' => $this->synchronized_at,
-                    'updated_at' => $this->synchronized_at,
-                    'synchronized_at' => $this->synchronized_at,
-                    'outer_id' => $id,
-                    'shop_id' => $this->shop->id,
-                    'hash' => $hash,
-                    'data' => $jsonEntry
-                ];
-                unset($hashs[$id]);
+                unset($hashs[$outer_id]);
             }
         }
 
