@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Feed;
+namespace App\Services\Feed\SyncFeedAction;
 
 use ErrorException;
 use Generator;
