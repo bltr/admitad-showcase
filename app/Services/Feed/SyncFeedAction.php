@@ -36,11 +36,7 @@ class SyncFeedAction
         $this->shop = $shop;
         $this->synchronized_at = now();
 
-        try {
-            $this->sync();
-        } catch (\Throwable $exception) {
-            Log::error('feed sync: ' . $exception->getMessage() . ' ' . $exception->getLine());
-        }
+        $this->sync();
     }
 
     public function sync()
