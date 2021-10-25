@@ -3,7 +3,7 @@
 namespace App\Jobs\Catalog;
 
 use App\Models\Shop;
-use App\Services\Catalog\ImportOffers;
+use App\Services\Catalog\ImportOffersAction;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,7 +22,7 @@ class ImportJob implements ShouldQueue
         $this->shop = $shop;
     }
 
-    public function handle(ImportOffers $importOffers)
+    public function handle(ImportOffersAction $importOffers)
     {
         $importOffers->run($this->shop);
     }

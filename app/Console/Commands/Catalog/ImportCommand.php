@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Catalog;
 
-use App\Services\Catalog\ImportOffers;
+use App\Services\Catalog\ImportOffersAction;
 use App\Models\Shop;
 use Illuminate\Console\Command;
 
@@ -17,13 +17,13 @@ class ImportCommand extends Command
         parent::__construct();
     }
 
-    public function handle(ImportOffers $importOffers)
+    public function handle(ImportOffersAction $importOffersAction)
     {
-        $shop_ids = $this->argument('shop_id');
+        $shopIds = $this->argument('shop_id');
         $query = Shop::active();
-        $shops = $shop_ids ? $query->whereIn('id', $shop_ids)->get() : $query->get() ;
+        $shops = $shopIds ? $query->whereIn('id', $shopIds)->get() : $query->get() ;
 
-        $shops->each(fn($shop) => $importOffers->run($shop));
+        $shops->each(fn($shop) => $importOffersAction($shop));
 
         return 0;
     }

@@ -6,9 +6,9 @@ use App\Models\FeedOffer;
 use App\Models\Offer;
 use App\Models\Shop;
 
-class ImportOffers
+class ImportOffersAction
 {
-    public function run(Shop $shop)
+    public function __invoke(Shop $shop)
     {
         $hashs = Offer::where('shop_id', $shop->id)->pluck('hash', 'id');
         $query = FeedOffer::where('shop_id', $shop->id);
