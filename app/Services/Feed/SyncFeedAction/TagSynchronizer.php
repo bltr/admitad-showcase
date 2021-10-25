@@ -55,12 +55,13 @@ abstract class TagSynchronizer
 
     private function syncChunk(array $entries)
     {
+        $values_to_upsert = [];
+
         $hashs = $this->query()
             ->where('shop_id', $this->shop->id)
             ->whereIn('outer_id', array_keys($entries))
             ->pluck('hash', 'outer_id')
             ->all();
-        $values = [];
 
         foreach ($entries as $entry) {
             $entry = $this->processEntry($entry);
@@ -70,7 +71,7 @@ abstract class TagSynchronizer
             $outer_id = $entry['id'];
 
             if (!isset($hashs[$outer_id]) || ($hashs[$outer_id] !== $hash)) {
-                $values[] = [
+                $values_to_upsert[] = [
                     'created_at' => $this->synchronized_at,
                     'updated_at' => $this->synchronized_at,
                     'synchronized_at' => $this->synchronized_at,
@@ -84,7 +85,7 @@ abstract class TagSynchronizer
         }
 
         $this->query()->upsert(
-            $values,
+            $values_to_upsert,
             ['shop_id', 'outer_id'],
             ['updated_at', 'synchronized_at', 'hash', 'data']
         );
