@@ -36,10 +36,16 @@
                             <i class="bi bi-house"></i>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.catalog.index') ? 'active' : '' }}" aria-current="page" href="{{ route('admin.catalog.index') }}">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Каталог
                         </a>
+
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{{ route('admin.catalog.index') }}">Товары</a></li>
+                            <li><a class="dropdown-item" href="{{ route('admin.catalog.categories.index') }}">Категории</a></li>
+                            <li><a class="dropdown-item" href="#">Тэги</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('admin.feeds.index') ? 'active' : '' }}" aria-current="page" href="{{ route('admin.feeds.index') }}">
