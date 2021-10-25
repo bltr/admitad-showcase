@@ -37,7 +37,7 @@
                     @if($shops->isNotEmpty())
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary btn-sm">Применить</button>
-                            <button type="reset" class="btn btn-info btn-sm">Сбросить</button>
+                            <a class="btn btn-outline-secondary btn-sm mt-1" href="{{ route('admin.catalog.index') }}">Сбросить</a>
                         </div>
                     @else
                         <div class="col-12 small text-secondary">Нет одобренных магазинов</div>
