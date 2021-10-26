@@ -40,6 +40,7 @@ Route::prefix('/admin')->name('admin.')->group(function () {
     Route::prefix('catalog')->name('catalog.')->group(function () {
         Route::get('/', [CatalogController::class, 'index'])->name('index');
 
-        Route::resource('categories', CatalogCategoriesController::class);
+        Route::get('/categories/{currentRootCategory?}', [CatalogCategoriesController::class, 'index'])->name('categories.index');
+        Route::resource('categories', CatalogCategoriesController::class)->except('index');
     });
 });

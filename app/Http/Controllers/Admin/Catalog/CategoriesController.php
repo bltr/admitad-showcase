@@ -8,19 +8,28 @@ use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
 {
-    public function index()
+    public function index(Category $currentRootCategory)
     {
-        return view('admin.catalog.categories.index');
+        $rootCategories = Category::whereIsRoot()->orderBy('name')->get();
+        $currentRootCategory = $currentRootCategory ?? Category::whereIsRoot()->orderBy('name')->first();
+        $categories = $currentRootCategory->descendants()
+            ->defaultOrder()
+            ->withDepth()
+            ->get()
+            ->toTree();
+        return view('admin.catalog.categories.index', compact('categories', 'rootCategories', 'currentRootCategory'));
     }
 
     public function create()
     {
-        //
+        return view('admin.catalog.categories.create');
     }
 
     public function store(Request $request)
     {
-        //
+        Category::create($request->all());
+
+        return redirect()->route('admin.catalog.categories.index');
     }
 
     public function show(Category $category)
