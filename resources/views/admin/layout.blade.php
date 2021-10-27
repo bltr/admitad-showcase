@@ -60,5 +60,8 @@
     <main class="container py-4">
         @yield('content')
     </main>
+
+    @stack('modal')
+    @stack('scripts')
 </body>
 </html>

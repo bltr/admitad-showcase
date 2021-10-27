@@ -15,7 +15,8 @@ class CategoriesController extends Controller
         $categories = $rootCategory->descendants()
             ->defaultOrder()
             ->withDepth()
-            ->get();
+            ->get()
+            ->toTree();
 
         return view('admin.catalog.categories.index', compact('categories', 'rootCategories', 'rootCategory'));
     }

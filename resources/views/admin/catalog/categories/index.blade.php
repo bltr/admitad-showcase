@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row my-4">
         <div class="col">
             <div class="btn-group">
                 @foreach($rootCategories as $category)
@@ -32,13 +32,13 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row my-4">
         <div class="col">
-            <ul>
-                @foreach($categories as $category)
-                    <li>{{ str_repeat(' -', $category->depth) . $category->name }}</li>
-                @endforeach
-            </ul>
+            @include('components.tree', [
+                'items' => $categories,
+                'itemTemplate' => 'admin.catalog.categories._tree-item',
+                'id' => 'a'
+            ])
         </div>
     </div>
 @endsection
