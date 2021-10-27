@@ -25,7 +25,8 @@ class CategoriesController extends Controller
     {
         $categories = Category::withDepth()
             ->defaultOrder()
-            ->get();
+            ->get()
+            ->toTree();
 
         return view('admin.catalog.categories.create', compact('categories'));
     }

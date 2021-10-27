@@ -42,10 +42,10 @@ Route::prefix('/admin')->name('admin.')->group(function () {
 
         Route::get('/categories/root/{rootCategory?}', [CatalogCategoriesController::class, 'index'])->name('categories.index');
         Route::resource('categories', CatalogCategoriesController::class)->except('index');
-        Route::post('/categories/{category}/append-to', [CatalogCategoriesController::class, 'appendTo'])->name('append-to');
-        Route::post('/categories/{category}/up', [CatalogCategoriesController::class, 'up'])->name('up');
-        Route::post('/categories/{category}/down', [CatalogCategoriesController::class, 'down'])->name('down');
-        Route::post('/categories/{category}/first', [CatalogCategoriesController::class, 'first'])->name('first');
-        Route::post('/categories/{category}/last', [CatalogCategoriesController::class, 'last'])->name('last');
+        Route::post('/categories/{category}/append-to', [CatalogCategoriesController::class, 'appendTo'])->name('categories.append-to');
+        Route::post('/categories/{category}/up', [CatalogCategoriesController::class, 'up'])->name('categories.up');
+        Route::post('/categories/{category}/down', [CatalogCategoriesController::class, 'down'])->name('categories.down');
+        Route::post('/categories/{category}/first', [CatalogCategoriesController::class, 'first'])->name('categories.first');
+        Route::post('/categories/{category}/last', [CatalogCategoriesController::class, 'last'])->name('categories.last');
     });
 });

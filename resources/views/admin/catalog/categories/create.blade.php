@@ -16,12 +16,12 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-6">
-            <form method="POST" action="{{ route('admin.catalog.categories.store') }}">
-                @csrf
-                @method('POST')
+    <form method="POST" action="{{ route('admin.catalog.categories.store') }}">
+        @csrf
+        @method('POST')
 
+        <div class="row">
+            <div class="col-6">
                 <div class="row mb-3">
                     <label for="name" class="col-sm-4 col-form-label">Название</label>
                     <div class="col-sm-8">
@@ -33,18 +33,6 @@
                     <label for="slug" class="col-sm-4 col-form-label">Slug</label>
                     <div class="col-sm-8">
                         <input type="text" name="slug" class="form-control" id="slug">
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <label for="parent_id" class="col-sm-4 col-form-label">Родительская категория</label>
-                    <div class="col-sm-8">
-                        <select class="form-select form-select-lg mb-3" name="parent_id">
-                            <option selected>-</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->id }}">{{ str_repeat('- ', $category->depth)  . $category->name }}</option>
-                            @endforeach
-                        </select>
                     </div>
                 </div>
 
@@ -66,8 +54,16 @@
                     </div>
                 </fieldset>
 
-                <button type="submit" class="btn btn-primary">Sign in</button>
-            </form>
+                <button type="submit" class="btn btn-primary">Создать</button>
+            </div>
+
+            <div class="col-6">
+                @include('components.tree', [
+                    'items' => $categories,
+                    'itemTemplate' => 'admin.catalog.categories.modal._tree_item',
+                    'id' => 'a'
+                ])
+            </div>
         </div>
-    </div>
+    </form>
 @endsection
