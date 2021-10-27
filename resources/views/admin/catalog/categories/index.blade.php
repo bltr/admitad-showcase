@@ -31,4 +31,14 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col">
+            <ul>
+                @foreach($categories as $category)
+                    <li>{{ str_repeat(' -', $category->depth) . $category->name }}</li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
 @endsection
