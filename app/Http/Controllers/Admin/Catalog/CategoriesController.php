@@ -8,16 +8,16 @@ use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
 {
-    public function index(Category $currentRootCategory = null)
+    public function index(Category $rootCategory = null)
     {
         $rootCategories = Category::whereIsRoot()->orderBy('name')->get();
-        $currentRootCategory = $currentRootCategory ?? Category::whereIsRoot()->orderBy('name')->first();
-        $categories = $currentRootCategory->descendants()
+        $rootCategory = $rootCategory ?? Category::whereIsRoot()->orderBy('name')->first();
+        $categories = $rootCategory->descendants()
             ->defaultOrder()
             ->withDepth()
             ->get();
 
-        return view('admin.catalog.categories.index', compact('categories', 'rootCategories', 'currentRootCategory'));
+        return view('admin.catalog.categories.index', compact('categories', 'rootCategories', 'rootCategory'));
     }
 
     public function create()

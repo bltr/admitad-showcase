@@ -16,12 +16,12 @@
     <div class="row">
         <div class="col">
             <div class="btn-group">
-                @foreach($rootCategories as $rootCategory)
+                @foreach($rootCategories as $category)
                     <a type="button"
-                       class="btn btn-primary {{ $currentRootCategory->is($rootCategory) ? 'active' : '' }}"
-                       href="{{ route('admin.catalog.categories.index', $rootCategory) }}"
+                       class="btn btn-primary {{ $rootCategory->is($category) ? 'active' : '' }}"
+                       href="{{ route('admin.catalog.categories.index', $category) }}"
                     >
-                        {{ $rootCategory->name }}
+                        {{ $category->name }}
                     </a>
                 @endforeach
             </div>
