@@ -24,7 +24,7 @@
 
                     @include('components.tree', [
                         'items' => $categories,
-                        'itemTemplate' => 'admin.catalog.categories.modal._tree_item',
+                        'itemTemplate' => 'admin.catalog.categories.index._change-parent-tree-item',
                         'id' => 'b'
                     ])
                 </form>

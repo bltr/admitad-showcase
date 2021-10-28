@@ -10,7 +10,7 @@
 {{--     модальное окно которым управляет эта кнопка--}}
     @once
         @push('modal')
-            @include('admin.catalog.categories.modal.change-parent-form', ['root' => $rootCategory, 'categories' => $items])
+            @include('admin.catalog.categories.index._change-parent', ['root' => $rootCategory, 'categories' => $items])
         @endpush
     @endonce
 </button>

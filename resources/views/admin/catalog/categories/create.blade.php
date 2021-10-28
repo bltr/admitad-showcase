@@ -58,9 +58,10 @@
             </div>
 
             <div class="col-6">
+
                 @include('components.tree', [
                     'items' => $categories,
-                    'itemTemplate' => 'admin.catalog.categories.modal._tree_item',
+                    'itemTemplate' => 'admin.catalog.categories.create._tree-item',
                     'id' => 'a'
                 ])
             </div>

@@ -36,7 +36,7 @@
         <div class="col">
             @include('components.tree', [
                 'items' => $categories,
-                'itemTemplate' => 'admin.catalog.categories._tree-item',
+                'itemTemplate' => 'admin.catalog.categories.index._tree-item',
                 'id' => 'a'
             ])
         </div>
