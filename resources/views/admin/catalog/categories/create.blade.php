@@ -58,10 +58,7 @@
             </div>
 
             <div class="col-6">
-                @component('components.tree', [
-                    'items' => $categories,
-                    'id' => 'a'
-                ])
+                @component('components.tree', ['items' => $categories, 'id' => 'categories'])
                     @scopedSlot('itemTemplate', ($item))
                         <div class="me-2">
                             <input

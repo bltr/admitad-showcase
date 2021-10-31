@@ -34,10 +34,7 @@
 
     <div class="row my-4">
         <div class="col">
-            @component('components.tree', [
-                'items' => $categories,
-                'id' => 'a'
-            ])
+            @component('components.tree', ['items' => $categories,'id' => 'categories'])
                 @scopedSlot('itemTemplate', ($item), ($rootCategory, $categories))
                     <div class="me-auto">{{ $item->name }}</div>
 

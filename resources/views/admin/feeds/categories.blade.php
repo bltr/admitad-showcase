@@ -8,11 +8,13 @@
     <div class="row">
         <div class="col">
             @if($categories->isNotEmpty())
-                @component('components.tree', ['items'=> $categories, 'id' => 'a'])
+
+                @component('components.tree', ['items'=> $categories, 'id' => 'categories'])
                     @scopedSlot('itemTemplate', ($item))
                         <div>{{ $item->name }}</div>
                     @endScopedSlot
                 @endcomponent
+
             @else
                 <div class="my-5 small text-secondary text-center">
                     Нет данных
