@@ -19,18 +19,18 @@
                     </div>
 
                     @if(!empty($itemTemplate))
-                        @include($itemTemplate)
+                        {{ $itemTemplate($item) }}
                     @endif
                 </div>
 
                 @if($item->children->isNotEmpty())
-                    @include('components.tree', [
-                        'items' => $item->children,
-                        'itemTemplate' => $itemTemplate,
+                    @component('components.tree', [
+                        'items'=> $item->children,
+                        'itemTemplate' => $itemTemplate ?? null,
                         'id' => $id,
                         'parentItemId' => $item->id,
                         'depth' => $depth + 1,
-                    ])
+                    ])@endcomponent
                 @endif
             </li>
         @endforeach

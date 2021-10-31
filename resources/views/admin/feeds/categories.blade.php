@@ -8,11 +8,11 @@
     <div class="row">
         <div class="col">
             @if($categories->isNotEmpty())
-                @include('components.tree', [
-                    'items' => $categories,
-                    'itemTemplate' => 'admin.feeds._categories-tree-item',
-                    'id' => 'a'
-                ])
+                @component('components.tree', ['items'=> $categories, 'id' => 'a'])
+                    @scopedSlot('itemTemplate', ($item))
+                        <div>{{ $item->name }}</div>
+                    @endScopedSlot
+                @endcomponent
             @else
                 <div class="my-5 small text-secondary text-center">
                     Нет данных
