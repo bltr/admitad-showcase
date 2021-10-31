@@ -58,12 +58,23 @@
             </div>
 
             <div class="col-6">
-
-                @include('components.tree', [
+                @component('components.tree', [
                     'items' => $categories,
-                    'itemTemplate' => 'admin.catalog.categories.create._tree-item',
                     'id' => 'a'
                 ])
+                    @scopedSlot('itemTemplate', ($item))
+                        <div class="me-2">
+                            <input
+                                type="radio"
+                                class="form-check-input"
+                                name="parent_category_id"
+                                value="{{ $item->id }}"
+                            >
+                        </div>
+
+                        <div class="me-auto ms-1">{{ $item->name }}</div>
+                    @endScopedSlot
+                @endcomponent
             </div>
         </div>
     </form>

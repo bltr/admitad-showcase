@@ -22,11 +22,23 @@
                         <div class="ms-2 me-auto ps-1 mb-2">Без родителя</div>
                     </div>
 
-                    @include('components.tree', [
+                    @component('components.tree', [
                         'items' => $categories,
-                        'itemTemplate' => 'admin.catalog.categories.index._change-parent-tree-item',
                         'id' => 'b'
                     ])
+                        @scopedSlot('itemTemplate', ($item))
+                            <div class="me-2">
+                                <input
+                                    type="radio"
+                                    class="form-check-input"
+                                    name="parent_category_id"
+                                    value="{{ $item->id }}"
+                                    onchange="this.form.submit()"
+                                >
+                            </div>
+                            <div class="me-auto ms-1">{{ $item->name }}</div>
+                        @endScopedSlot
+                    @endcomponent
                 </form>
             </div>
             <div class="modal-footer">

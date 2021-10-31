@@ -1,1 +1,0 @@
-<div>{{ $item->name }}</div>
