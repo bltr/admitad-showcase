@@ -58,13 +58,26 @@
             </div>
 
             <div class="col-6">
+                <div class="d-flex">
+                    <div class="ms-5">
+                        <input
+                            type="radio"
+                            class="form-check-input"
+                            name="parent_id"
+                            value=""
+                            checked="false"
+                        >
+                    </div>
+                    <div class="ms-2 me-auto ps-1 mb-2">Без родителя</div>
+                </div>
+
                 @component('components.tree', ['items' => $categories, 'id' => 'categories'])
                     @scopedSlot('itemTemplate', ($item))
                         <div class="me-2">
                             <input
                                 type="radio"
                                 class="form-check-input"
-                                name="parent_category_id"
+                                name="parent_id"
                                 value="{{ $item->id }}"
                             >
                         </div>

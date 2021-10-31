@@ -57,4 +57,50 @@ class CategoriesController extends Controller
     {
         //
     }
+
+    public function appendTo(Category $category, Request $request)
+    {
+        if ($request->parent_category_id) {
+            $parentCategory = Category::findOrFail($request->parent_category_id);
+            $category->appendToNode($parentCategory);
+        } else {
+            $category->makeRoot();
+        }
+
+        $category->save();
+
+        return back();
+    }
+
+    public function up(Category $category)
+    {
+        $category->up();
+
+        return back();
+    }
+
+    public function down(Category $category)
+    {
+        $category->down();
+
+        return back();
+    }
+
+    public function first(Category $category)
+    {
+        if ($first = $category->siblings()->defaultOrder()->first()) {
+            $category->insertBeforeNode($first);
+        }
+
+        return back();
+    }
+
+    public function last(Category $category)
+    {
+        if ($last = $category->siblings()->defaultOrder('desc')->first()) {
+            $category->insertAfterNode($last);
+        }
+
+        return back();
+    }
 }
