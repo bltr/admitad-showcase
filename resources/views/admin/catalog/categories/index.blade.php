@@ -51,7 +51,7 @@
                         {{-- модальное окно которым управляет эта кнопка--}}
                         @once
                             @push('modal')
-                                @include('admin.catalog.categories.index._change-parent', ['root' => $rootCategory, 'categories' => $categories])
+                                @include('admin.catalog.categories._change-parent-modal', ['root' => $rootCategory, 'categories' => $categories])
                             @endpush
                         @endonce
                     </button>
