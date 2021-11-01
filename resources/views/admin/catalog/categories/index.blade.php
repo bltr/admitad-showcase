@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <div class="row my-4">
+    <div class="row my-1">
         <div class="col">
             <div class="float-end">
                 <a href="{{ route('admin.catalog.categories.create') }}" class="btn btn-success"><i class="bi-plus"></i></a>
@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <div class="row my-4">
+    <div class="row my-1">
         <div class="col">
             @component('components.tree', ['items' => $categories,'id' => 'categories'])
                 @scopedSlot('itemTemplate', ($item), ($categories))
@@ -44,22 +44,41 @@
 
                     <form method="POST" action="{{ route('admin.catalog.categories.up', $item) }}" class="ms-1">
                         @csrf
+                        @method('PATCH')
+
                         <button class="btn btn-outline-primary"><i class="bi bi-chevron-up"></i></button>
                     </form>
 
                     <form method="POST" action="{{ route('admin.catalog.categories.down', $item) }}" class="ms-1">
                         @csrf
+                        @method('PATCH')
+
                         <button class="btn btn-outline-primary"><i class="bi bi-chevron-down"></i></button>
                     </form>
 
                     <form method="POST" action="{{ route('admin.catalog.categories.first', $item) }}" class="ms-1">
                         @csrf
+                        @method('PATCH')
+
                         <button class="btn btn-outline-primary"><i class="bi bi-chevron-double-up"></i></button>
                     </form>
 
                     <form method="POST" action="{{ route('admin.catalog.categories.last', $item) }}" class="ms-1">
                         @csrf
+                        @method('PATCH')
+
                         <button class="btn btn-outline-primary"><i class="bi bi-chevron-double-down"></i></button>
+                    </form>
+
+                    <a class="btn btn-outline-primary ms-1" href="{{ route('admin.catalog.categories.edit', $item) }}">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+
+                    <form method="POST" action="{{ route('admin.catalog.categories.destroy', $item) }}" class="ms-1">
+                        @csrf
+                        @method('DELETE')
+
+                        <button class="btn btn-outline-danger"><i class="bi bi-folder-minus"></i></button>
                     </form>
                 @endScopedSlot
             @endcomponent

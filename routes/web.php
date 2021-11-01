@@ -41,10 +41,10 @@ Route::prefix('/admin')->name('admin.')->group(function () {
         Route::get('/', [CatalogController::class, 'index'])->name('index');
 
         Route::resource('categories', CatalogCategoriesController::class);
-        Route::post('/categories/{category}/append-to', [CatalogCategoriesController::class, 'appendTo'])->name('categories.append-to');
-        Route::post('/categories/{category}/up', [CatalogCategoriesController::class, 'up'])->name('categories.up');
-        Route::post('/categories/{category}/down', [CatalogCategoriesController::class, 'down'])->name('categories.down');
-        Route::post('/categories/{category}/first', [CatalogCategoriesController::class, 'first'])->name('categories.first');
-        Route::post('/categories/{category}/last', [CatalogCategoriesController::class, 'last'])->name('categories.last');
+        Route::patch('/categories/{category}/append-to', [CatalogCategoriesController::class, 'appendTo'])->name('categories.append-to');
+        Route::patch('/categories/{category}/up', [CatalogCategoriesController::class, 'up'])->name('categories.up');
+        Route::patch('/categories/{category}/down', [CatalogCategoriesController::class, 'down'])->name('categories.down');
+        Route::patch('/categories/{category}/first', [CatalogCategoriesController::class, 'first'])->name('categories.first');
+        Route::patch('/categories/{category}/last', [CatalogCategoriesController::class, 'last'])->name('categories.last');
     });
 });

@@ -42,17 +42,26 @@ class CategoriesController extends Controller
 
     public function edit(Category $category)
     {
-        //
+        $categories = Category::withDepth()
+            ->defaultOrder()
+            ->get()
+            ->toTree();
+
+        return view('admin.catalog.categories.edit', compact('category', 'categories'));
     }
 
     public function update(Request $request, Category $category)
     {
-        //
+        $category->update($request->all());
+
+        return redirect()->route('admin.catalog.categories.index');
     }
 
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return back();
     }
 
     public function appendTo(Category $category, Request $request)
