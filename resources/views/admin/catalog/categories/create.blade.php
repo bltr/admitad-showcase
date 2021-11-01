@@ -36,24 +36,6 @@
                     </div>
                 </div>
 
-                <fieldset class="row mb-3">
-                    <legend class="col-form-label col-sm-4 pt-0">Пол</legend>
-                    <div class="col-sm-8">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="sex" id="women" value="women" checked>
-                            <label class="form-check-label" for="women">
-                                Женщина
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="sex" id="men" value="men">
-                            <label class="form-check-label" for="men">
-                                Мужчина
-                            </label>
-                        </div>
-                    </div>
-                </fieldset>
-
                 <button type="submit" class="btn btn-primary">Создать</button>
             </div>
 

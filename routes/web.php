@@ -40,8 +40,7 @@ Route::prefix('/admin')->name('admin.')->group(function () {
     Route::prefix('catalog')->name('catalog.')->group(function () {
         Route::get('/', [CatalogController::class, 'index'])->name('index');
 
-        Route::get('/categories/root/{rootCategory?}', [CatalogCategoriesController::class, 'index'])->name('categories.index');
-        Route::resource('categories', CatalogCategoriesController::class)->except('index');
+        Route::resource('categories', CatalogCategoriesController::class);
         Route::post('/categories/{category}/append-to', [CatalogCategoriesController::class, 'appendTo'])->name('categories.append-to');
         Route::post('/categories/{category}/up', [CatalogCategoriesController::class, 'up'])->name('categories.up');
         Route::post('/categories/{category}/down', [CatalogCategoriesController::class, 'down'])->name('categories.down');

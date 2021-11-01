@@ -15,17 +15,6 @@
 
     <div class="row my-4">
         <div class="col">
-            <div class="btn-group">
-                @foreach($rootCategories as $category)
-                    <a type="button"
-                       class="btn btn-primary {{ $rootCategory->is($category) ? 'active' : '' }}"
-                       href="{{ route('admin.catalog.categories.index', $category) }}"
-                    >
-                        {{ $category->name }}
-                    </a>
-                @endforeach
-            </div>
-
             <div class="float-end">
                 <a href="{{ route('admin.catalog.categories.create') }}" class="btn btn-success"><i class="bi-plus"></i></a>
             </div>
@@ -35,7 +24,7 @@
     <div class="row my-4">
         <div class="col">
             @component('components.tree', ['items' => $categories,'id' => 'categories'])
-                @scopedSlot('itemTemplate', ($item), ($rootCategory, $categories))
+                @scopedSlot('itemTemplate', ($item), ($categories))
                     <div class="me-auto">{{ $item->name }}</div>
 
                     <button class="btn btn-outline-primary" data-bs-toggle="modal"
@@ -48,7 +37,7 @@
                         {{-- модальное окно которым управляет эта кнопка--}}
                         @once
                             @push('modal')
-                                @include('admin.catalog.categories._change-parent-modal', ['root' => $rootCategory, 'categories' => $categories])
+                                @include('admin.catalog.categories._change-parent-modal', ['categories' => $categories])
                             @endpush
                         @endonce
                     </button>
