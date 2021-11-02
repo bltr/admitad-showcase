@@ -29,13 +29,6 @@
                     </div>
                 </div>
 
-                <div class="row mb-3">
-                    <label for="slug" class="col-sm-4 col-form-label">Slug</label>
-                    <div class="col-sm-8">
-                        <input type="text" name="slug" class="form-control" id="slug" value="{{ $category->slug }}">
-                    </div>
-                </div>
-
                 <button type="submit" class="btn btn-primary">Создать</button>
             </div>
 

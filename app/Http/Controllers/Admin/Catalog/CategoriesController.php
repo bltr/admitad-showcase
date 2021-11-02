@@ -30,7 +30,8 @@ class CategoriesController extends Controller
 
     public function store(Request $request)
     {
-        Category::create($request->all());
+        $data = $request->validate(['name' => 'required|string']);
+        Category::create($data);
 
         return redirect()->route('admin.catalog.categories.index');
     }
@@ -52,7 +53,8 @@ class CategoriesController extends Controller
 
     public function update(Request $request, Category $category)
     {
-        $category->update($request->all());
+        $data = $request->validate(['name' => 'required|string']);
+        $category->update($data);
 
         return redirect()->route('admin.catalog.categories.index');
     }
