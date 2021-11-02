@@ -25,7 +25,13 @@
                 <div class="row mb-3">
                     <label for="name" class="col-sm-4 col-form-label">Название</label>
                     <div class="col-sm-8">
-                        <input type="text" name="name" class="form-control" id="name" value="{{ $category->name }}">
+                        <input type="text" name="name" class="form-control
+                            @error('name')) is-invalid @enderror" id="name"
+                               value="{{ old('name', $category->name) }}"
+                        >
+                        @error('name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -40,7 +46,7 @@
                             class="form-check-input"
                             name="parent_id"
                             value=""
-                            checked="false"
+                            @if(old('parent_id') === null) checked @endif
                         >
                     </div>
                     <div class="ms-2 me-auto ps-1 mb-2">Без родителя</div>
@@ -54,7 +60,7 @@
                                 class="form-check-input"
                                 name="parent_id"
                                 value="{{ $item->id }}"
-                                {{ $item->id === $category->parent_id ? 'checked' : ''}}
+                                @if(old('parent_id', $category->parent_id) == $item->id) checked @endif
                             >
                         </div>
 

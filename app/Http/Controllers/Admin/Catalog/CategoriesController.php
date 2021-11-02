@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Catalog;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Kalnoy\Nestedset\Collection;
 
 class CategoriesController extends Controller
@@ -25,7 +26,7 @@ class CategoriesController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate(['name' => 'required|string']);
+        $data = $this->validateRequest($request);
         Category::create($data);
 
         return redirect()->route('admin.catalog.categories.index');
@@ -45,7 +46,7 @@ class CategoriesController extends Controller
 
     public function update(Request $request, Category $category)
     {
-        $data = $request->validate(['name' => 'required|string']);
+        $data = $this->validateRequest($request);
         $category->update($data);
 
         return redirect()->route('admin.catalog.categories.index');
@@ -110,5 +111,25 @@ class CategoriesController extends Controller
             ->defaultOrder()
             ->get()
             ->toTree();
+    }
+
+    public function validateRequest(Request $request): array
+    {
+        return $request->validate([
+            'name' => 'required|string',
+            'parent_id' => [
+                'nullable',
+                'integer',
+                'exists:' . Category::class . ',id',
+                function ($attribute, $value, $fail) use ($request) {
+                    if (
+                        $request->routeIs('admin.catalog.categories.update')
+                        && $request->route('category')->id == $value
+                    ) {
+                        $fail('parent_id не может указывать на себя.');
+                    }
+                },
+            ],
+        ]);
     }
 }

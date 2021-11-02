@@ -11,6 +11,7 @@
             <div class="modal-body">
                 <form method="POST">
                     @csrf
+                    @method('PATCH')
 
                     <div class="d-flex">
                         <div class="ms-5">
