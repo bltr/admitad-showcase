@@ -19,6 +19,8 @@ class CreateCategoriesTable extends Migration
             $table->string('name');
             $table->string('slug');
             $table->nestedSet();
+
+            $table->foreign(\Kalnoy\Nestedset\NestedSet::PARENT_ID)->references('id')->on('categories');
         });
     }
 

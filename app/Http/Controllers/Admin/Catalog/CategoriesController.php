@@ -117,19 +117,7 @@ class CategoriesController extends Controller
     {
         return $request->validate([
             'name' => 'required|string',
-            'parent_id' => [
-                'nullable',
-                'integer',
-                'exists:' . Category::class . ',id',
-                function ($attribute, $value, $fail) use ($request) {
-                    if (
-                        $request->routeIs('admin.catalog.categories.update')
-                        && $request->route('category')->id == $value
-                    ) {
-                        $fail('parent_id не может указывать на себя.');
-                    }
-                },
-            ],
+            'parent_id' => ['nullable', 'integer'],
         ]);
     }
 }
