@@ -5,25 +5,20 @@ namespace App\Http\Controllers\Admin\Catalog;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Kalnoy\Nestedset\Collection;
 
 class CategoriesController extends Controller
 {
     public function index()
     {
-        $categories = Category::defaultOrder()
-            ->withDepth()
-            ->get()
-            ->toTree();
+        $categories = $this->getCategoriesTree();
 
         return view('admin.catalog.categories.index', compact('categories'));
     }
 
     public function create()
     {
-        $categories = Category::withDepth()
-            ->defaultOrder()
-            ->get()
-            ->toTree();
+        $categories = $this->getCategoriesTree();
 
         return view('admin.catalog.categories.create', compact('categories'));
     }
@@ -43,10 +38,7 @@ class CategoriesController extends Controller
 
     public function edit(Category $category)
     {
-        $categories = Category::withDepth()
-            ->defaultOrder()
-            ->get()
-            ->toTree();
+        $categories = $this->getCategoriesTree();
 
         return view('admin.catalog.categories.edit', compact('category', 'categories'));
     }
@@ -110,5 +102,13 @@ class CategoriesController extends Controller
         }
 
         return back();
+    }
+
+    public function getCategoriesTree(): Collection
+    {
+        return Category::withDepth()
+            ->defaultOrder()
+            ->get()
+            ->toTree();
     }
 }
