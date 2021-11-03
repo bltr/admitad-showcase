@@ -18,7 +18,7 @@
                             <input
                                 type="radio"
                                 class="form-check-input"
-                                name="parent_category_id"
+                                name="parent_id"
                                 value=""
                                 onchange="this.form.submit()"
                             >
@@ -32,7 +32,7 @@
                                 <input
                                     type="radio"
                                     class="form-check-input"
-                                    name="parent_category_id"
+                                    name="parent_id"
                                     value="{{ $item->id }}"
                                     onchange="this.form.submit()"
                                 >

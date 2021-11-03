@@ -60,8 +60,8 @@ class CategoriesController extends Controller
 
     public function appendTo(Category $category, Request $request)
     {
-        if ($request->parent_category_id) {
-            $parentCategory = Category::findOrFail($request->parent_category_id);
+        if ($request->parent_id) {
+            $parentCategory = Category::findOrFail($request->parent_id);
             $category->appendToNode($parentCategory);
         } else {
             $category->makeRoot();
