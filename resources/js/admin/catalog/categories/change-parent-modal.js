@@ -3,6 +3,10 @@
         let changeParentModal = document.getElementById('change-parent-modal')
         let categoryItem = undefined;
 
+        if (changeParentModal === null) {
+            return
+        }
+
         changeParentModal.addEventListener('show.bs.modal', function (event) {
             let button = event.relatedTarget
             let category_id = button.getAttribute('data-category-id')
