@@ -20,4 +20,12 @@ class Category extends Model
             $instance->slug = Str::slug($instance->name);
         });
     }
+
+    public function delete()
+    {
+        if ($this->children->isNotEmpty()) {
+            throw new \DomainException('Попытка удаления категории с потомками.');
+        }
+        return parent::delete();
+    }
 }
