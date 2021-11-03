@@ -60,6 +60,7 @@
                                 class="form-check-input"
                                 name="parent_id"
                                 value="{{ $item->id }}"
+                                @if($item->id === $category->id || $item->isDescendantOf($category)) disabled @endif
                                 @if(old('parent_id', $category->parent_id) == $item->id) checked @endif
                             >
                         </div>

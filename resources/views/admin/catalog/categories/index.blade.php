@@ -28,7 +28,7 @@
                     <div class="me-auto">{{ $item->name }}</div>
 
                     <button class="btn btn-outline-primary" data-bs-toggle="modal"
-                            data-bs-target="#choiceParentModal"
+                            data-bs-target="#change-parent-modal"
                             data-category-id="{{ $item->id }}"
                             data-link="{{ route('admin.catalog.categories.append-to', $item) }}"
                     >

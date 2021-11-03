@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin\Catalog;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Kalnoy\Nestedset\Collection;
 
 class CategoriesController extends Controller

@@ -1,4 +1,4 @@
 require('./bootstrap');
 
 require('./components/tree')
-require('./components/modal')
+require('./admin/catalog/categories/change-parent-modal')

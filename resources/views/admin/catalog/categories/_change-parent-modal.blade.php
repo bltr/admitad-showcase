@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal" id="choiceParentModal" tabindex="-1">
+<div class="modal" id="change-parent-modal" tabindex="-1">
     <div class="modal-dialog  modal-lg modal-dialog-scrollable modal-dialog-centered">
         <div class="modal-content h-100">
 
