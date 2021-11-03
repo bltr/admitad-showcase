@@ -9,7 +9,7 @@
             let link = button.getAttribute('data-link')
 
             categoryItem = changeParentModal.querySelector('li[data-item-id="' + category_id + '"]')
-            categoryItem.querySelectorAll('input[name="parent_category_id"]').forEach((el) => {
+            categoryItem.querySelectorAll('input[name="parent_id"]').forEach((el) => {
                 el.disabled = true
             })
             categoryItem.classList.add('text-secondary')
@@ -20,7 +20,7 @@
 
         changeParentModal.addEventListener('hide.bs.modal', function (event) {
             categoryItem.classList.remove('text-secondary')
-            categoryItem.querySelectorAll('input[name="parent_category_id"]').forEach((el) => {
+            categoryItem.querySelectorAll('input[name="parent_id"]').forEach((el) => {
                 el.disabled = false
             })
         })
