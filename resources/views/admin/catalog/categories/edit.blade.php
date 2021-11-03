@@ -35,7 +35,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Создать</button>
+                <button type="submit" class="btn btn-primary">Сохранить</button>
             </div>
 
             <div class="col-6">

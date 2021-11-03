@@ -78,7 +78,7 @@
                         @csrf
                         @method('DELETE')
 
-                        <button class="btn btn-outline-danger"><i class="bi bi-folder-minus"></i></button>
+                        <button class="btn btn-outline-danger" @if($item->children->isNotEmpty()) disabled @endif><i class="bi bi-folder-minus"></i></button>
                     </form>
                 @endScopedSlot
             @endcomponent

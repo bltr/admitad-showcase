@@ -53,6 +53,9 @@ class CategoriesController extends Controller
 
     public function destroy(Category $category)
     {
+        if ($category->children->isNotEmpty()) {
+            throw new \DomainException('Нельзя удалить категорию с дочерними категориями.');
+        }
         $category->delete();
 
         return back();
