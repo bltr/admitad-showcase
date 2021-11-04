@@ -23,32 +23,31 @@
                 {{ config('app.name') . '.admin' }}
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
-            >
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.home') ? 'active' : '' }}" aria-current="page" href="{{ route('admin.home') }}">
+                        <a class="nav-link @if(request()->routeIs('admin.home')) active @endif" href="{{ route('admin.home') }}">
                             <i class="bi bi-house"></i>
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle @if(request()->routeIs('admin.catalog.*')) active @endif" href="#" data-bs-toggle="dropdown">
                             Каталог
                         </a>
 
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{{ route('admin.catalog.index') }}">Товары</a></li>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ route('admin.catalog.index') }}">Сводная</a></li>
+                            <li><a class="dropdown-item" href="{{ route('admin.catalog.offers.index') }}">Товары</a></li>
                             <li><a class="dropdown-item" href="{{ route('admin.catalog.categories.index') }}">Категории</a></li>
                             <li><a class="dropdown-item" href="#">Тэги</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.feeds.index') ? 'active' : '' }}" aria-current="page" href="{{ route('admin.feeds.index') }}">
+                        <a class="nav-link @if(request()->routeIs('admin.feeds.*')) active @endif" href="{{ route('admin.feeds.index') }}">
                             Фиды
                         </a>
                     </li>

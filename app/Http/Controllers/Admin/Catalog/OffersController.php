@@ -7,7 +7,7 @@ use App\Models\Offer;
 use App\Models\Shop;
 use Illuminate\Http\Request;
 
-class CatalogController extends Controller
+class OffersController extends Controller
 {
     public function index(Request $request)
     {
@@ -19,6 +19,6 @@ class CatalogController extends Controller
 
         $shops = Shop::active()->get();
 
-        return view('admin.catalog.index', compact('offers', 'shops'));
+        return view('admin.catalog.offers.index', compact('offers', 'shops'));
     }
 }

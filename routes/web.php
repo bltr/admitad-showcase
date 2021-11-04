@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Admin\Catalog\CatalogController;
+use App\Http\Controllers\Admin\Catalog\IndexController as CatalogIndexController;
+use App\Http\Controllers\Admin\Catalog\OffersController as CatalogOffersController;
 use App\Http\Controllers\Admin\Catalog\CategoriesController as CatalogCategoriesController;
 use App\Http\Controllers\Admin\Feeds\ReportController;
 use App\Http\Controllers\Admin\Feeds\CategoriesController;
@@ -38,7 +39,9 @@ Route::prefix('/admin')->name('admin.')->group(function () {
     });
 
     Route::prefix('catalog')->name('catalog.')->group(function () {
-        Route::get('/', [CatalogController::class, 'index'])->name('index');
+        Route::get('/', [CatalogIndexController::class, 'index'])->name('index');
+
+        Route::get('/offers', [CatalogOffersController::class, 'index'])->name('offers.index');
 
         Route::resource('categories', CatalogCategoriesController::class);
         Route::patch('/categories/{category}/append-to', [CatalogCategoriesController::class, 'appendTo'])->name('categories.append-to');
