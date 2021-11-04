@@ -6,8 +6,8 @@
 @endphp
 
 @section('feed-content')
-    <div class="row ">
-        @include('admin.feeds.components._nav', ['shop' => $currentShop])
+    <div class="row">
+        @include('admin.feeds._nav', ['shop' => $currentShop])
     </div>
 
     <div class="row">

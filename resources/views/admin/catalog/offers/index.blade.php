@@ -2,20 +2,8 @@
 
 @section('content')
     <div class="row">
-        <div class="col-12">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb text-lowercase">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.home') }}"><i class="bi bi-house"></i></a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Каталог</li>
-                </ol>
-            </nav>
-        </div>
-    </div>
-
-    <div class="row">
         <div class="col-2">
             <form>
-
                 <fieldset class="row p-2 border border-secondary rounded">
                     <legend class="col-form-label col-12 text-secondary">Магазины</legend>
                     <div class="col-12 mb-3">

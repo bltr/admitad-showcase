@@ -1,18 +1,6 @@
 @extends('admin.layout')
 
 @section('content')
-    <div class="row">
-        <div class="col-12">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb text-lowercase">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.home') }}"><i class="bi bi-house"></i></a></li>
-                    <li class="breadcrumb-item active">Каталог</li>
-                    <li class="breadcrumb-item active" aria-current="page">Категории</li>
-                </ol>
-            </nav>
-        </div>
-    </div>
-
     <div class="row my-1">
         <div class="col">
             <div class="float-end">

@@ -2,12 +2,6 @@
 
 @section('content')
     <div class="row">
-        <div class="col">
-            @include('admin.feeds.components._breadcrums', ['shop' => $currentShop ?? null])
-        </div>
-    </div>
-
-    <div class="row">
         <div class="col-2">
             <div class="list-group">
                 @foreach($shops as $shop)

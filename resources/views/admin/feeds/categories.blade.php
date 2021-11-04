@@ -2,7 +2,7 @@
 
 @section('feed-content')
     <div class="row">
-        @include('admin.feeds.components._nav', ['shop' => $currentShop])
+        @include('admin.feeds._nav', ['shop' => $currentShop])
     </div>
 
     <div class="row">

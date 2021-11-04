@@ -2,21 +2,6 @@
 
 @section('content')
     <div class="row">
-        <div class="col">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb text-lowercase">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.home') }}"><i class="bi bi-house"></i></a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('admin.feeds.index') }}">Фиды</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">
-                        <a href="{{ route('admin.feeds.report', $shop) }}">{{ $shop->name }}</a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">Отклонения групп</li>
-                </ol>
-            </nav>
-        </div>
-    </div>
-
-    <div class="row">
         <div class="col-6">
             @include('admin.report.feed.offers_count', $report->data['feed.offers_count'])
         </div>

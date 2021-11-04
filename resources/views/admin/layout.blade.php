@@ -57,6 +57,8 @@
     </nav>
 
     <main class="container py-4">
+        {{ \Diglactic\Breadcrumbs\Breadcrumbs::render() }}
+
         @yield('content')
     </main>
 
