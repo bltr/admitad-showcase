@@ -10,7 +10,7 @@ class OffersController extends Controller
 {
     public function index(Shop $shop)
     {
-        $offers = FeedOffer::with('feed_category')
+        $offers = FeedOffer::with('feed_category.ancestors')
             ->where('shop_id', $shop->id)
             ->selectRaw('*, jsonb_pretty(data) as data')
             ->orderBy('id')
