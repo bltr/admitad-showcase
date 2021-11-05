@@ -93,7 +93,7 @@
                     data-bs-placement="right"
                     title="Отклонения по picture в группах по url"
                 >
-                    <span class="text-danger">u:</span>
+                    <span class="text-danger">p:</span>
                     @if(!empty($deviations['picture_deviation_in_url_group']))
                         <a href="{{ route('admin.feeds.report.group-deviation', [$shop, $report, 'deviation_type' => 'picture_deviation_in_url_group']) }}"
                            @class(['badge text-dark', 'bg-danger' => request()->deviation_type === 'picture_deviation_in_url_group'])

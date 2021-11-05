@@ -32,9 +32,17 @@
                         <div class="ms-auto"
                              data-bs-toggle="tooltip"
                              data-bs-placement="right"
+                             title="Количество групп"
+                        >
+                            {{ $shop->group_count }}
+                            <i class="bi bi-union text-secondary"></i>
+                        </div>
+                        <div class="ms-auto"
+                             data-bs-toggle="tooltip"
+                             data-bs-placement="right"
                              title="Количество офферов в фиде"
                         >
-                            {{ $shop->report->data['feed.offers_count']['count'] ?? '-' }}
+                            {{ $shop->offers_count ?? '-' }}
                             <i class="bi bi-union text-secondary"></i>
                         </div>
                     </li>

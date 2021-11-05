@@ -102,4 +102,36 @@ class Shop extends Model
     {
         return storage_path(static::FEED_DIR_NAME) . '/' . $this->id . '.xml';
     }
+
+    public function getOffersCountAttribute()
+    {
+        return $this->report->data['feed.offers_count']['count'] ?? null;
+    }
+
+    public function getGroupCountAttribute()
+    {
+        $group_id_count = $this->report->data['feed.groups_count']['group_id_count'] ?? 0;
+        $url_count = $this->report->data['feed.groups_count']['url_count'] ?? 0;
+        $picture_count = $this->report->data['feed.groups_count']['picture_count'] ?? 0;
+
+        $values = [];
+
+        if ($group_id_count !== 0) {
+            $values[] = $group_id_count;
+        }
+
+        if ($url_count !== 0) {
+            $values[] = $url_count;
+        }
+
+        if ($picture_count !== 0) {
+            $values[] = $picture_count;
+        }
+
+        if (empty($values)) {
+            return 0;
+        }
+
+        return min(...$values);
+    }
 }

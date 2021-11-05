@@ -12,7 +12,9 @@ class IndexController extends Controller
 {
     public function index(ReportService $reportService)
     {
-        $shops = Shop::with('report')->get();
+        $shops = Shop::with('report')
+            ->get()
+            ->sortByDesc('group_count');
         $compositeReport = CompositeReport::feedReportTotal();
         $report = $reportService->getLastReport($compositeReport);
         $reports_codes = $compositeReport->getReportsCodes();

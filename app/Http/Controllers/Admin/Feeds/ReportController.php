@@ -21,7 +21,9 @@ class ReportController extends Controller
         $compositeReport = CompositeReport::feedReportByShop();
         $report = $reportService->getLastReport($compositeReport, $shop->id);
         $reports_codes = $compositeReport->getReportsCodes();
-        $shops = Shop::all();
+        $shops = Shop::with('report')
+            ->get()
+            ->sortByDesc('group_count');
         $currentShop = $shop;
 
         return view('admin.feeds.report', compact('currentShop', 'report', 'reports_codes', 'shops', 'shop'));

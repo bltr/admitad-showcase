@@ -4,6 +4,7 @@
 namespace App\Services\Report;
 
 
+use App\Services\Report\Reports\FeedDistinctFieldsReport;
 use App\Services\Report\Reports\OffersCountReport;
 use App\Services\Report\Reports\ShopsCountReport;
 use App\Services\Report\Reports\FeedGroupsCountReport;
@@ -30,6 +31,7 @@ class CompositeReport implements Report
         $composite = new self('feed_report_by_shop');
         $composite->addReport(new FeedOffersCountReport());
         $composite->addReport(new FeedGroupsCountReport());
+        $composite->addReport(new FeedDistinctFieldsReport());
 
         return $composite;
     }
