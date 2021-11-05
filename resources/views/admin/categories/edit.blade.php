@@ -1,7 +1,7 @@
 @extends('admin.layout')
 
 @section('content')
-    <form method="POST" action="{{ route('admin.catalog.categories.update', $category) }}">
+    <form method="POST" action="{{ route('admin.categories.update', $category) }}">
         @csrf
         @method('PUT')
 

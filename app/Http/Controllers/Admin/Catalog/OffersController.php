@@ -19,6 +19,6 @@ class OffersController extends Controller
 
         $shops = Shop::active()->get();
 
-        return view('admin.catalog.offers.index', compact('offers', 'shops'));
+        return view('admin.offers.index', compact('offers', 'shops'));
     }
 }

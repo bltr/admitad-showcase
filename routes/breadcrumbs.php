@@ -11,30 +11,23 @@ Breadcrumbs::for('admin.home', function (BreadcrumbTrail $trail) {
 });
 
 /**
- * Catalog
+ * Offers
  */
-Breadcrumbs::for('admin.catalog.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('admin.home')->push('Каталог', route('admin.catalog.index'));
+Breadcrumbs::for('admin.offers.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.index')->push('Товары', route('admin.offers.index'));
 });
 
 /**
- * Catalog.Offers
+ * Categories
  */
-Breadcrumbs::for('admin.catalog.offers.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('admin.catalog.index')->push('Товары', route('admin.catalog.offers.index'));
+Breadcrumbs::for('admin.categories.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.index')->push('Категории', route('admin.categories.index'));
 });
-
-/**
- * Catalog.Categories
- */
-Breadcrumbs::for('admin.catalog.categories.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('admin.catalog.index')->push('Категории', route('admin.catalog.categories.index'));
+Breadcrumbs::for('admin.categories.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.categories.index')->push('Создать', route('admin.categories.create'));
 });
-Breadcrumbs::for('admin.catalog.categories.create', function (BreadcrumbTrail $trail) {
-    $trail->parent('admin.catalog.categories.index')->push('Создать', route('admin.catalog.categories.create'));
-});
-Breadcrumbs::for('admin.catalog.categories.edit', function (BreadcrumbTrail $trail, $category) {
-    $trail->parent('admin.catalog.categories.index')->push('Изменить', route('admin.catalog.categories.edit', $category));
+Breadcrumbs::for('admin.categories.edit', function (BreadcrumbTrail $trail, $category) {
+    $trail->parent('admin.categories.index')->push('Изменить', route('admin.categories.edit', $category));
 });
 
 /**

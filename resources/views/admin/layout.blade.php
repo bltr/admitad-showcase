@@ -34,17 +34,15 @@
                             <i class="bi bi-house"></i>
                         </a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle @if(request()->routeIs('admin.catalog.*')) active @endif" href="#" data-bs-toggle="dropdown">
-                            Каталог
+                    <li class="nav-item">
+                        <a class="nav-link @if(request()->routeIs('admin.offers.index')) active @endif" href="{{ route('admin.offers.index') }}">
+                            Товары
                         </a>
-
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('admin.catalog.index') }}">Сводная</a></li>
-                            <li><a class="dropdown-item" href="{{ route('admin.catalog.offers.index') }}">Товары</a></li>
-                            <li><a class="dropdown-item" href="{{ route('admin.catalog.categories.index') }}">Категории</a></li>
-                            <li><a class="dropdown-item" href="#">Тэги</a></li>
-                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if(request()->routeIs('admin.categories.index')) active @endif" href="{{ route('admin.categories.index') }}">
+                            Категории
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if(request()->routeIs('admin.feeds.*')) active @endif" href="{{ route('admin.feeds.index') }}">

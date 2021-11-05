@@ -13,14 +13,14 @@ class CategoriesController extends Controller
     {
         $categories = $this->getCategoriesTree();
 
-        return view('admin.catalog.categories.index', compact('categories'));
+        return view('admin.categories.index', compact('categories'));
     }
 
     public function create()
     {
         $categories = $this->getCategoriesTree();
 
-        return view('admin.catalog.categories.create', compact('categories'));
+        return view('admin.categories.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -28,7 +28,7 @@ class CategoriesController extends Controller
         $data = $this->validateRequest($request);
         Category::create($data);
 
-        return redirect()->route('admin.catalog.categories.index');
+        return redirect()->route('admin.categories.index');
     }
 
     public function show(Category $category)
@@ -40,7 +40,7 @@ class CategoriesController extends Controller
     {
         $categories = $this->getCategoriesTree();
 
-        return view('admin.catalog.categories.edit', compact('category', 'categories'));
+        return view('admin.categories.edit', compact('category', 'categories'));
     }
 
     public function update(Request $request, Category $category)
@@ -48,7 +48,7 @@ class CategoriesController extends Controller
         $data = $this->validateRequest($request);
         $category->update($data);
 
-        return redirect()->route('admin.catalog.categories.index');
+        return redirect()->route('admin.categories.index');
     }
 
     public function destroy(Category $category)

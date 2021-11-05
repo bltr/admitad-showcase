@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\Catalog\IndexController as CatalogIndexController;
 use App\Http\Controllers\Admin\Catalog\OffersController as CatalogOffersController;
 use App\Http\Controllers\Admin\Catalog\CategoriesController as CatalogCategoriesController;
 use App\Http\Controllers\Admin\Feeds\ReportController;
@@ -38,16 +37,15 @@ Route::prefix('/admin')->name('admin.')->group(function () {
         Route::get('/{shop}/report/{report}/group-deviation', [ReportController::class, 'groupDeviation'])->name('report.group-deviation');
     });
 
-    Route::prefix('catalog')->name('catalog.')->group(function () {
-        Route::get('/', [CatalogIndexController::class, 'index'])->name('index');
 
-        Route::get('/offers', [CatalogOffersController::class, 'index'])->name('offers.index');
+    Route::get('/offers', [CatalogOffersController::class, 'index'])->name('offers.index');
 
-        Route::resource('categories', CatalogCategoriesController::class);
-        Route::patch('/categories/{category}/append-to', [CatalogCategoriesController::class, 'appendTo'])->name('categories.append-to');
-        Route::patch('/categories/{category}/up', [CatalogCategoriesController::class, 'up'])->name('categories.up');
-        Route::patch('/categories/{category}/down', [CatalogCategoriesController::class, 'down'])->name('categories.down');
-        Route::patch('/categories/{category}/first', [CatalogCategoriesController::class, 'first'])->name('categories.first');
-        Route::patch('/categories/{category}/last', [CatalogCategoriesController::class, 'last'])->name('categories.last');
+    Route::resource('categories', CatalogCategoriesController::class);
+    Route::prefix('categories')->name('categories.')->group(function () {
+        Route::patch('{category}/append-to', [CatalogCategoriesController::class, 'appendTo'])->name('append-to');
+        Route::patch('{category}/up', [CatalogCategoriesController::class, 'up'])->name('up');
+        Route::patch('{category}/down', [CatalogCategoriesController::class, 'down'])->name('down');
+        Route::patch('{category}/first', [CatalogCategoriesController::class, 'first'])->name('first');
+        Route::patch('{category}/last', [CatalogCategoriesController::class, 'last'])->name('last');
     });
 });
