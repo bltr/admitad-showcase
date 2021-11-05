@@ -7,7 +7,7 @@ use App\Models\FeedCategory;
 use App\Models\Shop;
 use Illuminate\Http\Request;
 
-class CategoriesController extends Controller
+class FeedCategoriesController extends Controller
 {
     public function index(Shop $shop)
     {

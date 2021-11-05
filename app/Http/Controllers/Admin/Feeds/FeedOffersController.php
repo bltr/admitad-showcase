@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\FeedOffer;
 use App\Models\Shop;
 
-class OffersController extends Controller
+class FeedOffersController extends Controller
 {
     public function index(Shop $shop)
     {
