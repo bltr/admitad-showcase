@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Admin\Catalog\OffersController as CatalogOffersController;
-use App\Http\Controllers\Admin\Catalog\CategoriesController as CatalogCategoriesController;
+use App\Http\Controllers\Admin\OffersController as CatalogOffersController;
+use App\Http\Controllers\Admin\CategoriesController as CatalogCategoriesController;
 use App\Http\Controllers\Admin\Feeds\ReportController;
 use App\Http\Controllers\Admin\Feeds\CategoriesController;
 use App\Http\Controllers\Admin\Feeds\IndexController;

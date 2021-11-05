@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Catalog;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Offer;
 use App\Models\Shop;
 use Illuminate\Http\Request;
+use function view;
 
 class OffersController extends Controller
 {

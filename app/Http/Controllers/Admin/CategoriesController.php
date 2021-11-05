@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Catalog;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Kalnoy\Nestedset\Collection;
+use function back;
+use function redirect;
+use function view;
 
 class CategoriesController extends Controller
 {
