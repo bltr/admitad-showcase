@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Admin\OffersController;
 use App\Http\Controllers\Admin\CategoriesController;
-use App\Http\Controllers\Admin\Feeds\ReportController;
+use App\Http\Controllers\Admin\Feeds\ImportSettingsController;
 use App\Http\Controllers\Admin\Feeds\FeedCategoriesController;
 use App\Http\Controllers\Admin\Feeds\IndexController;
 use App\Http\Controllers\Admin\Feeds\FeedOffersController;
@@ -33,8 +33,8 @@ Route::prefix('/admin')->name('admin.')->group(function () {
         Route::patch('/{shop}/import-type', [IndexController::class, 'importType'])->name('import-type');
         Route::get('/{shop}/offers', [FeedOffersController::class, 'index'])->name('offers');
         Route::get('/{shop}/categories', [FeedCategoriesController::class, 'index'])->name('categories');
-        Route::get('/{shop}/import-settings', [ReportController::class, 'index'])->name('import-settings');
-        Route::get('/{shop}/report/group-deviation', [ReportController::class, 'groupDeviation'])->name('report.group-deviation');
+        Route::get('/{shop}/import-settings', [ImportSettingsController::class, 'index'])->name('import-settings');
+        Route::get('/{shop}/report/group-deviation', [ImportSettingsController::class, 'groupDeviation'])->name('report.group-deviation');
     });
 
 

@@ -12,13 +12,13 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
-class ReportController extends Controller
+class ImportSettingsController extends Controller
 {
     public function index(Shop $shop, PrecomputedValuesService $computingService)
     {
         $values = $computingService->getLastValuesForShop($shop->id);
 
-        return view('admin.feeds.report', compact('shop') + $values);
+        return view('admin.feeds.import-settings', compact('shop') + $values);
     }
 
     public function groupDeviation(Shop $shop, Request $request, PrecomputedValuesService $computingService)
