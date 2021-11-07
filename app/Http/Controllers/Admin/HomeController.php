@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Services\Report\ReportService;
-use App\Services\Report\CompositeReport;
+use App\Services\PrecomputedValues\PrecomputedValuesService;
 
 class HomeController extends Controller
 {
-    public function index(ReportService $reportService){
-        $report = $reportService->getLastReport(CompositeReport::catalogReportTotal());
+    public function index(PrecomputedValuesService $computingService){
+        $values = $computingService->getLastTotalValues();
 
-        return view('admin.home.index', compact('report'));
+        return view('admin.home.index', compact('values'));
     }
 }

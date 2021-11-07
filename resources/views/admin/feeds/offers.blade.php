@@ -1,8 +1,8 @@
-@extends('admin.feeds.layout')
+@extends('admin.layout')
 
-@section('feed-content')
+@section('content')
     <div class="row">
-        @include('admin.feeds._nav', ['shop' => $currentShop])
+        @include('admin.feeds._nav', ['shop' => $shop])
     </div>
 
     @if($offers->isNotEmpty())

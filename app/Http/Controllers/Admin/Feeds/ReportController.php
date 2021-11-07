@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Admin\Feeds;
 
 use App\Models\FeedOffer;
-use App\Models\Report;
-use App\Services\Report\ReportService;
+use App\Services\PrecomputedValues\PrecomputedValuesService;
 use App\Http\Controllers\Controller;
 use App\Models\Shop;
-use App\Services\Report\CompositeReport;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
@@ -16,25 +14,21 @@ use Illuminate\Support\Collection;
 
 class ReportController extends Controller
 {
-    public function index(Shop $shop, ReportService $reportService)
+    public function index(Shop $shop, PrecomputedValuesService $computingService)
     {
-        $compositeReport = CompositeReport::feedReportByShop();
-        $report = $reportService->getLastReport($compositeReport, $shop->id);
-        $reports_codes = $compositeReport->getReportsCodes();
-        $shops = Shop::with('report')
-            ->get()
-            ->sortByDesc('group_count');
-        $currentShop = $shop;
+        $values = $computingService->getLastValuesForShop($shop->id);
 
-        return view('admin.feeds.report', compact('currentShop', 'report', 'reports_codes', 'shops', 'shop'));
+        return view('admin.feeds.report', compact('shop') + $values);
     }
 
-    public function groupDeviation(Shop $shop, Report $report, Request $request)
+    public function groupDeviation(Shop $shop, Request $request, PrecomputedValuesService $computingService)
     {
-        $paginator = $this->getPaginator($report->data['feed.groups_count']['deviations'][$request->deviation_type], $request);
+        $values = $computingService->getLastValuesForShop($shop->id);
+
+        $paginator = $this->getPaginator($values['feed_offers_group_deviations'][$request->deviation_type], $request);
         $offers = $this->getOffers($paginator->items());
 
-        return view('admin.feeds.group-deviation', compact('shop', 'report', 'offers', 'paginator'));
+        return view('admin.feeds.group-deviation', compact('shop', 'offers', 'paginator') + $values);
     }
 
     public function getPaginator(array $deviations, Request $request): LengthAwarePaginator

@@ -14,11 +14,7 @@ class FeedCategoriesController extends Controller
         $categories = FeedCategory::where('shop_id', $shop->id)
             ->get()
             ->toTree();
-        $shops = Shop::with('report')
-            ->get()
-            ->sortByDesc('group_count');
-        $currentShop = $shop;
 
-        return view('admin.feeds.categories', compact('currentShop', 'categories', 'shops'));
+        return view('admin.feeds.categories', compact('shop', 'categories'));
     }
 }

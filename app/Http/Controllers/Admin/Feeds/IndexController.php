@@ -4,22 +4,17 @@ namespace App\Http\Controllers\Admin\Feeds;
 
 use App\Http\Controllers\Controller;
 use App\Models\Shop;
-use App\Services\Report\ReportService;
-use App\Services\Report\CompositeReport;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
-    public function index(ReportService $reportService)
+    public function index()
     {
-        $shops = Shop::with('report')
+        $shops = Shop::with('feed_offers_count', 'feed_offers_groups_count')
             ->get()
             ->sortByDesc('group_count');
-        $compositeReport = CompositeReport::feedReportTotal();
-        $report = $reportService->getLastReport($compositeReport);
-        $reports_codes = $compositeReport->getReportsCodes();
 
-        return view('admin.feeds.index', compact('shops', 'report', 'reports_codes'));
+        return view('admin.feeds.index', compact('shops'));
     }
 
     public function toggleActivity(Shop $shop)

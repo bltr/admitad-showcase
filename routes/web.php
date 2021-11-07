@@ -34,7 +34,7 @@ Route::prefix('/admin')->name('admin.')->group(function () {
         Route::get('/{shop}/offers', [FeedOffersController::class, 'index'])->name('offers');
         Route::get('/{shop}/categories', [FeedCategoriesController::class, 'index'])->name('categories');
         Route::get('/{shop}/report', [ReportController::class, 'index'])->name('report');
-        Route::get('/{shop}/report/{report}/group-deviation', [ReportController::class, 'groupDeviation'])->name('report.group-deviation');
+        Route::get('/{shop}/report/group-deviation', [ReportController::class, 'groupDeviation'])->name('report.group-deviation');
     });
 
 

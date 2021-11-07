@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\Traits\SortedById;
+use App\Services\PrecomputedValues\Values\ForShop\FeedOffersCount;
+use App\Services\PrecomputedValues\Values\ForShop\FeedOffersGroupsCount;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -70,11 +72,6 @@ class Shop extends Model
         return 'https://account.admitad.com/ru/webmaster/websites/867132/offers/' . $this->outer_id;
     }
 
-    public function report()
-    {
-        return $this->hasOne(Report::class, 'object_id')->latest();
-    }
-
     public function getImportTypes(): array{
         return [
             null,
@@ -103,16 +100,21 @@ class Shop extends Model
         return storage_path(static::FEED_DIR_NAME) . '/' . $this->id . '.xml';
     }
 
-    public function getOffersCountAttribute()
+    public function feed_offers_count()
     {
-        return $this->report->data['feed.offers_count']['count'] ?? null;
+        return $this->hasOne(PrecomputedValue::class, 'object_id')->where('code', FeedOffersCount::CODE)->latest();
+    }
+
+    public function feed_offers_groups_count()
+    {
+        return $this->hasOne(PrecomputedValue::class, 'object_id')->where('code', FeedOffersGroupsCount::CODE)->latest();
     }
 
     public function getGroupCountAttribute()
     {
-        $group_id_count = $this->report->data['feed.groups_count']['group_id_count'] ?? 0;
-        $url_count = $this->report->data['feed.groups_count']['url_count'] ?? 0;
-        $picture_count = $this->report->data['feed.groups_count']['picture_count'] ?? 0;
+        $group_id_count = $this->feed_offers_groups_count->value['group_id_count'] ?? 0;
+        $url_count = $this->feed_offers_groups_count->value['url_count'] ?? 0;
+        $picture_count = $this->feed_offers_groups_count->value['picture_count'] ?? 0;
 
         $values = [];
 

@@ -15,11 +15,7 @@ class FeedOffersController extends Controller
             ->selectRaw('*, jsonb_pretty(data) as data')
             ->orderBy('id')
             ->paginate(20);
-        $shops = Shop::with('report')
-            ->get()
-            ->sortByDesc('group_count');
-        $currentShop = $shop;
 
-        return view('admin.feeds.offers', compact('currentShop', 'offers', 'shops'));
+        return view('admin.feeds.offers', compact('shop', 'offers'));
     }
 }

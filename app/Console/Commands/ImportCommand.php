@@ -3,12 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Jobs\Catalog\ImportJob;
-use App\Jobs\Feed\ReportJob;
 use App\Jobs\Feed\DownloadFileJob;
 use App\Jobs\Feed\SyncFeedJob;
 use App\Models\Shop;
-use App\Services\Report\CompositeReport;
-use App\Services\Report\ReportService;
+use App\Services\PrecomputedValues\PrecomputedValuesService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Bus;
 
@@ -18,7 +16,7 @@ class ImportCommand extends Command
 
     protected $description = 'Полный импорт';
 
-    public function handle(ReportService $reportService)
+    public function handle(PrecomputedValuesService $valuesService)
     {
         $shop_ids = $this->argument('shop_id');
         $query = Shop::active();
@@ -28,11 +26,10 @@ class ImportCommand extends Command
             return [
                 new DownloadFileJob($shop),
                 new SyncFeedJob($shop),
-                new ReportJob($shop),
                 new ImportJob($shop)
             ];
-        }))->then(function () use ($reportService) {
-            $reportService->build(CompositeReport::catalogReportTotal());
+        }))->then(function () use ($valuesService) {
+            $valuesService->calc();
         })->dispatch();
 
         return 0;

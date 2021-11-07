@@ -45,6 +45,6 @@ Breadcrumbs::for('admin.feeds.offers', function (BreadcrumbTrail $trail, $shop) 
 Breadcrumbs::for('admin.feeds.categories', function (BreadcrumbTrail $trail, $shop) {
     $trail->parent('admin.feeds.index')->push($shop->name, route('admin.feeds.categories', $shop));
 });
-Breadcrumbs::for('admin.feeds.report.group-deviation', function (BreadcrumbTrail $trail, $shop, $report) {
-    $trail->parent('admin.feeds.report', $shop)->push('Отклонения групп', route('admin.feeds.report.group-deviation', [$shop, $report]));
+Breadcrumbs::for('admin.feeds.report.group-deviation', function (BreadcrumbTrail $trail, $shop) {
+    $trail->parent('admin.feeds.report', $shop)->push('Отклонения групп', route('admin.feeds.report.group-deviation', $shop));
 });

@@ -2,7 +2,7 @@
 
 @section('feed-content')
     <div class="row">
-        <div class="col-6">
+        <div class="col-12">
             <ul class="list-group">
                 @foreach($shops as $shop)
                     <li class="list-group-item border-top d-flex"
@@ -42,15 +42,12 @@
                              data-bs-placement="right"
                              title="Количество офферов в фиде"
                         >
-                            {{ $shop->offers_count ?? '-' }}
+                            {{ $shop->feed_offers_count->value ?? '-' }}
                             <i class="bi bi-union text-secondary"></i>
                         </div>
                     </li>
                 @endforeach
             </ul>
-        </div>
-        <div class="col-6">
-            @include('admin.report.composite', compact('report'))
         </div>
     </div>
 @endsection
