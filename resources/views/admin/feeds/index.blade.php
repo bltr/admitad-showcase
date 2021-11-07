@@ -3,20 +3,36 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-            <ul class="list-group">
+            <table class="table">
+                <tr>
+                    <th>id</th>
+                    <th>Имя (сайт)</th>
+                    <th>профиль Admitad</th>
+                    <th>Количество групп</th>
+                    <th>Количество товаров</th>
+                    <th></th>
+                </tr>
+
                 @foreach($shops as $shop)
-                    <li class="list-group-item border-top d-flex"
-                        style="height: 3rem"
-                    >
-                        <div class="me-auto">
-                            <a href="{{ route('admin.feeds.import-settings', $shop) }}">
-                                {{ $shop->id }}. {{ $shop->name }}
+                    <tr>
+                        <td>
+                            {{ $shop->id }}
+                        </td>
+                        <td>
+                            <a href="{{ $shop->site }}">
+                                {{ \Str::replaceFirst('www.', '', parse_url($shop->site, PHP_URL_HOST)) }}
+                                <i class="bi bi-box-arrow-up-right small"></i>
                             </a>
-                        </div>
-                        <div class="me-4"><a href="{{ $shop->site }}" target="_blank">site⮭</a></div>
-                        <div class="me-4"><a href="{{ $shop->admitad_url }}" target="_blank">Ad⮭</a></div>
-                        <div>
-                            <form action="{{ route('admin.feeds.toggle-activity', $shop) }}" method="POST">
+                        </td>
+                        <td>
+                            <a href="{{ $shop->admitad_url }}" target="_blank">
+                                <i class="bi bi-box-arrow-up-right small"></i>
+                            </a>
+                        </td>
+                        <td>{{ $shop->group_count }}</td>
+                        <td>{{ $shop->feed_offers_count->value ?? '-' }}</td>
+                        <td>
+                            <form class="d-inline" action="{{ route('admin.feeds.toggle-activity', $shop) }}" method="POST">
                                 @method('patch')
                                 @csrf
 
@@ -27,32 +43,37 @@
                                 @else
                                     <span data-bs-toggle="tooltip"
                                           data-bs-placement="right"
-                                          title="Нельзя включить импорт если не установлен тип импорта"
+                                          title="Нельзя включить импорт без настроек импорта"
                                     >
                                         <span class="btn btn-outline-primary btn-sm disabled">Включить импорт</span>
                                     </span>
                                 @endif
                             </form>
-                        </div>
-                        <div class="ms-4"
-                             data-bs-toggle="tooltip"
-                             data-bs-placement="right"
-                             title="Количество групп"
-                        >
-                            {{ $shop->group_count }}
-                            <i class="bi bi-union text-secondary"></i>
-                        </div>
-                        <div class="ms-4"
-                             data-bs-toggle="tooltip"
-                             data-bs-placement="right"
-                             title="Количество офферов в фиде"
-                        >
-                            {{ $shop->feed_offers_count->value ?? '-' }}
-                            <i class="bi bi-union text-secondary"></i>
-                        </div>
-                    </li>
+                            <a data-bs-toggle="tooltip"
+                               data-bs-placement="right"
+                               title="Настройки импорта"
+                               class="btn btn-outline-primary btn-sm" href="{{ route('admin.feeds.import-settings', $shop) }}"
+                            >
+                                <i class="bi bi-sliders"></i>
+                            </a>
+                            <a data-bs-toggle="tooltip"
+                               data-bs-placement="right"
+                               title="Товары"
+                               class="btn btn-outline-primary btn-sm" href="{{ route('admin.feeds.offers', $shop) }}"
+                            >
+                                <i class="bi bi-grid-3x3-gap"></i>
+                            </a>
+                            <a data-bs-toggle="tooltip"
+                               data-bs-placement="right"
+                               title="Категории"
+                               class="btn btn-outline-primary btn-sm" href="{{ route('admin.feeds.categories', $shop) }}"
+                            >
+                                <i class="bi bi-diagram-3"></i>
+                            </a>
+                        </td>
+                    </tr>
                 @endforeach
-            </ul>
+            </table>
         </div>
     </div>
 @endsection
