@@ -1,13 +1,13 @@
 <div class="btn-group mb-4">
-    <a href="{{ route('admin.feeds.report', $shop->id) }}"
-       class="btn btn-primary {{ request()->routeIs('admin.feeds.report') ? 'active' : '' }}"
+    <a href="{{ route('admin.feeds.import-settings', $shop->id) }}"
+       class="btn btn-primary {{ request()->routeIs('admin.feeds.import-settings') ? 'active' : '' }}"
     >
-        Отчеты
+        Настройки импорта
     </a>
     <a href="{{ route('admin.feeds.offers', $shop->id) }}"
        class="btn btn-primary {{ request()->routeIs('admin.feeds.offers') ? 'active' : '' }}"
     >
-        Офферы
+        Товары
     </a>
     <a href="{{ route('admin.feeds.categories', $shop->id) }}"
        class="btn btn-primary {{ request()->routeIs('admin.feeds.categories') ? 'active' : '' }}"

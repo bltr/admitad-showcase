@@ -36,8 +36,8 @@ Breadcrumbs::for('admin.categories.edit', function (BreadcrumbTrail $trail, $cat
 Breadcrumbs::for('admin.feeds.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.home')->push('Фиды', route('admin.feeds.index'));
 });
-Breadcrumbs::for('admin.feeds.report', function (BreadcrumbTrail $trail, $shop) {
-    $trail->parent('admin.feeds.index')->push($shop->name, route('admin.feeds.report', $shop));
+Breadcrumbs::for('admin.feeds.import-settings', function (BreadcrumbTrail $trail, $shop) {
+    $trail->parent('admin.feeds.index')->push($shop->name, route('admin.feeds.import-settings', $shop));
 });
 Breadcrumbs::for('admin.feeds.offers', function (BreadcrumbTrail $trail, $shop) {
     $trail->parent('admin.feeds.index')->push($shop->name, route('admin.feeds.offers', $shop));

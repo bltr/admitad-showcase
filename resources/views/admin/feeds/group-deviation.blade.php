@@ -165,7 +165,7 @@
 
     <div class="row">
         <div class="col">
-            @forelse($paginator as $group_key=>$offer_ids)
+            @foreach($paginator as $group_key=>$offer_ids)
                 <h5 class="mt-5">
                     Группа по <span class="badge bg-info">{{ $group_key }}</span>
                     @if(str_contains(request()->deviation_type, 'in_picture'))
@@ -210,9 +210,7 @@
                         </tr>
                     @endforeach
                 </table>
-            @empty
-                нет отклонений
-            @endforelse
+            @endforeach
             {!! $paginator->links() !!}
         </div>
     </div>

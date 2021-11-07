@@ -1,6 +1,6 @@
-@extends('admin.feeds.layout')
+@extends('admin.layout')
 
-@section('feed-content')
+@section('content')
     <div class="row">
         <div class="col-12">
             <ul class="list-group">
@@ -8,6 +8,11 @@
                     <li class="list-group-item border-top d-flex"
                         style="height: 3rem"
                     >
+                        <div class="me-auto">
+                            <a href="{{ route('admin.feeds.import-settings', $shop) }}">
+                                {{ $shop->id }}. {{ $shop->name }}
+                            </a>
+                        </div>
                         <div class="me-4"><a href="{{ $shop->site }}" target="_blank">site⮭</a></div>
                         <div class="me-4"><a href="{{ $shop->admitad_url }}" target="_blank">Ad⮭</a></div>
                         <div>
@@ -29,7 +34,7 @@
                                 @endif
                             </form>
                         </div>
-                        <div class="ms-auto"
+                        <div class="ms-4"
                              data-bs-toggle="tooltip"
                              data-bs-placement="right"
                              title="Количество групп"
@@ -37,7 +42,7 @@
                             {{ $shop->group_count }}
                             <i class="bi bi-union text-secondary"></i>
                         </div>
-                        <div class="ms-auto"
+                        <div class="ms-4"
                              data-bs-toggle="tooltip"
                              data-bs-placement="right"
                              title="Количество офферов в фиде"
