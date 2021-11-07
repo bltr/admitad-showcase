@@ -134,4 +134,9 @@ class Shop extends Model
 
         return min(...$values);
     }
+
+    public function feed_offers()
+    {
+        return $this->hasMany(FeedOffer::class);
+    }
 }

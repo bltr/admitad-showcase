@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -50,5 +51,12 @@ class FeedOffer extends Model
         }
 
         return '-';
+    }
+
+    public function scopeInvalid(Builder $query): Builder
+    {
+        return $query->whereNull('data->price')
+            ->orWhereRaw("data -> 'pictures' = '[]'::jsonb")
+            ->orWhereNull('data->url');
     }
 }
