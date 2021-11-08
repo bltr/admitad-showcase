@@ -46,27 +46,21 @@
 
             <div class="row">
                 <div class="col-6">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">Количество offers</h5>
-                            <table class="table table-bordered">
-                                <tr>
-                                    <td>Общее количество</td>
-                                    <td>{{ $feed_offers_count }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Количество не валидных</td>
-                                    <td>{{ $invalid_feed_offers_count }}</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
+                    <h5 class="text-center">Количество offers</h5>
+                    <table class="table table-bordered h-100">
+                        <tr>
+                            <td>Общее количество</td>
+                            <td>{{ $feed_offers_count }}</td>
+                        </tr>
+                        <tr>
+                            <td>Количество не валидных</td>
+                            <td>{{ $invalid_feed_offers_count }}</td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="col-6">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">Количество групп и отклонения групп</h5>
-                            <table class="table table-bordered">
+                    <h5 class="text-center">Количество групп и отклонения групп</h5>
+                    <table class="table table-bordered h-100">
                                 <tr>
                                     <td>group_id</td>
                                     <td>{{ $feed_offers_groups_count['group_id_count'] }}</td>
@@ -171,8 +165,6 @@
                                     </td>
                                 </tr>
                             </table>
-                        </div>
-                    </div>
                 </div>
             </div>
 
