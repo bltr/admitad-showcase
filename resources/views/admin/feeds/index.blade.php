@@ -52,7 +52,7 @@
                             <a data-bs-toggle="tooltip"
                                data-bs-placement="right"
                                title="Настройки импорта"
-                               class="btn btn-outline-primary btn-sm" href="{{ route('admin.feeds.import-settings', $shop) }}"
+                               class="btn btn-outline-primary btn-sm" href="{{ route('admin.feeds.import-grouping', $shop) }}"
                             >
                                 <i class="bi bi-sliders"></i>
                             </a>

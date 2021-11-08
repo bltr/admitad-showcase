@@ -33,8 +33,8 @@ Route::prefix('/admin')->name('admin.')->group(function () {
         Route::patch('/{shop}/import-type', [IndexController::class, 'importType'])->name('import-type');
         Route::get('/{shop}/offers', [FeedOffersController::class, 'index'])->name('offers');
         Route::get('/{shop}/categories', [FeedCategoriesController::class, 'index'])->name('categories');
-        Route::get('/{shop}/import-settings', [ImportSettingsController::class, 'index'])->name('import-settings');
-        Route::get('/{shop}/report/group-deviation', [ImportSettingsController::class, 'groupDeviation'])->name('report.group-deviation');
+        Route::get('/{shop}/import-grouping', [ImportSettingsController::class, 'grouping'])->name('import-grouping');
+        Route::get('/{shop}/import-mapping', [ImportSettingsController::class, 'mapping'])->name('import-mapping');
     });
 
 

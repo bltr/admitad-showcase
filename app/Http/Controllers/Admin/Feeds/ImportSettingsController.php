@@ -14,21 +14,18 @@ use Illuminate\Support\Collection;
 
 class ImportSettingsController extends Controller
 {
-    public function index(Shop $shop, PrecomputedValuesService $computingService)
+    public function grouping(Shop $shop, PrecomputedValuesService $computingService, Request $request)
     {
         $values = $computingService->getLastValuesForShop($shop->id);
 
-        return view('admin.feeds.import-settings', compact('shop') + $values);
-    }
+        $paginator = null;
+        $offers = null;
+        if ($request->filled('deviation_type')) {
+            $paginator = $this->getPaginator($values['feed_offers_group_deviations'][$request->deviation_type], $request);
+            $offers = $this->getOffers($paginator->items());
+        }
 
-    public function groupDeviation(Shop $shop, Request $request, PrecomputedValuesService $computingService)
-    {
-        $values = $computingService->getLastValuesForShop($shop->id);
-
-        $paginator = $this->getPaginator($values['feed_offers_group_deviations'][$request->deviation_type], $request);
-        $offers = $this->getOffers($paginator->items());
-
-        return view('admin.feeds.group-deviation', compact('shop', 'offers', 'paginator') + $values);
+        return view('admin.feeds.import-grouping', compact('shop', 'offers', 'paginator') + $values);
     }
 
     public function getPaginator(array $deviations, Request $request): LengthAwarePaginator
@@ -55,5 +52,12 @@ class ImportSettingsController extends Controller
             ->keyBy('id');
 
         return $offers;
+    }
+
+    public function mapping(Shop $shop, PrecomputedValuesService $computingService)
+    {
+        $values = $computingService->getLastValuesForShop($shop->id);
+
+        return view('admin.feeds.import-maping', compact('shop') + $values);
     }
 }
