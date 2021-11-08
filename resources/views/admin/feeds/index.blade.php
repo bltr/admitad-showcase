@@ -19,7 +19,7 @@
                             {{ $shop->id }}
                         </td>
                         <td>
-                            <a href="{{ $shop->site }}">
+                            <a href="{{ $shop->site }}" target="_blank">
                                 {{ \Str::replaceFirst('www.', '', parse_url($shop->site, PHP_URL_HOST)) }}
                                 <i class="bi bi-box-arrow-up-right small"></i>
                             </a>
