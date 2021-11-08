@@ -13,7 +13,7 @@
         <div class="col-10">
             <div class="row mb-4">
                 <div class="col-6">
-                    <form action="{{ route('admin.feeds.import-type', $shop) }}" method="POST">
+                    <form action="{{ route('admin.feeds.set-import-grouping', $shop) }}" method="POST">
                         @method('patch')
                         @csrf
 

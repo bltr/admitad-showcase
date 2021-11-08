@@ -30,10 +30,10 @@ Route::prefix('/admin')->name('admin.')->group(function () {
     Route::prefix('feeds')->name('feeds.')->group(function () {
         Route::get('/', [IndexController::class, 'index'])->name('index');
         Route::patch('/{shop}/toggle-activity', [IndexController::class, 'toggleActivity'])->name('toggle-activity');
-        Route::patch('/{shop}/import-type', [IndexController::class, 'importType'])->name('import-type');
         Route::get('/{shop}/offers', [FeedOffersController::class, 'index'])->name('offers');
         Route::get('/{shop}/categories', [FeedCategoriesController::class, 'index'])->name('categories');
         Route::get('/{shop}/import-grouping', [ImportSettingsController::class, 'grouping'])->name('import-grouping');
+        Route::patch('/{shop}/import-grouping', [ImportSettingsController::class, 'setGrouping'])->name('set-import-grouping');
         Route::get('/{shop}/import-mapping', [ImportSettingsController::class, 'mapping'])->name('import-mapping');
     });
 

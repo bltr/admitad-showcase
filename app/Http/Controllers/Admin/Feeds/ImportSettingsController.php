@@ -28,6 +28,14 @@ class ImportSettingsController extends Controller
         return view('admin.feeds.import-grouping', compact('shop', 'offers', 'paginator') + $values);
     }
 
+    public function setGrouping(Shop $shop, Request $request)
+    {
+        $request->validate(['import_type' => 'in:' . implode(',', $shop->getImportTypes())]);
+        $shop->setImportType($request->import_type);
+
+        return back();
+    }
+
     public function getPaginator(array $deviations, Request $request): LengthAwarePaginator
     {
         $deviations = collect($deviations);
