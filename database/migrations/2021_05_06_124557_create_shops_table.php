@@ -19,7 +19,8 @@ class CreateShopsTable extends Migration
             $table->string('name');
             $table->string('site');
             $table->string('feed_url')->nullable();
-            $table->string('import_type')->nullable();
+            $table->string('import_grouping')->nullable();
+            $table->string('import_mapping')->nullable();
             $table->boolean('is_active')->default(false);
             $table->unsignedInteger('outer_id');
         });

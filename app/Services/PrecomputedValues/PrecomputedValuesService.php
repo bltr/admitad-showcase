@@ -70,7 +70,7 @@ class PrecomputedValuesService
             ->all();
     }
 
-    public function getLastValuesForShop(int $shop_id)
+    public function getLastValuesForShop(int $shop_id): array
     {
         return PrecomputedValue::whereIn('code', array_map(fn($class) => $class::CODE, $this->valuesClassesForShops))
             ->where('object_id', $shop_id)
@@ -78,5 +78,14 @@ class PrecomputedValuesService
             ->limit(count($this->valuesClassesForShops))
             ->pluck('value', 'code')
             ->all();
+    }
+
+    public function getLastValueForShop(int $shop_id, string $code)
+    {
+        return PrecomputedValue::whereIn('code', array_map(fn($class) => $class::CODE, $this->valuesClassesForShops))
+            ->where('object_id', $shop_id)
+            ->where('code', $code)
+            ->latest()
+            ->value('value');
     }
 }

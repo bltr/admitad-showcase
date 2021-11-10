@@ -35,7 +35,7 @@ class Shop extends Model
     public function toggleActivity()
     {
         if (!$this->is_active && !$this->isCanBeActive()) {
-            throw new \DomainException('Попытка активировать магазин без выбранного типа импорта');
+            throw new \DomainException('Попытка активировать магазин без настроек импорта');
         }
 
         $this->is_active = !$this->is_active;
@@ -44,7 +44,7 @@ class Shop extends Model
 
     public function isCanBeActive(): bool
     {
-        return $this->import_type !== null;
+        return !is_null($this->import_grouping) && !is_null($this->import_mapping);
     }
 
     public function isImportWithoutGrouping()

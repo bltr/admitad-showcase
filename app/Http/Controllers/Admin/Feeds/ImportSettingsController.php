@@ -6,6 +6,7 @@ use App\Models\FeedOffer;
 use App\Services\PrecomputedValues\PrecomputedValuesService;
 use App\Http\Controllers\Controller;
 use App\Models\Shop;
+use App\Services\PrecomputedValues\Values\ForShop\FeedOffersDistinctFields;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
@@ -51,21 +52,32 @@ class ImportSettingsController extends Controller
         return $paginator;
     }
 
-    public function getOffers(array $ids_groups): Collection
+    public function getOffers(array $idsGroups): Collection
     {
-        $offer_ids = Arr::flatten($ids_groups);
+        $offerIds = Arr::flatten($idsGroups);
         $offers = FeedOffer::selectRaw('*, jsonb_pretty(data) as data')
-            ->whereIn('id', $offer_ids)
+            ->whereIn('id', $offerIds)
             ->get(['id', 'data'])
             ->keyBy('id');
 
         return $offers;
     }
 
-    public function mapping(Shop $shop, PrecomputedValuesService $computingService)
+    public function mapping(Shop $shop, PrecomputedValuesService $computingService, Request $request)
     {
-        $values = $computingService->getLastValuesForShop($shop->id);
+        $feedOffersDistinctFields = $computingService->getLastValueForShop($shop->id, FeedOffersDistinctFields::CODE);
 
-        return view('admin.feeds.import-maping', compact('shop') + $values);
+        $feedOffers = $shop->feed_offers()
+            ->when(!$request->field, fn($query) => $query->selectRaw('jsonb_pretty(data) as data'))
+            ->when($request->field, fn($query, $field) => $query->selectRaw("data ->> '$field' as data"))
+            ->simplePaginate()
+            ->withQueryString();
+
+        return view('admin.feeds.import-mapping', compact('shop', 'feedOffersDistinctFields', 'feedOffers'));
+    }
+
+    public function setMapping(Shop $shop, Request $request)
+    {
+
     }
 }

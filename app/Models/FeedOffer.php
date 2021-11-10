@@ -36,6 +36,7 @@ class FeedOffer extends Model
 
     public function getRawDataAttribute()
     {
+        $this->getRawOriginal();
         return $this->attributes['data'];
     }
 
