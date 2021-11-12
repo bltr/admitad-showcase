@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Feeds;
 
 use App\Models\FeedOffer;
+use App\Models\ImportMapping;
 use App\Services\PrecomputedValues\PrecomputedValuesService;
 use App\Http\Controllers\Controller;
 use App\Models\Shop;
@@ -12,6 +13,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
 
 class ImportSettingsController extends Controller
 {
@@ -31,8 +33,8 @@ class ImportSettingsController extends Controller
 
     public function setGrouping(Shop $shop, Request $request)
     {
-        $request->validate(['import_type' => 'in:' . implode(',', $shop->getImportTypes())]);
-        $shop->setImportType($request->import_type);
+        $request->validate(['import_type' => 'in:' . implode(',', $shop->getImportGroupings())]);
+        $shop->setImportGrouping($request->import_type);
 
         return back();
     }
@@ -78,6 +80,13 @@ class ImportSettingsController extends Controller
 
     public function setMapping(Shop $shop, Request $request)
     {
+        $data = $request->collect()
+            ->filter(fn($value) => in_array($value, array_keys(Shop::IMPORT_MAPPING_TARGET_FIELDS)))
+            ->mapToDictionary(fn($targetField, $field) => [$targetField => $field])
+            ->all();
 
+        $shop->setImportMapping($data);
+
+        return back();
     }
 }

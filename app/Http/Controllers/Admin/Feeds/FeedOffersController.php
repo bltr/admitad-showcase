@@ -13,7 +13,6 @@ class FeedOffersController extends Controller
         $offers = $shop->feed_offers()
             ->with('feed_category.ancestors')
             ->selectRaw('*, jsonb_pretty(data) as data')
-            ->orderBy('id')
             ->paginate(20);
 
         return view('admin.feeds.offers', compact('shop', 'offers'));

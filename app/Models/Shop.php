@@ -21,7 +21,28 @@ class Shop extends Model
     public const IMPORT_GROUP_BY_PICTURE = 'import_group_by_picture';
     public const IMPORT_GROUP_BY_URL = 'import_group_by_url';
 
+    public const IMPORT_MAPPING_UNUSED_FIELDS = [
+        'price',
+        'vendor',
+        'currencyId',
+        'group_id',
+        'oldprice',
+        'url',
+        'param',
+        'pictures',
+        'available',
+        'id',
+        'modified_time',
+    ];
+
+    public const IMPORT_MAPPING_TARGET_FIELDS = [
+        'forCategories' => 'Для категорий',
+        'forEndCategory' => 'Для конечных категорий',
+        'forTags' => 'Для тегов',
+    ];
+
     protected $casts = [
+        'import_mapping' => 'array',
         'is_active' => 'boolean',
     ];
 
@@ -49,22 +70,22 @@ class Shop extends Model
 
     public function isImportWithoutGrouping()
     {
-        return $this->import_type === static::IMPORT_WITHOUT_GROUPING;
+        return $this->import_grouping === static::IMPORT_WITHOUT_GROUPING;
     }
 
     public function isImportGroupByGroupId()
     {
-        return $this->import_type === static::IMPORT_GROUP_BY_GROUP_ID;
+        return $this->import_grouping === static::IMPORT_GROUP_BY_GROUP_ID;
     }
 
     public function isImportGroupByPicture()
     {
-        return $this->import_type === static::IMPORT_GROUP_BY_PICTURE;
+        return $this->import_grouping === static::IMPORT_GROUP_BY_PICTURE;
     }
 
     public function isImportGroupByUrl()
     {
-        return $this->import_type === static::IMPORT_GROUP_BY_URL;
+        return $this->import_grouping === static::IMPORT_GROUP_BY_URL;
     }
 
     public function getAdmitadUrlAttribute()
@@ -72,7 +93,7 @@ class Shop extends Model
         return 'https://account.admitad.com/ru/webmaster/websites/867132/offers/' . $this->outer_id;
     }
 
-    public function getImportTypes(): array{
+    public function getImportGroupings(): array{
         return [
             null,
             static::IMPORT_WITHOUT_GROUPING,
@@ -82,14 +103,23 @@ class Shop extends Model
         ];
     }
 
-    public function setImportType(?string $import_type)
+    public function setImportGrouping(?string $import_grouping)
     {
-        if (!in_array($import_type, $this->getImportTypes())) {
-            throw new \InvalidArgumentException('Неверный тип импорта');
+        if (!in_array($import_grouping, $this->getImportGroupings())) {
+            throw new \InvalidArgumentException('Неверный тип групировки');
         }
 
-        $this->import_type = $import_type;
-        if (is_null($import_type)) {
+        $this->import_grouping = $import_grouping;
+        if (is_null($import_grouping)) {
+            $this->is_active = false;
+        }
+        $this->save();
+    }
+
+    public function setImportMapping(array $import_mapping)
+    {
+        $this->import_mapping = $import_mapping;
+        if (empty($import_mapping)) {
             $this->is_active = false;
         }
         $this->save();

@@ -35,6 +35,7 @@ Route::prefix('/admin')->name('admin.')->group(function () {
         Route::get('/{shop}/import-grouping', [ImportSettingsController::class, 'grouping'])->name('import-grouping');
         Route::patch('/{shop}/import-grouping', [ImportSettingsController::class, 'setGrouping'])->name('set-import-grouping');
         Route::get('/{shop}/import-mapping', [ImportSettingsController::class, 'mapping'])->name('import-mapping');
+        Route::patch('/{shop}/import-mapping', [ImportSettingsController::class, 'setMapping'])->name('set-import-mapping');
     });
 
 

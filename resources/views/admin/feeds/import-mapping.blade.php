@@ -17,15 +17,53 @@
                     <table class="table table-bordered">
                         <tr>
                             <td>
-                                <a href="{{ route('admin.feeds.import-mapping', compact('shop')) }}">Все</a>
+                                <form id="form" method="POST" action="{{ route('admin.feeds.set-import-mapping',  $shop) }}">
+                                    @csrf()
+                                    @method('PATCH')
+
+                                    <div>
+                                        @error('forCategories')
+                                        {{ $message }}
+                                        @enderror
+                                    </div>
+                                    <div>
+                                        @error('forEndCategory')
+                                        {{ $message }}
+                                        @enderror
+                                    </div>
+
+                                    <button class="btn btn-primary float-end" type="submit">Сохранить</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="{{ route('admin.feeds.import-mapping', $shop) }}">Все</a>
                             </td>
                         </tr>
                         @foreach($feedOffersDistinctFields as $field)
                             <tr>
                                 <td>
-                                    <a href="{{ route('admin.feeds.import-mapping', ['shop' => $shop, 'field' => $field]) }}"
-                                       class="@if(\App\Models\ImportMapping::isUnusedField($field)) text-secondary @endif"
-                                    >{{ $field }}</a>
+                                    <div class="d-flex">
+                                        @if(in_array($field, \App\Models\Shop::IMPORT_MAPPING_UNUSED_FIELDS))
+                                            <a href="{{ route('admin.feeds.import-mapping', ['shop' => $shop, 'field' => $field]) }}"
+                                               class="text-secondary"
+                                            >{{ $field }}</a>
+                                        @else
+                                            <a href="{{ route('admin.feeds.import-mapping', ['shop' => $shop, 'field' => $field]) }}">{{ $field }}</a>
+
+                                            <select class="form-select ms-auto d-inline w-50" form="form" name="{{ $field }}">
+                                                <option value="" ></option>
+                                                @foreach(\App\Models\Shop::IMPORT_MAPPING_TARGET_FIELDS as $targetField => $label)
+                                                    <option
+                                                        value="{{ $targetField }}"
+                                                        @if(in_array($field, $shop->import_mapping[$targetField] ?? [])) selected @endif
+                                                    >{{ $label }}</option>
+                                                @endforeach
+                                            </select>
+                                        @endif
+                                    </div>
+
                                 </td>
                             </tr>
                         @endforeach
