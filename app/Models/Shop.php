@@ -21,20 +21,6 @@ class Shop extends Model
     public const IMPORT_GROUP_BY_PICTURE = 'import_group_by_picture';
     public const IMPORT_GROUP_BY_URL = 'import_group_by_url';
 
-    public const IMPORT_MAPPING_UNUSED_FIELDS = [
-        'price',
-        'vendor',
-        'currencyId',
-        'group_id',
-        'oldprice',
-        'url',
-        'param',
-        'pictures',
-        'available',
-        'id',
-        'modified_time',
-    ];
-
     public const IMPORT_MAPPING_TARGET_FIELDS = [
         'forCategories' => 'Для категорий',
         'forEndCategory' => 'Для конечных категорий',

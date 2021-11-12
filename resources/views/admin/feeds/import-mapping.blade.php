@@ -45,23 +45,17 @@
                             <tr>
                                 <td>
                                     <div class="d-flex">
-                                        @if(in_array($field, \App\Models\Shop::IMPORT_MAPPING_UNUSED_FIELDS))
-                                            <a href="{{ route('admin.feeds.import-mapping', ['shop' => $shop, 'field' => $field]) }}"
-                                               class="text-secondary"
-                                            >{{ $field }}</a>
-                                        @else
-                                            <a href="{{ route('admin.feeds.import-mapping', ['shop' => $shop, 'field' => $field]) }}">{{ $field }}</a>
+                                        <a href="{{ route('admin.feeds.import-mapping', ['shop' => $shop, 'field' => $field]) }}">{{ $field }}</a>
 
-                                            <select class="form-select ms-auto d-inline w-50" form="form" name="{{ $field }}">
-                                                <option value="" ></option>
-                                                @foreach(\App\Models\Shop::IMPORT_MAPPING_TARGET_FIELDS as $targetField => $label)
-                                                    <option
-                                                        value="{{ $targetField }}"
-                                                        @if(in_array($field, $shop->import_mapping[$targetField] ?? [])) selected @endif
-                                                    >{{ $label }}</option>
-                                                @endforeach
-                                            </select>
-                                        @endif
+                                        <select class="form-select ms-auto d-inline w-50" form="form" name="{{ $field }}">
+                                            <option value="" ></option>
+                                            @foreach(\App\Models\Shop::IMPORT_MAPPING_TARGET_FIELDS as $targetField => $label)
+                                                <option
+                                                    value="{{ $targetField }}"
+                                                    @if(in_array($field, $shop->import_mapping[$targetField] ?? [])) selected @endif
+                                                >{{ $label }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
 
                                 </td>
