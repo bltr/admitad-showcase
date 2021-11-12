@@ -14,14 +14,14 @@ Breadcrumbs::for('admin.home', function (BreadcrumbTrail $trail) {
  * Offers
  */
 Breadcrumbs::for('admin.offers.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('admin.index')->push('Товары', route('admin.offers.index'));
+    $trail->parent('admin.home')->push('Товары', route('admin.offers.index'));
 });
 
 /**
  * Categories
  */
 Breadcrumbs::for('admin.categories.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('admin.index')->push('Категории', route('admin.categories.index'));
+    $trail->parent('admin.home')->push('Категории', route('admin.categories.index'));
 });
 Breadcrumbs::for('admin.categories.create', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.categories.index')->push('Создать', route('admin.categories.create'));
