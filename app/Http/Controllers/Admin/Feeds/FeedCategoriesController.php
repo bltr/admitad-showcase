@@ -12,6 +12,7 @@ class FeedCategoriesController extends Controller
     public function index(Shop $shop)
     {
         $categories = FeedCategory::where('shop_id', $shop->id)
+            ->defaultOrder()
             ->get()
             ->toTree();
 

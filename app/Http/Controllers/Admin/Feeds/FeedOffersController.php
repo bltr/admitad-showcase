@@ -11,7 +11,7 @@ class FeedOffersController extends Controller
     public function index(Shop $shop)
     {
         $offers = $shop->feed_offers()
-            ->with('feed_category.ancestors')
+            ->with('feed_category')
             ->selectRaw('*, jsonb_pretty(data) as data')
             ->paginate(20);
 

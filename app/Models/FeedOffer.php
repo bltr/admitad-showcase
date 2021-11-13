@@ -41,7 +41,10 @@ class FeedOffer extends Model
 
     public function feed_category()
     {
-        return $this->belongsTo(FeedCategory::class);
+        return $this->belongsTo(FeedCategory::class)
+            ->with([
+                'ancestors' => fn($query) => $query->defaultOrder(),
+            ]);
     }
 
     public function getFullCategoryNameAttribute()
