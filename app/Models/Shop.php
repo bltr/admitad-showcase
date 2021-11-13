@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use App\Models\Traits\SortedById;
 use App\Services\PrecomputedValues\Values\ForShop\FeedOffersCount;
 use App\Services\PrecomputedValues\Values\ForShop\FeedOffersGroupsCount;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Shop extends Model
 {
     use HasFactory;
-    use SortedById;
+    use SoftDeletes;
 
     public const FEED_DIR_NAME = 'feeds';
 
