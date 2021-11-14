@@ -68,7 +68,7 @@
                             @endif
 
                             <div class="card-body">
-                                <a class="card-title small" href="{{ $offer->not_sponsored_url }}" target="_blank">{{ $offer->name }} ⮭</a>
+                                <a class="card-title small" href="{{ $offer->not_sponsored_url }}" target="_blank">{{ $offer->for_end_category }} ⮭</a>
                                 <p class="card-subtitle my-2 text-muted">{{ $offer->price }} р.</p>
                                 <p class="card-subtitle my-2 text-muted">{{ $offer->shop->name }}</p>
                             </div>

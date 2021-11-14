@@ -11,32 +11,31 @@ class ImportOffersAction
     public function __invoke(Shop $shop)
     {
         $hashs = Offer::where('shop_id', $shop->id)->pluck('hash', 'id');
-        $query = FeedOffer::where('shop_id', $shop->id);
+        $query = FeedOffer::with('feed_category')->where('shop_id', $shop->id);
 
-        if ($shop->import_type === Shop::IMPORT_GROUP_BY_GROUP_ID) {
+        if ($shop->isImportGroupByGroupId()) {
             $query->groupByRaw("data ->> 'group_id'");
-        } elseif($shop->import_type === Shop::IMPORT_GROUP_BY_URL) {
+        } elseif($shop->isImportGroupByUrl()) {
             $query->groupByRaw("data ->> 'url'");
-        } elseif($shop->import_type === Shop::IMPORT_GROUP_BY_PICTURE) {
+        } elseif($shop->isImportGroupByPicture()) {
             $query->groupByRaw("data #>> '{pictures, 0}'");
         }
 
-        if ($shop->import_type !== Shop::IMPORT_WITHOUT_GROUPING) {
+        if (!$shop->isImportWithoutGrouping()) {
             $query
                 ->selectRaw("json_agg(id) as ids")
-                ->selectRaw("mode() WITHIN GROUP (ORDER BY data ->> 'price') as price")
-                ->selectRaw("mode() WITHIN GROUP (ORDER BY data ->> 'name') as name")
-                ->selectRaw("mode() WITHIN GROUP (ORDER BY data ->> 'url') as url")
-                ->selectRaw("mode() WITHIN GROUP (ORDER BY data ->> 'pictures') as photos")
-                ->selectRaw("mode() WITHIN GROUP (ORDER BY offer_id) as offer_id");
+                ->selectRaw("(array_agg(offer_id))[1] as offer_id")
+                ->selectRaw("(array_agg(feed_category_id))[1] as feed_category_id")
+                ->selectRaw("(array_agg(data))[1] as data");
         } else {
             $query
-                ->select('offer_id')
                 ->selectRaw('json_build_array(id) as ids')
-                ->selectRaw("data ->> 'price' as price")
-                ->selectRaw("data ->> 'name' as name")
-                ->selectRaw("data ->> 'url' as url")
-                ->selectRaw("data ->> 'pictures' as photos");
+                ->addSelect(
+                    'offer_id',
+                    'feed_category_id',
+                    'data'
+                )
+            ;
         }
         $query->withCasts([
             'photos' => 'array',
@@ -66,11 +65,33 @@ class ImportOffersAction
     protected function mapOffer(FeedOffer $offer, Shop $shop): array
     {
         return [
-            'price' => (int)$offer->price,
-            'name' => $offer->name,
-            'url' => $offer->url,
-            'photos' => $offer->photos,
+            'price' => (int)$offer->data->price,
+            'url' => $offer->data->url,
+            'photos' => $offer->data->pictures,
             'shop_id' => $shop->id,
+            'vendor' => $offer->data->vendor,
+            'params' => $offer->data->param ?? null,
+            'for_categories' => $this->mapField($offer, $shop, 'for_categories'),
+            'for_end_category' => $this->mapField($offer, $shop, 'for_end_category'),
+            'for_tags' => $this->mapField($offer, $shop, 'for_tags'),
         ];
+    }
+
+    protected function mapField(FeedOffer $offer, Shop $shop, $field): ?string
+    {
+        if (empty($shop->import_mapping[$field])) {
+            return null;
+        }
+
+        $result = '';
+        foreach ($shop->import_mapping[$field] as $attribute) {
+            if (in_array($attribute, ['full_category_name', 'category_name'])) {
+                $result .= $offer->{$attribute};
+            } else {
+                $result .= $offer->data->{$attribute} ?? '';
+            }
+        }
+
+        return $result;
     }
 }

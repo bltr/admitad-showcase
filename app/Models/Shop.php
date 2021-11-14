@@ -22,9 +22,9 @@ class Shop extends Model
     public const IMPORT_GROUP_BY_URL = 'import_group_by_url';
 
     public const IMPORT_MAPPING_TARGET_FIELDS = [
-        'forCategories' => 'Для категорий',
-        'forEndCategory' => 'Для конечных категорий',
-        'forTags' => 'Для тегов',
+        'for_categories' => 'Для категорий',
+        'for_end_category' => 'Для конечных категорий',
+        'for_tags' => 'Для тегов',
     ];
 
     protected $casts = [

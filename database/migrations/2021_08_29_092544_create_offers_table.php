@@ -22,6 +22,8 @@ class CreateOffersTable extends Migration
             $table->string('url');
             $table->unsignedBigInteger('shop_id');
             $table->string('hash');
+            $table->string('vendor');
+            $table->jsonb('params')->nullable();
             $table->string('for_categories')->nullable();
             $table->string('for_end_category')->nullable();
             $table->string('for_tags')->nullable();
