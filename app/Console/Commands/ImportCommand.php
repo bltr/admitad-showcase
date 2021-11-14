@@ -2,35 +2,28 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\Catalog\ImportJob;
-use App\Jobs\Feed\DownloadFileJob;
-use App\Jobs\Feed\SyncFeedJob;
+use App\Services\Catalog\ImportOffersAction;
 use App\Models\Shop;
-use App\Services\PrecomputedValues\PrecomputedValuesService;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Bus;
 
 class ImportCommand extends Command
 {
     protected $signature = 'import {shop_id?* : список id магазинов}';
 
-    protected $description = 'Полный импорт';
+    protected $description = 'Импорт товаров в каталог';
 
-    public function handle(PrecomputedValuesService $valuesService)
+    public function __construct()
     {
-        $shop_ids = $this->argument('shop_id');
-        $query = Shop::active();
-        $shops = $shop_ids ? $query->whereIn('id', $shop_ids)->get() : $query->get() ;
+        parent::__construct();
+    }
 
-        Bus::batch($shops->map(function ($shop) {
-            return [
-                new DownloadFileJob($shop),
-                new SyncFeedJob($shop),
-                new ImportJob($shop)
-            ];
-        }))->then(function () use ($valuesService) {
-            $valuesService->calc();
-        })->dispatch();
+    public function handle(ImportOffersAction $importOffersAction)
+    {
+        $shopIds = $this->argument('shop_id');
+        $query = Shop::active();
+        $shops = $shopIds ? $query->whereIn('id', $shopIds)->get() : $query->get() ;
+
+        $shops->each(fn($shop) => $importOffersAction($shop));
 
         return 0;
     }
