@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\Catalog\ImportJob;
+use App\Jobs\ImportJob;
 use App\Jobs\Feed\DownloadFileJob;
 use App\Jobs\Feed\SyncFeedJob;
 use App\Models\Shop;

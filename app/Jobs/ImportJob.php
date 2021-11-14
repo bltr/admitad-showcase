@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs\Catalog;
+namespace App\Jobs;
 
 use App\Models\Shop;
 use App\Services\Catalog\ImportOffersAction;
