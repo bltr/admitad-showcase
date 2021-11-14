@@ -17,12 +17,14 @@ class CreateOffersTable extends Migration
             $table->id();
             $table->timestamps();
             $table->softDeletes();
-            $table->string('name');
             $table->unsignedInteger('price');
             $table->jsonb('photos');
             $table->string('url');
             $table->unsignedBigInteger('shop_id');
             $table->string('hash');
+            $table->string('for_categories')->nullable();
+            $table->string('for_end_category')->nullable();
+            $table->string('for_tags')->nullable();
         });
     }
 
