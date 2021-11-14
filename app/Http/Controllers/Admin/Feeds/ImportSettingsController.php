@@ -70,8 +70,13 @@ class ImportSettingsController extends Controller
         $feedOffersDistinctFields = $computingService->getLastValueForShop($shop->id, FeedOffersDistinctFields::CODE);
 
         $feedOffers = $shop->feed_offers()
+            ->with('feed_category')
             ->when(!$request->field, fn($query) => $query->selectRaw('jsonb_pretty(data) as data'))
-            ->when($request->field, fn($query, $field) => $query->selectRaw("data ->> '$field' as data"))
+            ->when($request->field, function($query, $field) {
+                if (!in_array($field, ['full_category_name', 'category_name'])) {
+                    $query->selectRaw("data ->> '$field' as data");
+                }
+            })
             ->simplePaginate()
             ->withQueryString();
 
