@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Jobs\Feed;
 
 use App\Models\Shop;
-use App\Services\Catalog\ImportOffersAction;
+use App\Services\ImportOffersAction;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Catalog;
+namespace App\Services;
 
 use App\Models\FeedOffer;
 use App\Models\Offer;
