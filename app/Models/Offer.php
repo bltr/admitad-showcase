@@ -15,7 +15,7 @@ class Offer extends Model
 
     protected $casts = [
         'photos' => 'collection',
-        'params' => 'array',
+        'feed_data' => 'array',
     ];
 
     public function shop()

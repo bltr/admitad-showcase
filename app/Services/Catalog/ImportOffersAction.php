@@ -11,7 +11,7 @@ class ImportOffersAction
     public function __invoke(Shop $shop)
     {
         $hashs = Offer::where('shop_id', $shop->id)->pluck('hash', 'id');
-        $query = FeedOffer::with('feed_category')->where('shop_id', $shop->id);
+        $query = FeedOffer::with('feed_category')->valid()->where('shop_id', $shop->id);
 
         if ($shop->isImportGroupByGroupId()) {
             $query->groupByRaw("data ->> 'group_id'");
@@ -65,30 +65,23 @@ class ImportOffersAction
     protected function mapOffer(FeedOffer $offer, Shop $shop): array
     {
         return [
+            'shop_id' => $shop->id,
             'price' => (int)$offer->data->price,
             'url' => $offer->data->url,
             'photos' => $offer->data->pictures,
-            'shop_id' => $shop->id,
-            'vendor' => $offer->data->vendor,
-            'params' => $offer->data->param ?? null,
-            'for_categories' => $this->mapField($offer, $shop, 'for_categories'),
-            'for_end_category' => $this->mapField($offer, $shop, 'for_end_category'),
-            'for_tags' => $this->mapField($offer, $shop, 'for_tags'),
+            'feed_data' => $this->mapFeedData($offer, $shop),
         ];
     }
 
-    protected function mapField(FeedOffer $offer, Shop $shop, $field): ?string
+    private function mapFeedData($feed_offer, Shop $shop)
     {
-        if (empty($shop->import_mapping[$field])) {
-            return null;
-        }
+        $result = [];
 
-        $result = '';
-        foreach ($shop->import_mapping[$field] as $attribute) {
-            if (in_array($attribute, ['full_category_name', 'category_name'])) {
-                $result .= $offer->{$attribute};
+        foreach ($shop->import_included_fields as $field) {
+            if ($field === 'full_category_name') {
+                $result[$field] = $feed_offer->full_category_name;
             } else {
-                $result .= $offer->data->{$attribute} ?? '';
+                $result[$field] = $feed_offer->data->{$field} ?? null;
             }
         }
 

@@ -62,4 +62,11 @@ class FeedOffer extends Model
             ->orWhereRaw("data -> 'pictures' = '[]'::jsonb")
             ->orWhereNull('data->url');
     }
+
+    public function scopeValid(Builder $query): Builder
+    {
+        return $query->whereNotNull('data->price')
+            ->orWhereRaw("data -> 'pictures' <> '[]'::jsonb")
+            ->orWhereNotNull('data->url');
+    }
 }
