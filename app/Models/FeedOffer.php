@@ -56,16 +56,16 @@ class FeedOffer extends Model
         return '-';
     }
 
-    public function scopeInvalid(Builder $query): Builder
+    public function scopeInvalid(Builder $query): void
     {
-        return $query->whereNull('data->price')
+        $query->whereNull('data->price')
             ->orWhereRaw("data -> 'pictures' = '[]'::jsonb")
             ->orWhereNull('data->url');
     }
 
-    public function scopeValid(Builder $query): Builder
+    public function scopeValid(Builder $query): void
     {
-        return $query->whereNotNull('data->price')
+        $query->whereNotNull('data->price')
             ->orWhereRaw("data -> 'pictures' <> '[]'::jsonb")
             ->orWhereNotNull('data->url');
     }

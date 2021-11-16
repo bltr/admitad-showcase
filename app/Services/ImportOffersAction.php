@@ -5,44 +5,14 @@ namespace App\Services;
 use App\Models\FeedOffer;
 use App\Models\Offer;
 use App\Models\Shop;
+use Illuminate\Database\Eloquent\Builder;
 
 class ImportOffersAction
 {
     public function __invoke(Shop $shop)
     {
         $hashs = Offer::where('shop_id', $shop->id)->pluck('hash', 'id');
-        $query = FeedOffer::with('feed_category')->valid()->where('shop_id', $shop->id);
-
-        if ($shop->isImportGroupByGroupId()) {
-            $query->groupByRaw("data ->> 'group_id'");
-        } elseif($shop->isImportGroupByUrl()) {
-            $query->groupByRaw("data ->> 'url'");
-        } elseif($shop->isImportGroupByPicture()) {
-            $query->groupByRaw("data #>> '{pictures, 0}'");
-        }
-
-        if (!$shop->isImportWithoutGrouping()) {
-            $query
-                ->selectRaw("json_agg(id) as ids")
-                ->selectRaw("(array_agg(offer_id))[1] as offer_id")
-                ->selectRaw("(array_agg(feed_category_id))[1] as feed_category_id")
-                ->selectRaw("(array_agg(data))[1] as data");
-        } else {
-            $query
-                ->selectRaw('json_build_array(id) as ids')
-                ->addSelect(
-                    'offer_id',
-                    'feed_category_id',
-                    'data'
-                )
-            ;
-        }
-        $query->withCasts([
-            'photos' => 'array',
-            'ids' => 'array',
-        ]);
-
-        $query->cursor()->each(function (FeedOffer $feedOffer) use ($hashs, $shop) {
+        $this->query($shop)->cursor()->each(function (FeedOffer $feedOffer) use ($hashs, $shop) {
             $attr = $this->mapOffer($feedOffer, $shop);
 
             $hash = sha1(json_encode($attr));
@@ -60,6 +30,44 @@ class ImportOffersAction
         });
 
         Offer::whereIn('id', $hashs->keys())->delete();
+    }
+
+    public function query(Shop $shop): Builder
+    {
+        $query = FeedOffer::with('feed_category')
+            ->valid()
+            ->where('shop_id', $shop->id);
+
+        if ($shop->isImportGroupByGroupId()) {
+            $query->groupByRaw("data ->> 'group_id'");
+        } elseif ($shop->isImportGroupByUrl()) {
+            $query->groupByRaw("data ->> 'url'");
+        } elseif ($shop->isImportGroupByPicture()) {
+            $query->groupByRaw("data #>> '{pictures, 0}'");
+        }
+
+        if (!$shop->isImportWithoutGrouping()) {
+            $query
+                ->selectRaw("json_agg(id) as ids")
+                ->selectRaw("(array_agg(offer_id))[1] as offer_id")
+                ->selectRaw("(array_agg(feed_category_id))[1] as feed_category_id")
+                ->selectRaw("(array_agg(data))[1] as data");
+        } else {
+            $query
+                ->selectRaw('json_build_array(id) as ids')
+                ->addSelect(
+                    'offer_id',
+                    'feed_category_id',
+                    'data'
+                );
+        }
+
+        $query->withCasts([
+            'photos' => 'array',
+            'ids' => 'array',
+        ]);
+
+        return $query;
     }
 
     protected function mapOffer(FeedOffer $offer, Shop $shop): array
