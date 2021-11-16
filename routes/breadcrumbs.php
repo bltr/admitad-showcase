@@ -39,8 +39,8 @@ Breadcrumbs::for('admin.feeds.index', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('admin.feeds.import-grouping', function (BreadcrumbTrail $trail, $shop) {
     $trail->parent('admin.feeds.index')->push($shop->name, route('admin.feeds.import-grouping', $shop));
 });
-Breadcrumbs::for('admin.feeds.import-mapping', function (BreadcrumbTrail $trail, $shop) {
-    $trail->parent('admin.feeds.index')->push($shop->name, route('admin.feeds.import-mapping', $shop));
+Breadcrumbs::for('admin.feeds.import-included-fields', function (BreadcrumbTrail $trail, $shop) {
+    $trail->parent('admin.feeds.index')->push($shop->name, route('admin.feeds.import-included-fields', $shop));
 });
 Breadcrumbs::for('admin.feeds.offers', function (BreadcrumbTrail $trail, $shop) {
     $trail->parent('admin.feeds.index')->push($shop->name, route('admin.feeds.offers', $shop));

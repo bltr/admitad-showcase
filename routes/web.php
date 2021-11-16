@@ -34,8 +34,8 @@ Route::prefix('/admin')->name('admin.')->group(function () {
         Route::get('/{shop}/categories', [FeedCategoriesController::class, 'index'])->name('categories');
         Route::get('/{shop}/import-grouping', [ImportSettingsController::class, 'grouping'])->name('import-grouping');
         Route::patch('/{shop}/import-grouping', [ImportSettingsController::class, 'setGrouping'])->name('set-import-grouping');
-        Route::get('/{shop}/import-mapping', [ImportSettingsController::class, 'mapping'])->name('import-mapping');
-        Route::patch('/{shop}/import-mapping', [ImportSettingsController::class, 'setMapping'])->name('set-import-mapping');
+        Route::get('/{shop}/import-included-fields', [ImportSettingsController::class, 'includedFields'])->name('import-included-fields');
+        Route::patch('/{shop}/import-included-fields', [ImportSettingsController::class, 'setIncludedFields'])->name('set-import-included-fields');
     });
 
 

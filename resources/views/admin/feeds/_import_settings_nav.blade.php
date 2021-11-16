@@ -6,9 +6,9 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link @if(request()->routeIs('admin.feeds.import-mapping')) active @endif"
-           href="{{ route('admin.feeds.import-mapping', $shop) }}">
-            Маппинг
+        <a class="nav-link @if(request()->routeIs('admin.feeds.import-included-fields')) active @endif"
+           href="{{ route('admin.feeds.import-included-fields', $shop) }}">
+            Включаемые поля
         </a>
     </li>
 </ul>

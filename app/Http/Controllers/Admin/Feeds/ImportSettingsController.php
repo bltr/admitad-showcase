@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin\Feeds;
 
 use App\Models\FeedOffer;
-use App\Models\ImportMapping;
 use App\Services\PrecomputedValues\PrecomputedValuesService;
 use App\Http\Controllers\Controller;
 use App\Models\Shop;
@@ -13,7 +12,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Validator;
 
 class ImportSettingsController extends Controller
 {
@@ -65,7 +63,7 @@ class ImportSettingsController extends Controller
         return $offers;
     }
 
-    public function mapping(Shop $shop, PrecomputedValuesService $computingService, Request $request)
+    public function includedFields(Shop $shop, PrecomputedValuesService $computingService, Request $request)
     {
         $feedOffersDistinctFields = $computingService->getLastValueForShop($shop->id, FeedOffersDistinctFields::CODE);
 
@@ -80,17 +78,13 @@ class ImportSettingsController extends Controller
             ->simplePaginate()
             ->withQueryString();
 
-        return view('admin.feeds.import-mapping', compact('shop', 'feedOffersDistinctFields', 'feedOffers'));
+        return view('admin.feeds.import-included-fields', compact('shop', 'feedOffersDistinctFields', 'feedOffers'));
     }
 
-    public function setMapping(Shop $shop, Request $request)
+    public function setIncludedFields(Shop $shop, Request $request)
     {
-        $data = $request->collect()
-            ->filter(fn($value) => in_array($value, array_keys(Shop::IMPORT_MAPPING_TARGET_FIELDS)))
-            ->mapToDictionary(fn($targetField, $field) => [$targetField => $field])
-            ->all();
-
-        $shop->setImportMapping($data);
+        $data = $request->validate(['fields' => 'nullable|array']);
+        $shop->setImportIncludedFields($data['fields'] ?? null);
 
         return back();
     }

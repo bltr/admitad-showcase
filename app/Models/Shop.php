@@ -21,14 +21,8 @@ class Shop extends Model
     public const IMPORT_GROUP_BY_PICTURE = 'import_group_by_picture';
     public const IMPORT_GROUP_BY_URL = 'import_group_by_url';
 
-    public const IMPORT_MAPPING_TARGET_FIELDS = [
-        'for_categories' => 'Для категорий',
-        'for_end_category' => 'Для конечных категорий',
-        'for_tags' => 'Для тегов',
-    ];
-
     protected $casts = [
-        'import_mapping' => 'array',
+        'import_included_fields' => 'array',
         'is_active' => 'boolean',
     ];
 
@@ -51,7 +45,7 @@ class Shop extends Model
 
     public function isCanBeActive(): bool
     {
-        return !is_null($this->import_grouping) && !is_null($this->import_mapping);
+        return !is_null($this->import_grouping) && !is_null($this->import_included_fields);
     }
 
     public function isImportWithoutGrouping()
@@ -102,10 +96,10 @@ class Shop extends Model
         $this->save();
     }
 
-    public function setImportMapping(array $import_mapping)
+    public function setImportIncludedFields(?array $import_included_fields)
     {
-        $this->import_mapping = $import_mapping;
-        if (empty($import_mapping)) {
+        $this->import_included_fields = $import_included_fields;
+        if (is_null($import_included_fields)) {
             $this->is_active = false;
         }
         $this->save();
