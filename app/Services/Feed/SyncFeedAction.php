@@ -15,8 +15,10 @@ class SyncFeedAction
     private CategoryTagSynchronizer $categoryTagSynchronizer;
     private OfferTagSynchronizer $offerTagSynchronizer;
 
-    public function __construct(CategoryTagSynchronizer $categoryTagSynchronizer,
-                                OfferTagSynchronizer $offerTagSynchronizer)
+    public function __construct(
+        CategoryTagSynchronizer $categoryTagSynchronizer,
+        OfferTagSynchronizer $offerTagSynchronizer
+    )
     {
         $this->categoryTagSynchronizer = $categoryTagSynchronizer;
         $this->offerTagSynchronizer = $offerTagSynchronizer;
