@@ -8,28 +8,29 @@ use Illuminate\Support\Str;
 use SimpleXMLElement;
 use XMLReader;
 
-class XMLFileReader
+class XMLFileIteratorAggregate implements \IteratorAggregate
 {
     private XMLReader $reader;
+
+    private string $tagName;
 
     public function __construct(XMLReader $reader)
     {
         $this->reader = $reader;
     }
 
-    public function open(string $fileName)
+    public function init(string $fileName, string $tagName)
     {
+        $this->tagName = $tagName;
         $this->reader->open($fileName);
     }
 
     /**
-     * @param string $tagName
-     * @return Generator|array
      * @throws ErrorException
      */
-    public function getIterator(string $tagName): Generator
+    public function getIterator(): Generator
     {
-        $pluralTagName = Str::plural($tagName);
+        $pluralTagName = Str::plural($this->tagName);
 
         while (($isSuccess = $this->reader->read()) && !$this->isTagStarted($pluralTagName)) continue;
 
@@ -38,7 +39,7 @@ class XMLFileReader
         }
 
         while (($isSuccess = $this->reader->read()) && !$this->isTagEnded($pluralTagName)) {
-            if ($this->isTagStarted($tagName)) {
+            if ($this->isTagStarted($this->tagName)) {
                 yield $this->xml2array(simplexml_load_string($this->reader->readOuterXml()));
             }
         }

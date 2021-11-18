@@ -3,22 +3,24 @@
 namespace App\Services\Feed\SyncFeedAction;
 
 use App\Models\Shop;
+use App\Utils\LazyCollection;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
+use Kalnoy\Nestedset\Collection;
 
 abstract class TagSynchronizer
 {
-    protected const BUFFER_SIZE = 500;
+    protected const CHUNK_SIZE = 500;
 
-    private XMLFileReader $xmlIterator;
+    private XMLFileIteratorAggregate $xmlIteratorAggregate;
 
     private Shop $shop;
 
     private Carbon $synchronized_at;
 
-    public function __construct(XMLFileReader $xmlIterator)
+    public function __construct(XMLFileIteratorAggregate $xmlIteratorAggregate)
     {
-        $this->xmlIterator = $xmlIterator;
+        $this->xmlIteratorAggregate = $xmlIteratorAggregate;
     }
 
     abstract protected function query(): Builder;
@@ -31,21 +33,13 @@ abstract class TagSynchronizer
     {
         $this->shop = $shop;
         $this->synchronized_at = $synchronized_at;
-        $buffer = [];
+        $this->xmlIteratorAggregate->init($shop->feed_file_name, $this->tagName());
 
-        $this->xmlIterator->open($shop->feed_file_name);
-        foreach ($this->xmlIterator->getIterator($this->tagName()) as $entry) {
-            $buffer[$entry['id']] = $entry;
-
-            if (count($buffer) === static::BUFFER_SIZE) {
-                $this->syncChunk($buffer);
-                $buffer = [];
-            }
-        }
-
-        if (count($buffer) > 0) {
-            $this->syncChunk($buffer);
-        }
+        LazyCollection::make($this->xmlIteratorAggregate)
+            ->chunk(static::CHUNK_SIZE)
+            ->each(function ($chunk) {
+                $this->syncChunk($chunk->all());
+            });
 
         $this->query()
             ->where('shop_id', $this->shop->id)
@@ -59,7 +53,7 @@ abstract class TagSynchronizer
 
         $hashs = $this->query()
             ->where('shop_id', $this->shop->id)
-            ->whereIn('outer_id', array_keys($entries))
+            ->whereIn('outer_id', array_column($entries, 'id'))
             ->pluck('hash', 'outer_id')
             ->all();
 
