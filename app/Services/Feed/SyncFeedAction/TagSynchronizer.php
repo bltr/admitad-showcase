@@ -6,7 +6,6 @@ use App\Models\Shop;
 use App\Utils\LazyCollection;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
-use Kalnoy\Nestedset\Collection;
 
 abstract class TagSynchronizer
 {
