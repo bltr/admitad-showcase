@@ -15,7 +15,9 @@ class CreateOffersTable extends Migration
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
+            $table->uuid('feed_offers_group_id');
             $table->timestamps();
+            $table->timestamp('imported_at')->nullable();
             $table->softDeletes();
             $table->unsignedBigInteger('shop_id');
             $table->string('hash');
