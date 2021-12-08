@@ -91,7 +91,7 @@ class ImportOffersAction
         if (!$this->shop->isImportWithoutGrouping()) {
             $query
                 ->selectRaw("json_agg(id) as ids")
-                ->selectRaw("(array_agg(group_id))[1] as group_id"); // брать первый не пустой
+                ->selectRaw("(array_agg(group_id) FILTER (WHERE group_id IS NOT NULL))[1] as group_id");
         } else {
             $query
                 ->selectRaw('json_build_array(id) as ids')
@@ -110,7 +110,7 @@ class ImportOffersAction
         if (!$this->shop->isImportWithoutGrouping()) {
             $query
                 ->selectRaw("json_agg(id) as ids")
-                ->selectRaw("(array_agg(group_id))[1] as group_id") // брать первый не пустой
+                ->selectRaw("(array_agg(group_id) FILTER (WHERE group_id IS NOT NULL))[1] as group_id")
                 ->selectRaw("(array_agg(feed_category_id))[1] as feed_category_id")
                 ->selectRaw("(array_agg(data))[1] as data");
         } else {
