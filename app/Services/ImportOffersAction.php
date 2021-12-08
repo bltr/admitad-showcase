@@ -8,6 +8,8 @@ use App\Models\Shop;
 use App\Utils\LazyCollection;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ImportOffersAction
 {
@@ -21,7 +23,9 @@ class ImportOffersAction
         $this->shop = $shop;
         $this->imported_at = now();
 
-        $this->query()
+        $this->populateFeedOffersGroupId();
+
+        $this->queryForImport()
             ->cursor()
             ->chunk(static::CHUNK_SIZE)
             ->each(function (LazyCollection $feedOffers) {
@@ -33,10 +37,40 @@ class ImportOffersAction
             ->delete();
     }
 
-    private function query(): Builder
+    private function populateFeedOffersGroupId()
     {
-        $query = FeedOffer::with('feed_category')
-            ->valid()
+        $this->queryForPopulateGroupId()
+            ->cursor()
+            ->chunk(static::CHUNK_SIZE)
+            ->each(function ($feed_offers) {
+                $ids = [];
+                $values = [];
+
+                foreach($feed_offers as $feed_offer) {
+                    $uuid = $feed_offer->group_id ?? Str::uuid();
+                    foreach ($feed_offer->ids as $id) {
+                        $ids[] =$id;
+                        $values[] =$uuid;
+                    }
+                }
+
+                FeedOffer::whereIn('id', $ids)->update(['group_id' => DB::raw($this->case('id', $ids, $values, 'group_id'))]);
+            });
+    }
+
+    private function case($expression, $values, $results, $defaultExpression): string
+    {
+        $callback = fn($value, $result) => 'WHEN ' . $value . ' THEN \'' . $result . '\'';
+
+        return 'CASE ' . $expression . ' '
+            . implode(' ', array_map($callback, $values, $results))
+            . ' ELSE ' . $defaultExpression
+            . ' END';
+    }
+
+    private function groupedQuery(): Builder
+    {
+        $query = FeedOffer::valid()
             ->where('shop_id', $this->shop->id);
 
         if ($this->shop->isImportGroupByGroupId()) {
@@ -46,6 +80,32 @@ class ImportOffersAction
         } elseif ($this->shop->isImportGroupByPicture()) {
             $query->groupByRaw("data #>> '{pictures, 0}'");
         }
+
+        return $query;
+    }
+
+    private function queryForPopulateGroupId()
+    {
+        $query = $this->groupedQuery();
+
+        if (!$this->shop->isImportWithoutGrouping()) {
+            $query
+                ->selectRaw("json_agg(id) as ids")
+                ->selectRaw("(array_agg(group_id))[1] as group_id"); // брать первый не пустой
+        } else {
+            $query
+                ->selectRaw('json_build_array(id) as ids')
+                ->addSelect('group_id',);
+        }
+
+        $query->withCasts(['ids' => 'array']);
+
+        return $query;
+    }
+
+    private function queryForImport()
+    {
+        $query = $this->groupedQuery();
 
         if (!$this->shop->isImportWithoutGrouping()) {
             $query
@@ -63,10 +123,11 @@ class ImportOffersAction
                 );
         }
 
-        $query->withCasts([
-            'photos' => 'array',
-            'ids' => 'array',
-        ]);
+        $query->with('feed_category')
+            ->withCasts([
+                'photos' => 'array',
+                'ids' => 'array',
+            ]);
 
         return $query;
     }
